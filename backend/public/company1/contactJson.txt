@@ -1,0 +1,2382 @@
+[
+  {
+    "id": "554891752750@s.whatsapp.net",
+    "name": "Niv Ben Avraham"
+  },
+  {
+    "id": "553193354964@s.whatsapp.net",
+    "name": "Pr Jackson"
+  },
+  {
+    "id": "554196244542@s.whatsapp.net",
+    "name": "Rodrigo"
+  },
+  {
+    "id": "5511956536948@s.whatsapp.net",
+    "name": "Troubleshoot"
+  },
+  {
+    "id": "5527997257795@s.whatsapp.net",
+    "name": ".Pra Andreia"
+  },
+  {
+    "id": "5527995067184@s.whatsapp.net",
+    "name": "Amanda Ribeiro"
+  },
+  {
+    "id": "5527997258792@s.whatsapp.net",
+    "name": "Conrado Rangel"
+  },
+  {
+    "id": "5527999229531@s.whatsapp.net",
+    "name": "Maria Bernadete Cjrn"
+  },
+  {
+    "id": "5527988624517@s.whatsapp.net",
+    "name": "Pedro Filho De Marcela"
+  },
+  {
+    "id": "5527999686045@s.whatsapp.net",
+    "name": "Deus E Fiel Adriana 🙌🏽"
+  },
+  {
+    "id": "5527997981375@s.whatsapp.net",
+    "name": "Josue"
+  },
+  {
+    "id": "5511960373203@s.whatsapp.net",
+    "name": "Digymarcas"
+  },
+  {
+    "id": "5527996148986@s.whatsapp.net",
+    "name": "Leticia de Jesus - GetNinjas"
+  },
+  {
+    "id": "5515997079717@s.whatsapp.net",
+    "name": "Dani M"
+  },
+  {
+    "id": "5527996872090@s.whatsapp.net",
+    "name": "Eletrônica Televideo"
+  },
+  {
+    "id": "5527999559482@s.whatsapp.net",
+    "name": "Herculano"
+  },
+  {
+    "id": "5519987390743@s.whatsapp.net",
+    "name": "Rafaele Melina"
+  },
+  {
+    "id": "558194973516@s.whatsapp.net",
+    "name": "Josenildo Costa"
+  },
+  {
+    "id": "5527988487985@s.whatsapp.net",
+    "name": "Geniele"
+  },
+  {
+    "id": "5527997447869@s.whatsapp.net",
+    "name": "Lu Batista"
+  },
+  {
+    "id": "5527997090903@s.whatsapp.net",
+    "name": "Jelio Lea - Praia Costa"
+  },
+  {
+    "id": "5527996964799@s.whatsapp.net",
+    "name": "Fabio👨🏿‍🦱✌🏿"
+  },
+  {
+    "id": "5527996296691@s.whatsapp.net",
+    "name": "Leandro França - Linhavix"
+  },
+  {
+    "id": "5527995252108@s.whatsapp.net",
+    "name": "SAULO MENEZES"
+  },
+  {
+    "id": "5527999186134@s.whatsapp.net",
+    "name": "renatoantoniogomes18"
+  },
+  {
+    "id": "5527999472824@s.whatsapp.net",
+    "name": "Pr Paulo"
+  },
+  {
+    "id": "5527999064970@s.whatsapp.net",
+    "name": "Rodrigo"
+  },
+  {
+    "id": "5527999085730@s.whatsapp.net",
+    "name": "Suzana Meira - GetNinjas"
+  },
+  {
+    "id": "5527992333625@s.whatsapp.net",
+    "name": "Maria de Fatima Souto Moreira - GetNinjas"
+  },
+  {
+    "id": "5511999628830@s.whatsapp.net",
+    "name": "Apolinaria Design"
+  },
+  {
+    "id": "551137778937@s.whatsapp.net",
+    "name": "Mediação - Departamento Jurídico"
+  },
+  {
+    "id": "5528999816929@s.whatsapp.net",
+    "name": "Gabriela"
+  },
+  {
+    "id": "5527981520418@s.whatsapp.net",
+    "name": "KELY 💋💋💋💋"
+  },
+  {
+    "id": "5512988166597@s.whatsapp.net",
+    "name": "Wellington Ferroni ."
+  },
+  {
+    "id": "5511965909905@s.whatsapp.net",
+    "name": "Fernando Alves Cavalcante"
+  },
+  {
+    "id": "5527995051874@s.whatsapp.net",
+    "name": "Wilden"
+  },
+  {
+    "id": "555191490515@s.whatsapp.net",
+    "name": "Evan Santos"
+  },
+  {
+    "id": "5527992576467@s.whatsapp.net",
+    "name": "Junior Sandero"
+  },
+  {
+    "id": "5527992491737@s.whatsapp.net",
+    "name": "Sandro - GetNinjas"
+  },
+  {
+    "id": "552732462803@s.whatsapp.net",
+    "name": "Edgar Poggian - Conecta Brasil"
+  },
+  {
+    "id": "5527998221617@s.whatsapp.net",
+    "name": "Auto Escola Sinal Verde"
+  },
+  {
+    "id": "5527992518888@s.whatsapp.net",
+    "name": "Camila - GetNinjas"
+  },
+  {
+    "id": "5527992419621@s.whatsapp.net",
+    "name": "Diniz"
+  },
+  {
+    "id": "5527998007073@s.whatsapp.net",
+    "name": "Sônia Guedes"
+  },
+  {
+    "id": "5511949469725@s.whatsapp.net",
+    "name": "Line"
+  },
+  {
+    "id": "5527992883344@s.whatsapp.net",
+    "name": "Geiza - GetNinjas"
+  },
+  {
+    "id": "555199049980@s.whatsapp.net",
+    "name": "Vinícius"
+  },
+  {
+    "id": "5527997001862@s.whatsapp.net",
+    "name": "JMM PATRÍCIO"
+  },
+  {
+    "id": "5527992285495@s.whatsapp.net",
+    "name": "Milena dos Santos - GetNinjas"
+  },
+  {
+    "id": "5527992975541@s.whatsapp.net",
+    "name": "Seg Vendas - Wilian"
+  },
+  {
+    "id": "5527981310624@s.whatsapp.net",
+    "name": "Lumar Cjrn"
+  },
+  {
+    "id": "5515998566622@s.whatsapp.net",
+    "name": "Comunidade ZDG"
+  },
+  {
+    "id": "5527997875726@s.whatsapp.net",
+    "name": "Anderson"
+  },
+  {
+    "id": "5527998371509@s.whatsapp.net",
+    "name": "Verneck 🤠"
+  },
+  {
+    "id": "5527997321360@s.whatsapp.net",
+    "name": "mel Bronze"
+  },
+  {
+    "id": "5527998117582@s.whatsapp.net",
+    "name": "Regina Pereira - GetNinjas"
+  },
+  {
+    "id": "5521981339832@s.whatsapp.net",
+    "name": "Ida Sartorio"
+  },
+  {
+    "id": "79040932203@s.whatsapp.net",
+    "name": "Kussokila Al-Bashir III 👑"
+  },
+  {
+    "id": "5527998337723@s.whatsapp.net",
+    "name": "Iara Sotério"
+  },
+  {
+    "id": "5527988789180@s.whatsapp.net",
+    "name": "Eriene"
+  },
+  {
+    "id": "5527995072691@s.whatsapp.net",
+    "name": "Nayara"
+  },
+  {
+    "id": "5527997219535@s.whatsapp.net",
+    "name": "Ricardo Brandao"
+  },
+  {
+    "id": "5527999150102@s.whatsapp.net",
+    "name": "Livia Folli"
+  },
+  {
+    "id": "5527998352813@s.whatsapp.net",
+    "name": "Daniel Dias"
+  },
+  {
+    "id": "5527993095248@s.whatsapp.net",
+    "name": "Mrd"
+  },
+  {
+    "id": "5527998576645@s.whatsapp.net",
+    "name": "©️@©️@🦭"
+  },
+  {
+    "id": "5527988120373@s.whatsapp.net",
+    "name": "Gaby Ehlke✨"
+  },
+  {
+    "id": "5527996614481@s.whatsapp.net",
+    "name": "Caio..TLL"
+  },
+  {
+    "id": "552731800851@s.whatsapp.net",
+    "name": "BeeBee - Entregas Inteligentes"
+  },
+  {
+    "id": "5527999890522@s.whatsapp.net",
+    "name": "Lorenzo Pazolini"
+  },
+  {
+    "id": "5527988464589@s.whatsapp.net",
+    "name": "zianebebe"
+  },
+  {
+    "id": "5527999398335@s.whatsapp.net",
+    "name": "Lilian"
+  },
+  {
+    "id": "5527997376308@s.whatsapp.net",
+    "name": "Esposa Thiago Tv guaranhus E Fiel"
+  },
+  {
+    "id": "8613510127668@s.whatsapp.net",
+    "name": "Vivian Placas Apple"
+  },
+  {
+    "id": "5527998248422@s.whatsapp.net",
+    "name": "Gilberto"
+  },
+  {
+    "id": "5527988121283@s.whatsapp.net",
+    "name": "GEOVANA CASTIGLIONI"
+  },
+  {
+    "id": "5527996430942@s.whatsapp.net",
+    "name": "SPEED CARTUCHOS"
+  },
+  {
+    "id": "5527999272555@s.whatsapp.net",
+    "name": "Valquiria"
+  },
+  {
+    "id": "5527999484299@s.whatsapp.net",
+    "name": "Tia Danda"
+  },
+  {
+    "id": "5527988574621@s.whatsapp.net",
+    "name": "Tauana🥰"
+  },
+  {
+    "id": "5527988398633@s.whatsapp.net",
+    "name": "Marcella Júlia"
+  },
+  {
+    "id": "5521984968082@s.whatsapp.net",
+    "name": "Andre Azambuja"
+  },
+  {
+    "id": "5527998658659@s.whatsapp.net",
+    "name": "Bia. ✨"
+  },
+  {
+    "id": "5527992511869@s.whatsapp.net",
+    "name": "Damaras"
+  },
+  {
+    "id": "5527999590606@s.whatsapp.net",
+    "name": "Marcela 🥰"
+  },
+  {
+    "id": "5511977774496@s.whatsapp.net",
+    "name": "Karla Eunerd"
+  },
+  {
+    "id": "5527999780150@s.whatsapp.net",
+    "name": "Felipe Soares - Fractalia"
+  },
+  {
+    "id": "5511946362220@s.whatsapp.net",
+    "name": "Luh Soares"
+  },
+  {
+    "id": "5527999688677@s.whatsapp.net",
+    "name": "Kamila Jocasta"
+  },
+  {
+    "id": "5521973498203@s.whatsapp.net",
+    "name": "Marcelo Couto Junior - GetNinjas"
+  },
+  {
+    "id": "5527988042276@s.whatsapp.net",
+    "name": "Alberlandio"
+  },
+  {
+    "id": "5527999857000@s.whatsapp.net",
+    "name": "Helena - GetNinjas"
+  },
+  {
+    "id": "5527996924798@s.whatsapp.net",
+    "name": "Rayan"
+  },
+  {
+    "id": "554591111217@s.whatsapp.net",
+    "name": "Claudeir Ribeiro (2)"
+  },
+  {
+    "id": "553588300000@s.whatsapp.net",
+    "name": "Demetrio"
+  },
+  {
+    "id": "5527999435123@s.whatsapp.net",
+    "name": "Doalcir Schneider"
+  },
+  {
+    "id": "5527997334458@s.whatsapp.net",
+    "name": "Clailton Silva Junior"
+  },
+  {
+    "id": "5519981178070@s.whatsapp.net",
+    "name": "SrMacedo"
+  },
+  {
+    "id": "5527999371522@s.whatsapp.net",
+    "name": "Andreia Guilherme Cjrn"
+  },
+  {
+    "id": "5527997885552@s.whatsapp.net",
+    "name": "💞 Fabrícia e Paulo 💞"
+  },
+  {
+    "id": "5527999135405@s.whatsapp.net",
+    "name": "Jean Gouvêa - GetNinjas"
+  },
+  {
+    "id": "5527992946548@s.whatsapp.net",
+    "name": "Mauro-village"
+  },
+  {
+    "id": "5527998486471@s.whatsapp.net",
+    "name": "Andrina - GetNinjas"
+  },
+  {
+    "id": "5527998282292@s.whatsapp.net",
+    "name": "Marcio Greick"
+  },
+  {
+    "id": "5527995191687@s.whatsapp.net",
+    "name": "Adriana Santos"
+  },
+  {
+    "id": "5527999368133@s.whatsapp.net",
+    "name": "Benedito JUNIOR"
+  },
+  {
+    "id": "554499301999@s.whatsapp.net",
+    "name": "Roger"
+  },
+  {
+    "id": "5527992980183@s.whatsapp.net",
+    "name": "Junior Barros"
+  },
+  {
+    "id": "5527996429379@s.whatsapp.net",
+    "name": "renatoqueizqueiroz"
+  },
+  {
+    "id": "5527988277806@s.whatsapp.net",
+    "name": "DecorArt Comunicação Visual"
+  },
+  {
+    "id": "5527998019835@s.whatsapp.net",
+    "name": "Tiago Digital cel"
+  },
+  {
+    "id": "5527999811498@s.whatsapp.net",
+    "name": "Bárbara"
+  },
+  {
+    "id": "5527992677468@s.whatsapp.net",
+    "name": "Ras Eletrônica"
+  },
+  {
+    "id": "5527988750274@s.whatsapp.net",
+    "name": "Larissa Siqueira"
+  },
+  {
+    "id": "558181211823@s.whatsapp.net",
+    "name": "Agência Legendary"
+  },
+  {
+    "id": "5527981416742@s.whatsapp.net",
+    "name": "Alef Alves"
+  },
+  {
+    "id": "5511954345286@s.whatsapp.net",
+    "name": "Bruno"
+  },
+  {
+    "id": "5518996666346@s.whatsapp.net",
+    "name": "Matheus Cassador"
+  },
+  {
+    "id": "5527992924093@s.whatsapp.net",
+    "name": "Bida"
+  },
+  {
+    "id": "5527974001822@s.whatsapp.net",
+    "name": "Eliana Darly Santos"
+  },
+  {
+    "id": "5511969295151@s.whatsapp.net",
+    "name": "Valdez"
+  },
+  {
+    "id": "556792612328@s.whatsapp.net",
+    "name": "Lenine Junior"
+  },
+  {
+    "id": "5527992813143@s.whatsapp.net",
+    "name": "wagner luiz"
+  },
+  {
+    "id": "5491167958196@s.whatsapp.net",
+    "name": "Franciele ●🫀📚"
+  },
+  {
+    "id": "41788496260@s.whatsapp.net",
+    "name": "Apostolo Praxedes"
+  },
+  {
+    "id": "5511915760383@s.whatsapp.net",
+    "name": "Rogério Rodrigues"
+  },
+  {
+    "id": "5527998156840@s.whatsapp.net",
+    "name": "Bruno Gustavo de Magalhaes - GetNinjas"
+  },
+  {
+    "id": "5527997470168@s.whatsapp.net",
+    "name": "Lucas Motos"
+  },
+  {
+    "id": "5527997649299@s.whatsapp.net",
+    "name": "A Braz Corona"
+  },
+  {
+    "id": "557398631289@s.whatsapp.net",
+    "name": "Impa 365 Comercial"
+  },
+  {
+    "id": "5527997696771@s.whatsapp.net",
+    "name": "Jusemar"
+  },
+  {
+    "id": "5512997488879@s.whatsapp.net",
+    "name": "Michel Almeida Dev"
+  },
+  {
+    "id": "556599303929@s.whatsapp.net",
+    "name": "Regina Arruda"
+  },
+  {
+    "id": "5527996267644@s.whatsapp.net",
+    "name": "Paulo Alberto das Virgens Brombley - GetNinjas"
+  },
+  {
+    "id": "5527997120543@s.whatsapp.net",
+    "name": "José Rufino"
+  },
+  {
+    "id": "5527997733480@s.whatsapp.net",
+    "name": "Amanda Bastianello GG Loja Vivo Nova Venecia"
+  },
+  {
+    "id": "5527997793878@s.whatsapp.net",
+    "name": "Diego - GetNinjas"
+  },
+  {
+    "id": "5527998965406@s.whatsapp.net",
+    "name": "Alexandro Follador"
+  },
+  {
+    "id": "5527997727897@s.whatsapp.net",
+    "name": "Dona Angela"
+  },
+  {
+    "id": "5527996228966@s.whatsapp.net",
+    "name": "Carlos"
+  },
+  {
+    "id": "5527997050452@s.whatsapp.net",
+    "name": "Universo Do Açaí"
+  },
+  {
+    "id": "5511997873915@s.whatsapp.net",
+    "name": "Paulo JR"
+  },
+  {
+    "id": "14709744791@s.whatsapp.net",
+    "name": "Clailton Jr"
+  },
+  {
+    "id": "5527995048963@s.whatsapp.net",
+    "name": "Pamela Santos"
+  },
+  {
+    "id": "5527997897313@s.whatsapp.net",
+    "name": "Eletrônica Pop. do Sandro"
+  },
+  {
+    "id": "5527997798903@s.whatsapp.net",
+    "name": "Emanuel TI Telelaudo - Pessoal - Pessoal"
+  },
+  {
+    "id": "5527988325629@s.whatsapp.net",
+    "name": "Sabrina de Laia Westphal da Vitoria - GetNinjas"
+  },
+  {
+    "id": "5527992566602@s.whatsapp.net",
+    "name": "Jefferson Benichio"
+  },
+  {
+    "id": "5527992922324@s.whatsapp.net",
+    "name": "Jaline Vendas Fortech Ppa"
+  },
+  {
+    "id": "5528999069425@s.whatsapp.net",
+    "name": "Leo"
+  },
+  {
+    "id": "5527992016298@s.whatsapp.net",
+    "name": "Tarsis"
+  },
+  {
+    "id": "5511983331516@s.whatsapp.net",
+    "name": "Maria Goretti Polcheira - GetNinjas"
+  },
+  {
+    "id": "5527997816485@s.whatsapp.net",
+    "name": "Ph Tech"
+  },
+  {
+    "id": "5527997220509@s.whatsapp.net",
+    "name": "Simone Vila Diamante 💎"
+  },
+  {
+    "id": "5527998039731@s.whatsapp.net",
+    "name": "Nene"
+  },
+  {
+    "id": "5527999086729@s.whatsapp.net",
+    "name": "Eletrônica GJ"
+  },
+  {
+    "id": "5527997971202@s.whatsapp.net",
+    "name": "Click Cell distribuidor de peças"
+  },
+  {
+    "id": "5527999624789@s.whatsapp.net",
+    "name": "Athyla Goncalves"
+  },
+  {
+    "id": "5527989013977@s.whatsapp.net",
+    "name": "Papi Suporte"
+  },
+  {
+    "id": "5527997556401@s.whatsapp.net",
+    "name": "Thales Valparaiso -tv"
+  },
+  {
+    "id": "5527988125781@s.whatsapp.net",
+    "name": "Rafael Sabino Clotilde Sabino Clotilde"
+  },
+  {
+    "id": "5527995058440@s.whatsapp.net",
+    "name": "Giorgia das Neves - GetNinjas"
+  },
+  {
+    "id": "5527997925104@s.whatsapp.net",
+    "name": "Maria lucileide Da Silva"
+  },
+  {
+    "id": "5527998209482@s.whatsapp.net",
+    "name": "Herculano Atendente PackFit"
+  },
+  {
+    "id": "5527988578405@s.whatsapp.net",
+    "name": "Andrew Rabello"
+  },
+  {
+    "id": "5527992641401@s.whatsapp.net",
+    "name": "Cecilia - GetNinjas"
+  },
+  {
+    "id": "5527995797051@s.whatsapp.net",
+    "name": "Karlinha😘"
+  },
+  {
+    "id": "5527992981329@s.whatsapp.net",
+    "name": "Paula Telelaudo"
+  },
+  {
+    "id": "554184048211@s.whatsapp.net",
+    "name": "Elton T.I Pro Renal"
+  },
+  {
+    "id": "5527999755030@s.whatsapp.net",
+    "name": "Fabricio"
+  },
+  {
+    "id": "5527997535355@s.whatsapp.net",
+    "name": "Motor Carrro Elcinei"
+  },
+  {
+    "id": "5527998695338@s.whatsapp.net",
+    "name": "Mandinha 🌈"
+  },
+  {
+    "id": "5527999237000@s.whatsapp.net",
+    "name": "Vendas e Manutenção"
+  },
+  {
+    "id": "5527988635322@s.whatsapp.net",
+    "name": "Camila Cjrn"
+  },
+  {
+    "id": "5527992973255@s.whatsapp.net",
+    "name": "SÉRGIO R."
+  },
+  {
+    "id": "5527995162655@s.whatsapp.net",
+    "name": "Carlos Felipe Silva Rosario da Penha - GetNinjas"
+  },
+  {
+    "id": "5527998846427@s.whatsapp.net",
+    "name": "Celina"
+  },
+  {
+    "id": "5527997368775@s.whatsapp.net",
+    "name": "Olavio Marcelino"
+  },
+  {
+    "id": "553598126042@s.whatsapp.net",
+    "name": "Nathan 3AM"
+  },
+  {
+    "id": "554691287444@s.whatsapp.net",
+    "name": "Martinho Duarte"
+  },
+  {
+    "id": "5527999916343@s.whatsapp.net",
+    "name": "Silvane - GetNinjas"
+  },
+  {
+    "id": "5511910073005@s.whatsapp.net",
+    "name": "Renato"
+  },
+  {
+    "id": "5527999380689@s.whatsapp.net",
+    "name": "Weverton"
+  },
+  {
+    "id": "5527996612229@s.whatsapp.net",
+    "name": "Breno - GetNinjas"
+  },
+  {
+    "id": "5527997668824@s.whatsapp.net",
+    "name": "ALÊ ROCHA"
+  },
+  {
+    "id": "5527999765033@s.whatsapp.net",
+    "name": "Mariana Fraven"
+  },
+  {
+    "id": "5511945153129@s.whatsapp.net",
+    "name": "Natalia Sena Ferreira F"
+  },
+  {
+    "id": "556194351949@s.whatsapp.net",
+    "name": "Wesley"
+  },
+  {
+    "id": "5511912406429@s.whatsapp.net",
+    "name": "Fernanda Monteiro"
+  },
+  {
+    "id": "5511987721354@s.whatsapp.net",
+    "name": "Thayna Fernandes"
+  },
+  {
+    "id": "5527998768686@s.whatsapp.net",
+    "name": "Dominos Segurança Eletrônica Wilson"
+  },
+  {
+    "id": "5527988590263@s.whatsapp.net",
+    "name": "Rd Cel Reparos"
+  },
+  {
+    "id": "5527981822198@s.whatsapp.net",
+    "name": "Gledson"
+  },
+  {
+    "id": "5527999478025@s.whatsapp.net",
+    "name": "Martinelli Despachantes"
+  },
+  {
+    "id": "5521976402367@s.whatsapp.net",
+    "name": "Filipe Abraão"
+  },
+  {
+    "id": "558199851993@s.whatsapp.net",
+    "name": "Tony"
+  },
+  {
+    "id": "5511965779454@s.whatsapp.net",
+    "name": "Eduarda Moreira"
+  },
+  {
+    "id": "5527999594106@s.whatsapp.net",
+    "name": "PIZZARIA 14BIS"
+  },
+  {
+    "id": "5527992340944@s.whatsapp.net",
+    "name": "Thiago S. - Coordenador TI Telelaudo"
+  },
+  {
+    "id": "5511997693524@s.whatsapp.net",
+    "name": "Marcelo Ativa App"
+  },
+  {
+    "id": "5527992372829@s.whatsapp.net",
+    "name": "Alex Oi Fibra"
+  },
+  {
+    "id": "5527998069551@s.whatsapp.net",
+    "name": "Sandra Panfletos"
+  },
+  {
+    "id": "5527997596870@s.whatsapp.net",
+    "name": "Vixcel novo número"
+  },
+  {
+    "id": "5511989683914@s.whatsapp.net",
+    "name": "Ane Gomes R&S"
+  },
+  {
+    "id": "5511983751267@s.whatsapp.net",
+    "name": "Guilherme Nicolino"
+  },
+  {
+    "id": "5527997287176@s.whatsapp.net",
+    "name": "Carlao"
+  },
+  {
+    "id": "5527995903575@s.whatsapp.net",
+    "name": "Petrus Ribeiro"
+  },
+  {
+    "id": "5527981218051@s.whatsapp.net",
+    "name": "Calixto"
+  },
+  {
+    "id": "5527997171774@s.whatsapp.net",
+    "name": "Rafael (Mov Caratoira)"
+  },
+  {
+    "id": "5527992796604@s.whatsapp.net",
+    "name": "Jaqueline Suave"
+  },
+  {
+    "id": "5511970781541@s.whatsapp.net",
+    "name": "Jéssica 3Am"
+  },
+  {
+    "id": "5527995314132@s.whatsapp.net",
+    "name": "Abilia Belinha"
+  },
+  {
+    "id": "5528999924830@s.whatsapp.net",
+    "name": "Rogério Nascimento - GetNinjas"
+  },
+  {
+    "id": "557191116956@s.whatsapp.net",
+    "name": "Alcenir 💝🔥🌵"
+  },
+  {
+    "id": "557381148593@s.whatsapp.net",
+    "name": "Sostenes Andrade"
+  },
+  {
+    "id": "5527998248914@s.whatsapp.net",
+    "name": "Maria"
+  },
+  {
+    "id": "5528992918283@s.whatsapp.net",
+    "name": "Mariana"
+  },
+  {
+    "id": "5527992250910@s.whatsapp.net",
+    "name": "Macrovisão Serviços Médicos"
+  },
+  {
+    "id": "5527997430430@s.whatsapp.net",
+    "name": "Claudia Patricio Fisio"
+  },
+  {
+    "id": "5511967894337@s.whatsapp.net",
+    "name": "JK INFORMATICA"
+  },
+  {
+    "id": "5527998034387@s.whatsapp.net",
+    "name": "Renata Ramos Andre - GetNinjas"
+  },
+  {
+    "id": "5527999133418@s.whatsapp.net",
+    "name": "Daniel Pelissari - Suporte TI"
+  },
+  {
+    "id": "5527988988817@s.whatsapp.net",
+    "name": "Carolaine"
+  },
+  {
+    "id": "5527995788999@s.whatsapp.net",
+    "name": "André -Esp Ana Paula"
+  },
+  {
+    "id": "5527992293628@s.whatsapp.net",
+    "name": "Amanda D. D"
+  },
+  {
+    "id": "5527981242910@s.whatsapp.net",
+    "name": "Sandra MP"
+  },
+  {
+    "id": "555399246487@s.whatsapp.net",
+    "name": "Nadjan Vieira"
+  },
+  {
+    "id": "244925149589@s.whatsapp.net",
+    "name": "Ezequiel -Angola"
+  },
+  {
+    "id": "5527999984429@s.whatsapp.net",
+    "name": "Dra Melina Moreira"
+  },
+  {
+    "id": "5511977463127@s.whatsapp.net",
+    "name": "Rallef Carvalho"
+  },
+  {
+    "id": "5527996366691@s.whatsapp.net",
+    "name": "Augusto Castiglioni"
+  },
+  {
+    "id": "5527999082624@s.whatsapp.net",
+    "name": "Ramel Tecnologia Automações e Computação Artificial"
+  },
+  {
+    "id": "5527996440024@s.whatsapp.net",
+    "name": "Beatriz Camargo Costa - GetNinjas"
+  },
+  {
+    "id": "5527999374574@s.whatsapp.net",
+    "name": "Play Cell"
+  },
+  {
+    "id": "5527998846507@s.whatsapp.net",
+    "name": "Rondineli Gama"
+  },
+  {
+    "id": "5527989031354@s.whatsapp.net",
+    "name": "Eduarda Costa🦋"
+  },
+  {
+    "id": "5527999464846@s.whatsapp.net",
+    "name": "Paulo Henrique - GetNinjas"
+  },
+  {
+    "id": "5527993160369@s.whatsapp.net",
+    "name": "Rafaela Miranda Atacado Vitória"
+  },
+  {
+    "id": "5527998034743@s.whatsapp.net",
+    "name": "Rafaela"
+  },
+  {
+    "id": "5527992596950@s.whatsapp.net",
+    "name": "Alex Trabach"
+  },
+  {
+    "id": "5527996670366@s.whatsapp.net",
+    "name": "Andrialy"
+  },
+  {
+    "id": "5527999051836@s.whatsapp.net",
+    "name": "Wesley Instrutor"
+  },
+  {
+    "id": "554792214368@s.whatsapp.net",
+    "name": "Gabriel Sloboda - Tráfego Pago & Automações"
+  },
+  {
+    "id": "5527998614485@s.whatsapp.net",
+    "name": "Anderson Vieira"
+  },
+  {
+    "id": "5527992752727@s.whatsapp.net",
+    "name": "Andressa"
+  },
+  {
+    "id": "5527992387117@s.whatsapp.net",
+    "name": "Alessandra"
+  },
+  {
+    "id": "5528999761272@s.whatsapp.net",
+    "name": "Paulo Cjrn"
+  },
+  {
+    "id": "5527992665825@s.whatsapp.net",
+    "name": "Thay😴😴"
+  },
+  {
+    "id": "5527999098413@s.whatsapp.net",
+    "name": "Saturnino - GetNinjas"
+  },
+  {
+    "id": "5527999031512@s.whatsapp.net",
+    "name": "Lyendio Moreira"
+  },
+  {
+    "id": "5527997546342@s.whatsapp.net",
+    "name": "Leandra Machado - GetNinjas"
+  },
+  {
+    "id": "5527998046941@s.whatsapp.net",
+    "name": "Rosineide da Fonseca - GetNinjas"
+  },
+  {
+    "id": "556284657551@s.whatsapp.net",
+    "name": "Humberley Cezilio"
+  },
+  {
+    "id": "557491162036@s.whatsapp.net",
+    "name": "Amanda Patricia"
+  },
+  {
+    "id": "5527988635949@s.whatsapp.net",
+    "name": "José Carlos"
+  },
+  {
+    "id": "5527992383274@s.whatsapp.net",
+    "name": "Welington,"
+  },
+  {
+    "id": "5527999778261@s.whatsapp.net",
+    "name": "Baratagames"
+  },
+  {
+    "id": "5527999810330@s.whatsapp.net",
+    "name": "Matheus Baihense - GetNinjas"
+  },
+  {
+    "id": "5527996938953@s.whatsapp.net",
+    "name": "Papa-móveis Prefeitura de Vitória"
+  },
+  {
+    "id": "5527998336274@s.whatsapp.net",
+    "name": "Braz Ferreira"
+  },
+  {
+    "id": "5527996480506@s.whatsapp.net",
+    "name": "Nilma 💕"
+  },
+  {
+    "id": "5528999069370@s.whatsapp.net",
+    "name": "camila"
+  },
+  {
+    "id": "5527992878532@s.whatsapp.net",
+    "name": "Ana Beatriz😘"
+  },
+  {
+    "id": "5519994248586@s.whatsapp.net",
+    "name": "Claudio Felix"
+  },
+  {
+    "id": "5527999277550@s.whatsapp.net",
+    "name": "Geidimar"
+  },
+  {
+    "id": "5527996103728@s.whatsapp.net",
+    "name": "Edna"
+  },
+  {
+    "id": "5527988844961@s.whatsapp.net",
+    "name": "Mayara Prado"
+  },
+  {
+    "id": "5511949998992@s.whatsapp.net",
+    "name": "Felipe Nunes"
+  },
+  {
+    "id": "5527988783583@s.whatsapp.net",
+    "name": "Miss Patrício Anderson"
+  },
+  {
+    "id": "5527997282738@s.whatsapp.net",
+    "name": "Ana 👩🏾‍⚕️🚨🚑🩺-"
+  },
+  {
+    "id": "5527999975745@s.whatsapp.net",
+    "name": "Sofia Tourinho - GetNinjas"
+  },
+  {
+    "id": "5527992986617@s.whatsapp.net",
+    "name": "Atendimento Telelaudo"
+  },
+  {
+    "id": "5527992612867@s.whatsapp.net",
+    "name": "Rodrigo - GetNinjas"
+  },
+  {
+    "id": "552732326473@s.whatsapp.net",
+    "name": "Tai Motors Vitória"
+  },
+  {
+    "id": "5527996442183@s.whatsapp.net",
+    "name": "Suzana"
+  },
+  {
+    "id": "5527997391837@s.whatsapp.net",
+    "name": "Gabriely De Paula"
+  },
+  {
+    "id": "5527996131011@s.whatsapp.net",
+    "name": "Barata"
+  },
+  {
+    "id": "5527992852122@s.whatsapp.net",
+    "name": "Samsung TXM"
+  },
+  {
+    "id": "5527992255745@s.whatsapp.net",
+    "name": "Penha Binda Corretora Morar"
+  },
+  {
+    "id": "5527997210562@s.whatsapp.net",
+    "name": "Pastor Leo Rocha"
+  },
+  {
+    "id": "5491123008363@s.whatsapp.net",
+    "name": "Diser Bruno"
+  },
+  {
+    "id": "5527996539008@s.whatsapp.net",
+    "name": "Valci Francisco"
+  },
+  {
+    "id": "5527988474814@s.whatsapp.net",
+    "name": "Eliseu - GetNinjas"
+  },
+  {
+    "id": "5527997862992@s.whatsapp.net",
+    "name": "Hentonny TI Pessoal"
+  },
+  {
+    "id": "5527998603888@s.whatsapp.net",
+    "name": "Tiago Fornecedo"
+  },
+  {
+    "id": "5527996991997@s.whatsapp.net",
+    "name": "Ana Quiroz"
+  },
+  {
+    "id": "557599201571@s.whatsapp.net",
+    "name": "João"
+  },
+  {
+    "id": "5527988940260@s.whatsapp.net",
+    "name": "Vanda"
+  },
+  {
+    "id": "5527998369419@s.whatsapp.net",
+    "name": "Wilson Sejus"
+  },
+  {
+    "id": "5527996087217@s.whatsapp.net",
+    "name": "Cau"
+  },
+  {
+    "id": "5527998330550@s.whatsapp.net",
+    "name": "Fabricio Junior de Souza - GetNinjas"
+  },
+  {
+    "id": "5527999219697@s.whatsapp.net",
+    "name": "Yá"
+  },
+  {
+    "id": "5527997001986@s.whatsapp.net",
+    "name": "Power Informática e Celular"
+  },
+  {
+    "id": "556384655005@s.whatsapp.net",
+    "name": "Marcelo Clínica"
+  },
+  {
+    "id": "5527998815374@s.whatsapp.net",
+    "name": "Sandra Helena"
+  },
+  {
+    "id": "554196830732@s.whatsapp.net",
+    "name": "Wantuir"
+  },
+  {
+    "id": "5527992529161@s.whatsapp.net",
+    "name": "Dra Raíssa"
+  },
+  {
+    "id": "5527997959155@s.whatsapp.net",
+    "name": "Fabio"
+  },
+  {
+    "id": "551230130139@s.whatsapp.net",
+    "name": "Franchising Ferroni - Franquia Pizza Lola"
+  },
+  {
+    "id": "5527995163091@s.whatsapp.net",
+    "name": "Heraldo"
+  },
+  {
+    "id": "5511998141831@s.whatsapp.net",
+    "name": "Luara Feijão 🌻"
+  },
+  {
+    "id": "5527992911706@s.whatsapp.net",
+    "name": "Elisangela"
+  },
+  {
+    "id": "5527999971902@s.whatsapp.net",
+    "name": "Renata"
+  },
+  {
+    "id": "5527999739600@s.whatsapp.net",
+    "name": "Luiz Foerste"
+  },
+  {
+    "id": "5511977650381@s.whatsapp.net",
+    "name": "Hyper - Serviços Gerenciados de TI"
+  },
+  {
+    "id": "5527992890629@s.whatsapp.net",
+    "name": "Mila Campos - Conecta Distribuidora"
+  },
+  {
+    "id": "5521999497921@s.whatsapp.net",
+    "name": "Sávio Andrade"
+  },
+  {
+    "id": "5527999958346@s.whatsapp.net",
+    "name": "Adriana"
+  },
+  {
+    "id": "5527998148529@s.whatsapp.net",
+    "name": "Maria Rodrigues - GetNinjas"
+  },
+  {
+    "id": "5511916873869@s.whatsapp.net",
+    "name": "Damaris Almeida AGPS Tech"
+  },
+  {
+    "id": "559292473887@s.whatsapp.net",
+    "name": "Wagner Gama"
+  },
+  {
+    "id": "5527995839983@s.whatsapp.net",
+    "name": "Amanda"
+  },
+  {
+    "id": "5527999460695@s.whatsapp.net",
+    "name": "Conserma"
+  },
+  {
+    "id": "558596605807@s.whatsapp.net",
+    "name": "Marco Túlio"
+  },
+  {
+    "id": "5527988023467@s.whatsapp.net",
+    "name": "Alan C Dias Moto"
+  },
+  {
+    "id": "5511961889010@s.whatsapp.net",
+    "name": "Mariana Costa"
+  },
+  {
+    "id": "557193509585@s.whatsapp.net",
+    "name": "rvi"
+  },
+  {
+    "id": "5527981393685@s.whatsapp.net",
+    "name": "Adriana Praia Do Canto"
+  },
+  {
+    "id": "557197023134@s.whatsapp.net",
+    "name": "Edgar TITANIUM"
+  },
+  {
+    "id": "5511945637214@s.whatsapp.net",
+    "name": "David Ponzenato"
+  },
+  {
+    "id": "5527996215642@s.whatsapp.net",
+    "name": "Luiz Ricardo Ramos Gama"
+  },
+  {
+    "id": "5527996001174@s.whatsapp.net",
+    "name": "Rita De Cassia Cjrn"
+  },
+  {
+    "id": "5511992478157@s.whatsapp.net",
+    "name": "Leonardo Firmino Tbs Firmino Tbs"
+  },
+  {
+    "id": "5527998911066@s.whatsapp.net",
+    "name": "Joao Conserma"
+  },
+  {
+    "id": "556281219543@s.whatsapp.net",
+    "name": "Thalles Programador Cubo Programador Cubo"
+  },
+  {
+    "id": "5527996365041@s.whatsapp.net",
+    "name": "Gilmar Ferreira Amorim"
+  },
+  {
+    "id": "553193020089@s.whatsapp.net",
+    "name": "Eloisio Oliveira"
+  },
+  {
+    "id": "5527998881710@s.whatsapp.net",
+    "name": "Chaveiro"
+  },
+  {
+    "id": "5524992242193@s.whatsapp.net",
+    "name": "Thiago Machado"
+  },
+  {
+    "id": "5527988467313@s.whatsapp.net",
+    "name": "Márcio"
+  },
+  {
+    "id": "5527999294044@s.whatsapp.net",
+    "name": "restaurantedonanete"
+  },
+  {
+    "id": "553484442774@s.whatsapp.net",
+    "name": "Lincoln Alves"
+  },
+  {
+    "id": "556299628079@s.whatsapp.net",
+    "name": "Johnson- Bonnu"
+  },
+  {
+    "id": "5511940300711@s.whatsapp.net",
+    "name": "TOBEMA.IA"
+  },
+  {
+    "id": "5527999620016@s.whatsapp.net",
+    "name": "Larissa Pereira - GetNinjas"
+  },
+  {
+    "id": "5527988930527@s.whatsapp.net",
+    "name": "Consultora/Nails/Manicure"
+  },
+  {
+    "id": "5527998678861@s.whatsapp.net",
+    "name": "Rosa Debora"
+  },
+  {
+    "id": "5527988299036@s.whatsapp.net",
+    "name": "Jhonatan Andrade de Souza - GetNinjas"
+  },
+  {
+    "id": "552721417950@s.whatsapp.net",
+    "name": "Linhavix Cariacica"
+  },
+  {
+    "id": "5527995189160@s.whatsapp.net",
+    "name": "Vinicius Martins Toró"
+  },
+  {
+    "id": "5527997011021@s.whatsapp.net",
+    "name": "Diego Rodrigues"
+  },
+  {
+    "id": "5527988173337@s.whatsapp.net",
+    "name": "Renner Rosa dos Santos - GetNinjas"
+  },
+  {
+    "id": "5527996465449@s.whatsapp.net",
+    "name": "Pr João - Graúna"
+  },
+  {
+    "id": "5527992467057@s.whatsapp.net",
+    "name": "Ricardo Cruz Cruz"
+  },
+  {
+    "id": "5527999329342@s.whatsapp.net",
+    "name": "Renzo Negri Castello"
+  },
+  {
+    "id": "5527995236232@s.whatsapp.net",
+    "name": "Samara Dias💋"
+  },
+  {
+    "id": "5527998573980@s.whatsapp.net",
+    "name": "Ney"
+  },
+  {
+    "id": "5511911032636@s.whatsapp.net",
+    "name": "Luara Feijão 🌻"
+  },
+  {
+    "id": "5527998640545@s.whatsapp.net",
+    "name": "Maria Inacia"
+  },
+  {
+    "id": "5511964868585@s.whatsapp.net",
+    "name": "José Yssy"
+  },
+  {
+    "id": "5519983907198@s.whatsapp.net",
+    "name": "Fabio Sacchetin"
+  },
+  {
+    "id": "5527981433780@s.whatsapp.net",
+    "name": "Adriani Alves"
+  },
+  {
+    "id": "5527998645849@s.whatsapp.net",
+    "name": "Kelly Adriano"
+  },
+  {
+    "id": "557199952268@s.whatsapp.net",
+    "name": "Yuri Góes 🔥"
+  },
+  {
+    "id": "5527992935916@s.whatsapp.net",
+    "name": "Alessandro Parmezani"
+  },
+  {
+    "id": "5527996061463@s.whatsapp.net",
+    "name": "Pedro Ferraz😎"
+  },
+  {
+    "id": "5527995334873@s.whatsapp.net",
+    "name": "Dgomes Hamburgueria"
+  },
+  {
+    "id": "554192197878@s.whatsapp.net",
+    "name": "Giovanna Andrade"
+  },
+  {
+    "id": "5528998846921@s.whatsapp.net",
+    "name": "Vitor Murilo"
+  },
+  {
+    "id": "5527997981435@s.whatsapp.net",
+    "name": "V. Urbaan"
+  },
+  {
+    "id": "5527998662586@s.whatsapp.net",
+    "name": "Luiza"
+  },
+  {
+    "id": "556293496706@s.whatsapp.net",
+    "name": "Simone"
+  },
+  {
+    "id": "5527988585299@s.whatsapp.net",
+    "name": "RdCell"
+  },
+  {
+    "id": "5527988796638@s.whatsapp.net",
+    "name": "Mtec Eletrônica"
+  },
+  {
+    "id": "5527999540365@s.whatsapp.net",
+    "name": "Hebio"
+  },
+  {
+    "id": "5527999233133@s.whatsapp.net",
+    "name": "Warley Soares"
+  },
+  {
+    "id": "5527998062495@s.whatsapp.net",
+    "name": "Ingrid Amaral Souza - GetNinjas"
+  },
+  {
+    "id": "5527995310140@s.whatsapp.net",
+    "name": "Alanis Vitória"
+  },
+  {
+    "id": "5527981228068@s.whatsapp.net",
+    "name": "Arley Santos Gomes - GetNinjas"
+  },
+  {
+    "id": "5511953211075@s.whatsapp.net",
+    "name": "Lucas"
+  },
+  {
+    "id": "5541936182972@s.whatsapp.net",
+    "name": "Mari - Sitech Tecnologia"
+  },
+  {
+    "id": "5511944711408@s.whatsapp.net",
+    "name": "Thyago Ciampa"
+  },
+  {
+    "id": "556199450865@s.whatsapp.net",
+    "name": "Rafael Fernandes 🤔"
+  },
+  {
+    "id": "556196878959@s.whatsapp.net",
+    "name": "Raphael - Astra Online"
+  },
+  {
+    "id": "5527993120052@s.whatsapp.net",
+    "name": "Suporte TI"
+  },
+  {
+    "id": "5527992047814@s.whatsapp.net",
+    "name": "Aldejania"
+  },
+  {
+    "id": "5527998002567@s.whatsapp.net",
+    "name": "alex"
+  },
+  {
+    "id": "5527997584795@s.whatsapp.net",
+    "name": "Rayanna Bezerra"
+  },
+  {
+    "id": "5511968533352@s.whatsapp.net",
+    "name": "Thais"
+  },
+  {
+    "id": "5511920458186@s.whatsapp.net",
+    "name": "Diretomil"
+  },
+  {
+    "id": "5527992870600@s.whatsapp.net",
+    "name": "Vitor 💙"
+  },
+  {
+    "id": "5527995058422@s.whatsapp.net",
+    "name": "Nayara"
+  },
+  {
+    "id": "5527995812613@s.whatsapp.net",
+    "name": "Fernado 2"
+  },
+  {
+    "id": "554599691663@s.whatsapp.net",
+    "name": "AtendUP"
+  },
+  {
+    "id": "5527998709329@s.whatsapp.net",
+    "name": "Thiago Vitorino"
+  },
+  {
+    "id": "5527999613909@s.whatsapp.net",
+    "name": "Pra Fabiano"
+  },
+  {
+    "id": "5512981666811@s.whatsapp.net",
+    "name": "David Marcio"
+  },
+  {
+    "id": "5541935003723@s.whatsapp.net",
+    "name": "Sitech"
+  },
+  {
+    "id": "557488641347@s.whatsapp.net",
+    "name": "alexandrapatriciaalves"
+  },
+  {
+    "id": "5527996175850@s.whatsapp.net",
+    "name": "João Bosco - GetNinjas"
+  },
+  {
+    "id": "5527981250021@s.whatsapp.net",
+    "name": "Magnum"
+  },
+  {
+    "id": "5527988544418@s.whatsapp.net",
+    "name": "Jhonatan 🤔💻⏳🔏🔐🔒🔓"
+  },
+  {
+    "id": "556195695454@s.whatsapp.net",
+    "name": "Júlia Reborn"
+  },
+  {
+    "id": "5511943912847@s.whatsapp.net",
+    "name": "~Giacomo Suzano"
+  },
+  {
+    "id": "5527996918468@s.whatsapp.net",
+    "name": "Raquel Lima"
+  },
+  {
+    "id": "5527992260704@s.whatsapp.net",
+    "name": "Suporte Técnico Automatizadores."
+  },
+  {
+    "id": "5527999917957@s.whatsapp.net",
+    "name": "Mecanico P Santana"
+  },
+  {
+    "id": "5511976669749@s.whatsapp.net",
+    "name": "Lilian"
+  },
+  {
+    "id": "5527999776725@s.whatsapp.net",
+    "name": "Anderson Lima Ti"
+  },
+  {
+    "id": "5527998785009@s.whatsapp.net",
+    "name": "Jose Roberto Longo Diniz Junior - GetNinjas"
+  },
+  {
+    "id": "5527997350070@s.whatsapp.net",
+    "name": "Alexssandra"
+  },
+  {
+    "id": "5527997392745@s.whatsapp.net",
+    "name": "Nath Elen - GetNinjas"
+  },
+  {
+    "id": "5527998811658@s.whatsapp.net",
+    "name": "Pr Flavio"
+  },
+  {
+    "id": "5511944591858@s.whatsapp.net",
+    "name": "Nikolas Silva"
+  },
+  {
+    "id": "5527999732184@s.whatsapp.net",
+    "name": "Matheus Amaral"
+  },
+  {
+    "id": "5527998685620@s.whatsapp.net",
+    "name": "Gabriel Tavora"
+  },
+  {
+    "id": "5527997487317@s.whatsapp.net",
+    "name": "Patrícia Vitorino"
+  },
+  {
+    "id": "5528999537990@s.whatsapp.net",
+    "name": "Pr. EDSON"
+  },
+  {
+    "id": "5527999974172@s.whatsapp.net",
+    "name": "Cilda"
+  },
+  {
+    "id": "558491138279@s.whatsapp.net",
+    "name": "Segredo Soluçoes Tecnologicas"
+  },
+  {
+    "id": "5527995173413@s.whatsapp.net",
+    "name": "Tati Debora"
+  },
+  {
+    "id": "5527992226710@s.whatsapp.net",
+    "name": "Pr Carlos Blank🙌🙌"
+  },
+  {
+    "id": "5511963615828@s.whatsapp.net",
+    "name": "Andre Almeida"
+  },
+  {
+    "id": "5527999167232@s.whatsapp.net",
+    "name": "Marcus"
+  },
+  {
+    "id": "5511914718383@s.whatsapp.net",
+    "name": "Dom Diego Morais"
+  },
+  {
+    "id": "5527997843227@s.whatsapp.net",
+    "name": "Amilson Rufino Silva - GetNinjas"
+  },
+  {
+    "id": "5527999348462@s.whatsapp.net",
+    "name": "jessianesantos963"
+  },
+  {
+    "id": "5527999689985@s.whatsapp.net",
+    "name": "Augusto (Guttho)"
+  },
+  {
+    "id": "5527997257875@s.whatsapp.net",
+    "name": "Ronan Rocha"
+  },
+  {
+    "id": "5527988752376@s.whatsapp.net",
+    "name": "Laura"
+  },
+  {
+    "id": "5527996130426@s.whatsapp.net",
+    "name": "GRUPO CLICK"
+  },
+  {
+    "id": "5527998634898@s.whatsapp.net",
+    "name": "Washington GRAF"
+  },
+  {
+    "id": "5527998793042@s.whatsapp.net",
+    "name": "brab"
+  },
+  {
+    "id": "559181220121@s.whatsapp.net",
+    "name": "J F Celulares"
+  },
+  {
+    "id": "5528999395862@s.whatsapp.net",
+    "name": "Pr Adair"
+  },
+  {
+    "id": "5527999999939@s.whatsapp.net",
+    "name": "Fábio Miguel"
+  },
+  {
+    "id": "5527996219130@s.whatsapp.net",
+    "name": "Condomínio Vila Diamante💎 portaria Diamante💎 portaria"
+  },
+  {
+    "id": "5527996619994@s.whatsapp.net",
+    "name": "Nilson Nunes Santos Nunes Santos"
+  },
+  {
+    "id": "5527996024273@s.whatsapp.net",
+    "name": "ME Segurança Eletrônica"
+  },
+  {
+    "id": "5527988960525@s.whatsapp.net",
+    "name": "Milena"
+  },
+  {
+    "id": "5511980486858@s.whatsapp.net",
+    "name": "Eunerd"
+  },
+  {
+    "id": "5527996609573@s.whatsapp.net",
+    "name": "Sandra Mara"
+  },
+  {
+    "id": "551151961979@s.whatsapp.net",
+    "name": "Projetos | Backoffice - HYPER TI"
+  },
+  {
+    "id": "5527998379262@s.whatsapp.net",
+    "name": "Carlos"
+  },
+  {
+    "id": "5527988091369@s.whatsapp.net",
+    "name": "Drica Dutra Cjrn"
+  },
+  {
+    "id": "5521979762820@s.whatsapp.net",
+    "name": "Jennifer"
+  },
+  {
+    "id": "5527998116079@s.whatsapp.net",
+    "name": "Ana Paula"
+  },
+  {
+    "id": "5527999268656@s.whatsapp.net",
+    "name": "Camila 👨‍👩‍👧"
+  },
+  {
+    "id": "555181325997@s.whatsapp.net",
+    "name": "Gustavo"
+  },
+  {
+    "id": "5527981133831@s.whatsapp.net",
+    "name": "Elizabeth Cjrn"
+  },
+  {
+    "id": "5527995172657@s.whatsapp.net",
+    "name": "digital celulares"
+  },
+  {
+    "id": "5527999157029@s.whatsapp.net",
+    "name": "Eliziane"
+  },
+  {
+    "id": "5511914559930@s.whatsapp.net",
+    "name": "Tatiane Lima"
+  },
+  {
+    "id": "5527999128411@s.whatsapp.net",
+    "name": "Pr. Daniel"
+  },
+  {
+    "id": "5527998020533@s.whatsapp.net",
+    "name": "Geovani Binda"
+  },
+  {
+    "id": "5511917305612@s.whatsapp.net",
+    "name": "livino manoel"
+  },
+  {
+    "id": "5527999949327@s.whatsapp.net",
+    "name": "João R Filho"
+  },
+  {
+    "id": "556298544934@s.whatsapp.net",
+    "name": "Global/Software"
+  },
+  {
+    "id": "5527988791307@s.whatsapp.net",
+    "name": "Marcelo S. Lopes"
+  },
+  {
+    "id": "17864224127@s.whatsapp.net",
+    "name": "Rev Serge Lopes"
+  },
+  {
+    "id": "5527988947370@s.whatsapp.net",
+    "name": "Pra.Priscila Santiago"
+  },
+  {
+    "id": "5527998250349@s.whatsapp.net",
+    "name": "Marcela Josue"
+  },
+  {
+    "id": "5527933000205@s.whatsapp.net",
+    "name": "Gelks Diniz"
+  },
+  {
+    "id": "5527997769329@s.whatsapp.net",
+    "name": "Ns JÚNIOR"
+  },
+  {
+    "id": "554598218775@s.whatsapp.net",
+    "name": "Oswaldo R."
+  },
+  {
+    "id": "5511994051985@s.whatsapp.net",
+    "name": "Line"
+  },
+  {
+    "id": "5527995244182@s.whatsapp.net",
+    "name": "Anderson - GetNinjas"
+  },
+  {
+    "id": "5527997303601@s.whatsapp.net",
+    "name": "Elizeu Divulgações"
+  },
+  {
+    "id": "557196438424@s.whatsapp.net",
+    "name": "Matheus Evo"
+  },
+  {
+    "id": "5527999035367@s.whatsapp.net",
+    "name": "GILMARA Gloria E Aleluia"
+  },
+  {
+    "id": "5527999351100@s.whatsapp.net",
+    "name": "Jo Cond. Santa Barbara"
+  },
+  {
+    "id": "5527999764181@s.whatsapp.net",
+    "name": "Espaço Do Notebook"
+  },
+  {
+    "id": "5527998079230@s.whatsapp.net",
+    "name": "Izaias E FIEL"
+  },
+  {
+    "id": "5527995193336@s.whatsapp.net",
+    "name": "Letícia"
+  },
+  {
+    "id": "557499879409@s.whatsapp.net",
+    "name": "Davidson Gomes"
+  },
+  {
+    "id": "6282396030886@s.whatsapp.net",
+    "name": "Maicon Bartoski"
+  },
+  {
+    "id": "5511911632409@s.whatsapp.net",
+    "name": "Wagner Santos"
+  },
+  {
+    "id": "5527996180881@s.whatsapp.net",
+    "name": "Conectcell"
+  },
+  {
+    "id": "5527999234542@s.whatsapp.net",
+    "name": "Maria Helena Cjrn"
+  },
+  {
+    "id": "5527997439101@s.whatsapp.net",
+    "name": "Genilson"
+  },
+  {
+    "id": "5527997613273@s.whatsapp.net",
+    "name": "Fran Carvalho"
+  },
+  {
+    "id": "5527998643292@s.whatsapp.net",
+    "name": "Jenifer"
+  },
+  {
+    "id": "554796270994@s.whatsapp.net",
+    "name": "Andre Gebien"
+  },
+  {
+    "id": "5527999323868@s.whatsapp.net",
+    "name": "Sheila G Oliveira"
+  },
+  {
+    "id": "555197061005@s.whatsapp.net",
+    "name": "João Sbeghen"
+  },
+  {
+    "id": "5527998347804@s.whatsapp.net",
+    "name": "Pr.Marcio Da Vitoria"
+  },
+  {
+    "id": "5527988055738@s.whatsapp.net",
+    "name": "Contato Pessoal Da Dri ❤️"
+  },
+  {
+    "id": "552730248218@s.whatsapp.net",
+    "name": "Nathan Sousa Route 66"
+  },
+  {
+    "id": "5527995754499@s.whatsapp.net",
+    "name": "Lavinia"
+  },
+  {
+    "id": "5527996355520@s.whatsapp.net",
+    "name": "Adriana - GetNinjas"
+  },
+  {
+    "id": "5527988093781@s.whatsapp.net",
+    "name": "Helio - Carapina"
+  },
+  {
+    "id": "5511975055830@s.whatsapp.net",
+    "name": "Posto Dos Componentes."
+  },
+  {
+    "id": "5527992425895@s.whatsapp.net",
+    "name": "Milla Muglia - GetNinjas"
+  },
+  {
+    "id": "5527998429362@s.whatsapp.net",
+    "name": "Crismel"
+  },
+  {
+    "id": "5527997748612@s.whatsapp.net",
+    "name": "Grazi"
+  },
+  {
+    "id": "5527988279113@s.whatsapp.net",
+    "name": "Manoel Ferreira"
+  },
+  {
+    "id": "5527988948352@s.whatsapp.net",
+    "name": "Renata Psicóloga"
+  },
+  {
+    "id": "5527998431648@s.whatsapp.net",
+    "name": "Tais Ferreira - GetNinjas"
+  },
+  {
+    "id": "558288898565@s.whatsapp.net",
+    "name": "Matheus Pastorini"
+  },
+  {
+    "id": "5527988951401@s.whatsapp.net",
+    "name": "Tio Sandro"
+  },
+  {
+    "id": "5527995262721@s.whatsapp.net",
+    "name": "Andreza Santos Cjrn"
+  },
+  {
+    "id": "5527995767852@s.whatsapp.net",
+    "name": "Joel Dalmazio - GetNinjas"
+  },
+  {
+    "id": "5527996380759@s.whatsapp.net",
+    "name": "Rafa Martins 💻"
+  },
+  {
+    "id": "5527999790931@s.whatsapp.net",
+    "name": "Cidade Fm"
+  },
+  {
+    "id": "5511955209353@s.whatsapp.net",
+    "name": "Jéssica Ribeiro - EUNERD"
+  },
+  {
+    "id": "5527996040720@s.whatsapp.net",
+    "name": "Silvano Santos"
+  },
+  {
+    "id": "5527998587238@s.whatsapp.net",
+    "name": "Clerio Sejus"
+  },
+  {
+    "id": "5527997142673@s.whatsapp.net",
+    "name": "Jodimar"
+  },
+  {
+    "id": "5527992931938@s.whatsapp.net",
+    "name": "João - Compras"
+  },
+  {
+    "id": "5527997079047@s.whatsapp.net",
+    "name": "Nalva"
+  },
+  {
+    "id": "5527992312280@s.whatsapp.net",
+    "name": "Eliane Mello"
+  },
+  {
+    "id": "554197635978@s.whatsapp.net",
+    "name": "Ali"
+  },
+  {
+    "id": "5527988915202@s.whatsapp.net",
+    "name": "Fb 😎"
+  },
+  {
+    "id": "5527997977608@s.whatsapp.net",
+    "name": "Naty"
+  },
+  {
+    "id": "555199916533@s.whatsapp.net",
+    "name": "Paola"
+  },
+  {
+    "id": "5527988447169@s.whatsapp.net",
+    "name": "Danilo"
+  },
+  {
+    "id": "5527988374558@s.whatsapp.net",
+    "name": "Pedro Henrique"
+  },
+  {
+    "id": "5527998849624@s.whatsapp.net",
+    "name": "Joseny Sampaio Firmino do"
+  },
+  {
+    "id": "5512991972681@s.whatsapp.net",
+    "name": "Alfredo Roes"
+  },
+  {
+    "id": "5527999236322@s.whatsapp.net",
+    "name": "Ws Walter"
+  },
+  {
+    "id": "551140205322@s.whatsapp.net",
+    "name": "Loomy"
+  },
+  {
+    "id": "5527997839503@s.whatsapp.net",
+    "name": "Jonas gouveia"
+  },
+  {
+    "id": "5527998007070@s.whatsapp.net",
+    "name": "Sonia Miss"
+  },
+  {
+    "id": "5527999977957@s.whatsapp.net",
+    "name": "Luiz Macari Jr"
+  },
+  {
+    "id": "5527999449101@s.whatsapp.net",
+    "name": "Joelma Bravim - GetNinjas"
+  },
+  {
+    "id": "5527998474036@s.whatsapp.net",
+    "name": "DILZA CAMPOS"
+  },
+  {
+    "id": "5527999114631@s.whatsapp.net",
+    "name": "Paulinho Chaveiro"
+  },
+  {
+    "id": "5527998522447@s.whatsapp.net",
+    "name": "Gelio Satu Gobetti"
+  },
+  {
+    "id": "5511933634756@s.whatsapp.net",
+    "name": "Daiane Troubleshoot"
+  },
+  {
+    "id": "5515981900338@s.whatsapp.net",
+    "name": "Suporte PAPI"
+  },
+  {
+    "id": "5527997612302@s.whatsapp.net",
+    "name": "Pimentel"
+  },
+  {
+    "id": "5527996552345@s.whatsapp.net",
+    "name": "Pr Rhuan, Nam Taty"
+  },
+  {
+    "id": "5527996594660@s.whatsapp.net",
+    "name": "Pra. Vanete"
+  },
+  {
+    "id": "5527999920291@s.whatsapp.net",
+    "name": "Pra Sônia"
+  },
+  {
+    "id": "5527992479355@s.whatsapp.net",
+    "name": "Francisco"
+  },
+  {
+    "id": "5527999106442@s.whatsapp.net",
+    "name": "Keti"
+  },
+  {
+    "id": "5527996085036@s.whatsapp.net",
+    "name": "Luciene Minchio"
+  },
+  {
+    "id": "5527999439418@s.whatsapp.net",
+    "name": "Alessandra"
+  },
+  {
+    "id": "5527997833955@s.whatsapp.net",
+    "name": "rosa Modas"
+  },
+  {
+    "id": "5527998790555@s.whatsapp.net",
+    "name": "CATIA 😻😻😻"
+  },
+  {
+    "id": "5511918615076@s.whatsapp.net",
+    "name": "Felipe - Impacto Drogasil"
+  },
+  {
+    "id": "554888277856@s.whatsapp.net",
+    "name": "Mauricio Loren"
+  },
+  {
+    "id": "5527999461146@s.whatsapp.net",
+    "name": "Diego Sanglard"
+  },
+  {
+    "id": "5527996302027@s.whatsapp.net",
+    "name": "Aldo"
+  },
+  {
+    "id": "5527998449314@s.whatsapp.net",
+    "name": "Alesson"
+  },
+  {
+    "id": "5527999707979@s.whatsapp.net",
+    "name": "PraTatiana Costa🇧🇷🇵🇹🇺🇬🇬🇧🇰🇼🇦🇴"
+  },
+  {
+    "id": "5527998090156@s.whatsapp.net",
+    "name": "Amabiane"
+  },
+  {
+    "id": "558597481913@s.whatsapp.net",
+    "name": "Bruno Falcão"
+  },
+  {
+    "id": "555196072744@s.whatsapp.net",
+    "name": "Cinepoa"
+  },
+  {
+    "id": "5527997621614@s.whatsapp.net",
+    "name": "Jorge Oficina"
+  },
+  {
+    "id": "5527996635037@s.whatsapp.net",
+    "name": "Delson Santiago ⚖💯⚖"
+  },
+  {
+    "id": "556192314992@s.whatsapp.net",
+    "name": "João Pedro"
+  },
+  {
+    "id": "5511918762537@s.whatsapp.net",
+    "name": "Claudeir Ribeiro (3)"
+  },
+  {
+    "id": "5527997088859@s.whatsapp.net",
+    "name": "Ana Paula"
+  },
+  {
+    "id": "5527996553181@s.whatsapp.net",
+    "name": "Gabriela Ferrari ✨"
+  },
+  {
+    "id": "5527988519857@s.whatsapp.net",
+    "name": "Maycom"
+  },
+  {
+    "id": "554591397543@s.whatsapp.net",
+    "name": "Dreger"
+  },
+  {
+    "id": "5527999940530@s.whatsapp.net",
+    "name": "Aurea"
+  },
+  {
+    "id": "5527999898139@s.whatsapp.net",
+    "name": "Necton"
+  },
+  {
+    "id": "5527996582691@s.whatsapp.net",
+    "name": "Yasmim Mãe Alana"
+  },
+  {
+    "id": "5527992476132@s.whatsapp.net",
+    "name": "Gisa"
+  },
+  {
+    "id": "554599296902@s.whatsapp.net",
+    "name": "Sandra Visao Vip"
+  },
+  {
+    "id": "5527998393506@s.whatsapp.net",
+    "name": "Anacarla - GetNinjas"
+  },
+  {
+    "id": "5527999375330@s.whatsapp.net",
+    "name": "Juliana"
+  },
+  {
+    "id": "5527998582421@s.whatsapp.net",
+    "name": "Genilza Crefisa"
+  },
+  {
+    "id": "555197872885@s.whatsapp.net",
+    "name": "Evan - Start Company Start Company"
+  },
+  {
+    "id": "5527999072384@s.whatsapp.net",
+    "name": "Marcia"
+  },
+  {
+    "id": "5527995218527@s.whatsapp.net",
+    "name": "Pr Rondinlle"
+  },
+  {
+    "id": "559184531870@s.whatsapp.net",
+    "name": "Silvia e Ingrid - Elo RH"
+  },
+  {
+    "id": "5511910390909@s.whatsapp.net",
+    "name": "Gabrieli"
+  },
+  {
+    "id": "5527995239444@s.whatsapp.net",
+    "name": "João Pedro"
+  },
+  {
+    "id": "5527996036817@s.whatsapp.net",
+    "name": "Infolife Informática Tecnologia"
+  },
+  {
+    "id": "5527997846691@s.whatsapp.net",
+    "name": "Larissa Rangel"
+  },
+  {
+    "id": "5527981256218@s.whatsapp.net",
+    "name": "Marcelo Cjrn"
+  },
+  {
+    "id": "5527992419121@s.whatsapp.net",
+    "name": "ADM Martinelli Despachante!!"
+  },
+  {
+    "id": "5527998295464@s.whatsapp.net",
+    "name": "Penha"
+  },
+  {
+    "id": "554999467388@s.whatsapp.net",
+    "name": "Davit Pontes"
+  },
+  {
+    "id": "5527992614116@s.whatsapp.net",
+    "name": "Leila Cjrn"
+  },
+  {
+    "id": "5527999125717@s.whatsapp.net",
+    "name": "Gildo Depiante"
+  },
+  {
+    "id": "5527998703630@s.whatsapp.net",
+    "name": "Carlin"
+  },
+  {
+    "id": "553188086482@s.whatsapp.net",
+    "name": "Rafael Mg"
+  },
+  {
+    "id": "5527998281083@s.whatsapp.net",
+    "name": "Thiago S."
+  },
+  {
+    "id": "5527998993527@s.whatsapp.net",
+    "name": "Sonia Marta Asame - GetNinjas"
+  },
+  {
+    "id": "4917614641093@s.whatsapp.net",
+    "name": "Francois"
+  },
+  {
+    "id": "5527996620874@s.whatsapp.net",
+    "name": "Neide"
+  },
+  {
+    "id": "5527995034509@s.whatsapp.net",
+    "name": "Alcidea"
+  },
+  {
+    "id": "5527999515430@s.whatsapp.net",
+    "name": "Gisele"
+  },
+  {
+    "id": "5527988823391@s.whatsapp.net",
+    "name": "Vitorinos Burguers"
+  },
+  {
+    "id": "5527998028853@s.whatsapp.net",
+    "name": "Stefano"
+  },
+  {
+    "id": "5527998279992@s.whatsapp.net",
+    "name": "Ericluiz 3"
+  },
+  {
+    "id": "555182892257@s.whatsapp.net",
+    "name": "André"
+  },
+  {
+    "id": "5527996240586@s.whatsapp.net",
+    "name": "auto elétrica big som Luciano"
+  },
+  {
+    "id": "5527988270556@s.whatsapp.net",
+    "name": "Pri 💕"
+  },
+  {
+    "id": "5527981829366@s.whatsapp.net",
+    "name": "Duda"
+  },
+  {
+    "id": "5527996326639@s.whatsapp.net",
+    "name": "Breno Inácio 😎🤙🏻"
+  },
+  {
+    "id": "5527997326898@s.whatsapp.net",
+    "name": "Francyelle - GetNinjas"
+  },
+  {
+    "id": "5527998849743@s.whatsapp.net",
+    "name": "Francimery Cancelieri"
+  },
+  {
+    "id": "5527999825260@s.whatsapp.net",
+    "name": "Ayrton Gomes da Fonseca Filho - GetNinjas"
+  },
+  {
+    "id": "5527999157702@s.whatsapp.net",
+    "name": "Wasley Irmão"
+  },
+  {
+    "id": "5527993098190@s.whatsapp.net",
+    "name": "Sinval"
+  },
+  {
+    "id": "5527988226963@s.whatsapp.net",
+    "name": "Thiago Vitória Aprt"
+  },
+  {
+    "id": "5511933991941@s.whatsapp.net",
+    "name": "Angélica"
+  },
+  {
+    "id": "5527998113562@s.whatsapp.net",
+    "name": "Açaí da Nathy"
+  },
+  {
+    "id": "5527998435036@s.whatsapp.net",
+    "name": "Binho"
+  },
+  {
+    "id": "5527997212705@s.whatsapp.net",
+    "name": "Petrus Ribeiro"
+  }
+]

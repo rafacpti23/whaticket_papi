@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: whaticket_postgres
+    platform: linux/amd64
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=master123
+      - POSTGRES_DB=whaticketnew3
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    restart: always
+
+  redis:
+    image: redis:latest
+    container_name: whaticket_redis
+    platform: linux/amd64
+    ports:
+      - "6379:6379"
+    restart: always
+
+  papi:
+    image: intrategica/papi-free:1.5
+    container_name: whaticket_papi
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - STORAGE_TYPE=postgres+redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=papi_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=master123
+      - POSTGRES_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - LICENSE_KEY=23311D91-F021A78B-E5CD6DFD-9BC6775C
+      # - LICENSE_ADMIN_URL=https://padmin.papi.api.br
+      - PANEL_API_KEY=Ramel@2025
+    ports:
+      - "3003:3000"
+    volumes:
+      - ./papi/sessions:/app/sessions
+      - ./papi/media:/app/Media
+      - ./papi/auth:/app/baileys_auth_info
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+volumes:
+  postgres_data:
