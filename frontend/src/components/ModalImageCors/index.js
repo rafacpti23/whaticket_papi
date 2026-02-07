@@ -22,16 +22,47 @@ const ModalImageCors = ({ imageUrl }) => {
 	const [blobUrl, setBlobUrl] = useState("");
 
 	useEffect(() => {
-		if (!imageUrl) return;
-		const fetchImage = async () => {
-			const { data, headers } = await api.get(imageUrl, {
-				responseType: "blob",
-			});
-			const url = window.URL.createObjectURL(
-				new Blob([data], { type: headers["content-type"] })
-			);
-			setBlobUrl(url);
+		// More comprehensive validation
+		if (!imageUrl || imageUrl === '' || imageUrl === 'null' || imageUrl === 'undefined') {
 			setFetching(false);
+			return;
+		}
+
+		// Validate URL before fetching
+		try {
+			// Check if it's a valid URL (absolute or relative starting with /)
+			const trimmedUrl = String(imageUrl).trim();
+			if (!trimmedUrl || trimmedUrl.length < 2) {
+				console.warn('Invalid image URL (too short or empty):', imageUrl);
+				setFetching(false);
+				return;
+			}
+
+			if (!trimmedUrl.startsWith('http') && !trimmedUrl.startsWith('/')) {
+				console.warn('Invalid image URL (invalid protocol):', imageUrl);
+				setFetching(false);
+				return;
+			}
+		} catch (e) {
+			console.warn('Error validating image URL:', e);
+			setFetching(false);
+			return;
+		}
+
+		const fetchImage = async () => {
+			try {
+				const { data, headers } = await api.get(imageUrl, {
+					responseType: "blob",
+				});
+				const url = window.URL.createObjectURL(
+					new Blob([data], { type: headers["content-type"] })
+				);
+				setBlobUrl(url);
+				setFetching(false);
+			} catch (error) {
+				console.error('Error fetching image:', error);
+				setFetching(false);
+			}
 		};
 		fetchImage();
 	}, [imageUrl]);

@@ -182,6 +182,7 @@ function ListItemLink(props) {
     );
 
   const iconStyle = iconStyles[iconKey] || iconStyles.dashboard;
+  const themeStyle = localStorage.getItem("themeStyle") || "premium";
 
   return (
     <ConditionalTooltip tooltipEnabled={collapsed}>
@@ -205,15 +206,15 @@ function ListItemLink(props) {
             },
             "&::before": isActive
               ? {
-                  content: '""',
-                  position: "absolute",
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 4,
-                  background: iconStyle.gradient,
-                  borderRadius: "0 4px 4px 0",
-                }
+                content: '""',
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 4,
+                background: iconStyle.gradient,
+                borderRadius: "0 4px 4px 0",
+              }
               : {},
           }}
         >
@@ -278,7 +279,7 @@ function ListItemLink(props) {
                     fontWeight: isActive ? 600 : 500,
                     color: isActive
                       ? iconStyle.color
-                      : theme.palette.text.primary,
+                      : (themeStyle === "premium" ? "#FFFFFF" : theme.palette.text.primary),
                   }}
                 >
                   {primary}
@@ -524,22 +525,26 @@ const MainListItems = ({ collapsed, drawerClose }) => {
   };
 
   // Section Header Component - só aparece quando expandido
-  const SectionHeader = ({ children }) =>
-    !collapsed && (
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: "0.75rem",
-          textTransform: "uppercase",
-          color: theme.palette.text.secondary,
-          padding: "16px 16px 8px",
-          lineHeight: 1,
-          letterSpacing: "0.5px",
-        }}
-      >
-        {children}
-      </Typography>
+  const SectionHeader = ({ children }) => {
+    const themeStyle = localStorage.getItem("themeStyle") || "premium";
+    return (
+      !collapsed && (
+        <Typography
+          sx={{
+            fontWeight: 700,
+            fontSize: "0.75rem",
+            textTransform: "uppercase",
+            color: themeStyle === "premium" ? alpha("#FFFFFF", 0.5) : theme.palette.text.secondary,
+            padding: "16px 16px 8px",
+            lineHeight: 1,
+            letterSpacing: "0.5px",
+          }}
+        >
+          {children}
+        </Typography>
+      )
     );
+  };
 
   // Submenu Item Component
   const SubmenuItem = ({ to, primary, icon, iconKey }) => (
@@ -651,7 +656,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
         <Can
           role={
             (user.profile === "user" && user.showDashboard === "enabled") ||
-            user.allowRealTime === "enabled"
+              user.allowRealTime === "enabled"
               ? "admin"
               : user.profile
           }

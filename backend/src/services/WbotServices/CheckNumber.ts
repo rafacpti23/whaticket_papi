@@ -12,20 +12,22 @@ const CheckContactNumber = async (
   let numberArray;
 
   if (isGroup) {
-    const grupoMeta = await wbot.groupMetadata(number);
+    const jid = number.includes("@g.us") ? number : `${number}@g.us`;
+    const grupoMeta = await wbot.groupMetadata(jid);
     numberArray = [
       {
         jid: grupoMeta.id,
         exists: true
       }
-    ]; 
+    ];
   } else {
-    numberArray = await wbot.onWhatsApp(`${number}@s.whatsapp.net`);
+    const jid = number.includes("@") ? number : `${number}@s.whatsapp.net`;
+    numberArray = await wbot.onWhatsApp(jid);
   }
 
   const isNumberExit = numberArray;
 
-  if (!isNumberExit[0]?.exists) {
+  if (!isNumberExit || !isNumberExit[0]?.exists) {
     throw new AppError("Este número não está cadastrado no whatsapp");
   }
 

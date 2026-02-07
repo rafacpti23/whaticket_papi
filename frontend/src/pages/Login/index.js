@@ -261,24 +261,24 @@ const Login = () => {
 					<div className={classes.containerFooter}>
 						<p>
 							Copyright ©{" "}
-							<a href={"https://seulink.com.br"} target={"_blank"} rel="noopener noreferrer">
-								Sua empresa{""}
+							<a href={"#"} target={"_blank"} rel="noopener noreferrer">
+								{appName || "Sua Empresa"}{""}
 							</a>{" "}
-							2024{" "}
+							{new Date().getFullYear()}{" "}
 						</p>
 						<p>
 							This site is protected by reCAPTCHA Enterprise and the Google{" "}
-							<a href={"https://seulink.com.br/politica-de-privacidade"} target={"_blank"} rel="noopener noreferrer">
+							<a href={"#"} target={"_blank"} rel="noopener noreferrer">
 								Privacy Policy
 							</a>{" "}
 							and{" "}
-							<a href={"https://seulink.com.br/politica-de-privacidade"} target={"_blank"} rel="noopener noreferrer">
+							<a href={"#"} target={"_blank"} rel="noopener noreferrer">
 								Terms of Service
 							</a>
 						</p>
 					</div>
 				</div>
-				
+
 				<div className={classes.rightSide}>
 					<Container component="main" maxWidth="xs">
 						<CssBaseline />

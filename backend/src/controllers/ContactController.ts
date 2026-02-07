@@ -24,6 +24,7 @@ import { ImportContactsService } from "../services/ContactServices/ImportContact
 import NumberSimpleListService from "../services/ContactServices/NumberSimpleListService";
 import CreateOrUpdateContactServiceForImport from "../services/ContactServices/CreateOrUpdateContactServiceForImport";
 import UpdateContactWalletsService from "../services/ContactServices/UpdateContactWalletsService";
+import SyncProfilePicsService from "../services/WbotServices/SyncProfilePicsService";
 
 import FindContactTags from "../services/ContactServices/FindContactTags";
 import { log } from "console";
@@ -394,102 +395,110 @@ export const getContactProfileURL = async (req: Request, res: Response) => {
         profilePicUrl: profilePicUrl
       }
     }
-    
+
     return res.status(200).json(obj);
   }
 
-  };
+};
 
-  export const getContactVcard = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    const { name, number } = req.query as IndexGetContactQuery;
-    const { companyId } = req.user;
+export const getContactVcard = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { name, number } = req.query as IndexGetContactQuery;
+  const { companyId } = req.user;
 
-    let vNumber = number;
-    const numberDDI = vNumber.toString().substr(0, 2);
-    const numberDDD = vNumber.toString().substr(2, 2);
-    const numberUser = vNumber.toString().substr(-8, 8);
+  let vNumber = number;
+  const numberDDI = vNumber.toString().substr(0, 2);
+  const numberDDD = vNumber.toString().substr(2, 2);
+  const numberUser = vNumber.toString().substr(-8, 8);
 
-    if (numberDDD <= '30' && numberDDI === '55') {
-      console.log("menor 30")
-      vNumber = `${numberDDI + numberDDD + 9 + numberUser}@s.whatsapp.net`;
-    } else if (numberDDD > '30' && numberDDI === '55') {
-      console.log("maior 30")
-      vNumber = `${numberDDI + numberDDD + numberUser}@s.whatsapp.net`;
-    } else {
-      vNumber = `${number}@s.whatsapp.net`;
-    }
-
-
-    const contact = await GetContactService({
-      name,
-      number,
-      companyId
-    });
-
-    return res.status(200).json(contact);
-  };
-
-  export const getContactTags = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    const { contactId } = req.params;
-
-    const contactTags = await FindContactTags({ contactId });
-
-    let tags = false;
-
-    if (contactTags.length > 0) {
-      tags = true;
-    }
-
-    return res.status(200).json({ tags: tags });
-
+  if (numberDDD <= '30' && numberDDI === '55') {
+    console.log("menor 30")
+    vNumber = `${numberDDI + numberDDD + 9 + numberUser}@s.whatsapp.net`;
+  } else if (numberDDD > '30' && numberDDI === '55') {
+    console.log("maior 30")
+    vNumber = `${numberDDI + numberDDD + numberUser}@s.whatsapp.net`;
+  } else {
+    vNumber = `${number}@s.whatsapp.net`;
   }
 
-  export const toggleDisableBot = async (req: Request, res: Response): Promise<Response> => {
-    var { contactId } = req.params;
-    const { companyId } = req.user;
-    const contact = await ToggleDisableBotContactService({ contactId });
 
-    const io = getIO();
-    io.of(String(companyId))
-      .emit(`company-${companyId}-contact`, {
-        action: "update",
-        contact
-      });
+  const contact = await GetContactService({
+    name,
+    number,
+    companyId
+  });
 
-    return res.status(200).json(contact);
-  };
+  return res.status(200).json(contact);
+};
 
-  export const updateContactWallet = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    const { wallets } = req.body;
-    const { contactId } = req.params;
-    const { companyId } = req.user;
+export const getContactTags = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { contactId } = req.params;
 
-    const contact = await UpdateContactWalletsService({
-      wallets,
-      contactId,
-      companyId
+  const contactTags = await FindContactTags({ contactId });
+
+  let tags = false;
+
+  if (contactTags.length > 0) {
+    tags = true;
+  }
+
+  return res.status(200).json({ tags: tags });
+
+}
+
+export const toggleDisableBot = async (req: Request, res: Response): Promise<Response> => {
+  var { contactId } = req.params;
+  const { companyId } = req.user;
+  const contact = await ToggleDisableBotContactService({ contactId });
+
+  const io = getIO();
+  io.of(String(companyId))
+    .emit(`company-${companyId}-contact`, {
+      action: "update",
+      contact
     });
 
-    return res.status(200).json(contact);
-  };
+  return res.status(200).json(contact);
+};
 
-  export const listWhatsapp = async (req: Request, res: Response): Promise<Response> => {
+export const updateContactWallet = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { wallets } = req.body;
+  const { contactId } = req.params;
+  const { companyId } = req.user;
 
-    const { name } = req.query as unknown as SearchContactParams;
-    const { companyId } = req.user;
+  const contact = await UpdateContactWalletsService({
+    wallets,
+    contactId,
+    companyId
+  });
 
-    const contactsAll = await SimpleListService({ name, companyId });
+  return res.status(200).json(contact);
+};
 
-    const contacts = contactsAll.filter(contact => contact.channel == "whatsapp");
+export const listWhatsapp = async (req: Request, res: Response): Promise<Response> => {
 
-    return res.json(contacts);
-  };
+  const { name } = req.query as unknown as SearchContactParams;
+  const { companyId } = req.user;
+
+  const contactsAll = await SimpleListService({ name, companyId });
+
+  const contacts = contactsAll.filter(contact => contact.channel == "whatsapp");
+
+  return res.json(contacts);
+};
+
+export const syncContacts = async (req: Request, res: Response): Promise<Response> => {
+  const { companyId } = req.user;
+
+  SyncProfilePicsService(companyId);
+
+  return res.status(200).json({ message: "Sync started" });
+};

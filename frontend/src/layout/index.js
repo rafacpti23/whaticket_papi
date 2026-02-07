@@ -98,7 +98,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "#FFF",
+    backgroundColor: `${theme.palette.barraLateral} !important`,
+    color: theme.palette.corIconesbarra,
     backgroundSize: "cover",
     padding: "0 8px",
     minHeight: "48px",
@@ -146,6 +147,8 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden",
     overflowY: "hidden",
+    backgroundColor: theme.palette.barraLateral,
+    color: theme.palette.corTextobarraLateral,
   },
 
   drawerPaperClose: {
@@ -159,6 +162,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9),
     },
+    backgroundColor: theme.palette.barraLateral,
   },
 
   appBarSpacer: {
@@ -197,20 +201,15 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: "100%",
-    height: "45px",
+    height: "auto",
+    maxHeight: "50px",
     maxWidth: 180,
     [theme.breakpoints.down("sm")]: {
       width: "auto",
       height: "100%",
       maxWidth: 180,
     },
-    logo: theme.logo,
-    content:
-      "url(" +
-      (theme.mode === "light"
-        ? theme.calculatedLogoLight()
-        : theme.calculatedLogoDark()) +
-      ")",
+    objectFit: "contain",
   },
   hideLogo: {
     display: "none",
@@ -282,7 +281,7 @@ const LoggedInLayout = ({ children, themeToggle }) => {
   const { user, socket } = useContext(AuthContext);
 
   const theme = useTheme();
-  const { colorMode } = useContext(ColorModeContext);
+  const { colorMode, themeStyle, appLogoLight, appLogoDark } = useContext(ColorModeContext);
   const greaterThenSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [volume, setVolume] = useState(localStorage.getItem("volume") || 1);
@@ -431,16 +430,17 @@ const LoggedInLayout = ({ children, themeToggle }) => {
       >
         <div className={classes.toolbarIcon}>
           <img
+            src={
+              themeStyle === "premium"
+                ? theme.calculatedLogoDark()
+                : theme.mode === "light"
+                  ? theme.calculatedLogoLight()
+                  : theme.calculatedLogoDark()
+            }
             className={drawerOpen ? classes.logo : classes.hideLogo}
-            style={{
-              display: "block",
-              margin: "0 auto",
-              height: "50px",
-              width: "100%",
-            }}
             alt="logo"
           />
-          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+          <IconButton onClick={() => setDrawerOpen(!drawerOpen)} style={{ color: theme.palette.corIconesbarra }}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -477,8 +477,8 @@ const LoggedInLayout = ({ children, themeToggle }) => {
           >
             {/* {greaterThenSm && user?.profile === "admin" && getDateAndDifDays(user?.company?.dueDate).difData < 7 ? ( */}
             {greaterThenSm &&
-            user?.profile === "admin" &&
-            user?.company?.dueDate ? (
+              user?.profile === "admin" &&
+              user?.company?.dueDate ? (
               <>
                 {i18n.t("mainDrawer.appBar.user.message")} <b>{user.name}</b>,{" "}
                 {i18n.t("mainDrawer.appBar.user.messageEnd")}{" "}

@@ -39,10 +39,12 @@ import { ToastContainer, toast } from "react-toastify";
 import useSettings from "../../hooks/useSettings";
 import { i18n } from "../../translate/i18n";
 import useCompanySettings from "../../hooks/useSettings/companySettings";
+import ColorModeContext from "../../layout/themeContext";
+import { Palette as PaletteIcon } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.mode === "dark" ? "#0a0e27" : "#f8fafc",
+    backgroundColor: theme.palette.background.default,
     minHeight: "100vh",
     padding: theme.spacing(3),
   },
@@ -58,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
         : "1px solid rgba(0,0,0,0.06)",
     background:
       theme.palette.mode === "dark"
-        ? "linear-gradient(145deg, #1a1f3a 0%, #0f1419 100%)"
+        ? theme.palette.background.paper
         : "#ffffff",
     marginBottom: theme.spacing(3),
     overflow: "hidden",
@@ -67,14 +69,17 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     background:
       theme.palette.mode === "dark"
-        ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+        ? "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)"
         : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     color: "#ffffff",
     display: "flex",
     alignItems: "center",
     gap: theme.spacing(2),
   },
-  sectionContent: { padding: theme.spacing(3) },
+  sectionContent: {
+    padding: theme.spacing(3),
+    color: theme.palette.mode === "dark" ? "#ffffff" : "inherit"
+  },
   modernField: {
     "& .MuiOutlinedInput-root": {
       borderRadius: 12,
@@ -132,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.mode === "dark"
         ? "1px solid rgba(255,255,255,0.1)"
         : "1px solid rgba(0,0,0,0.06)",
-    background: theme.palette.mode === "dark" ? "#1a1f3a" : "#ffffff",
+    background: theme.palette.background.paper,
     "&:before": { display: "none" },
   },
   accordionSummary: {
@@ -154,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     background:
       theme.palette.mode === "dark"
-        ? "linear-gradient(135deg, #1a1f3a 0%, #0f1419 100%)"
+        ? theme.palette.background.paper
         : "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
     borderRadius: 20,
     boxShadow:
@@ -400,6 +405,8 @@ export default function Options(props) {
   const { update: updateasaastoken } = useSettings();
   const { update: updateopenaitoken } = useSettings();
   const { update } = useCompanySettings();
+  const { colorMode } = useContext(ColorModeContext);
+  const { themeStyle, setThemeStyle } = colorMode || {};
 
   const isSuper = () => {
     return user && user.super;
@@ -1006,6 +1013,39 @@ export default function Options(props) {
         </Typography>
       </Box>
 
+      {/* SEÇÃO APARÊNCIA */}
+      <Card className={classes.sectionCard}>
+        <Box className={classes.sectionHeader}>
+          <PaletteIcon fontSize="large" />
+          <Box>
+            <Typography variant="h6" fontWeight="bold">
+              Aparência do Painel
+            </Typography>
+            <Typography variant="caption" sx={{ opacity: 0.8 }}>
+              Escolha o estilo visual da plataforma
+            </Typography>
+          </Box>
+        </Box>
+        <Box className={classes.sectionContent}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <ModernSelect
+                label="Tema do Sistema"
+                value={themeStyle}
+                onChange={(e) => setThemeStyle(e.target.value)}
+                options={[
+                  { value: "premium", label: "Premium (ChatFlow)" },
+                  { value: "classic", label: "Clássico (WorkZap)" },
+                ]}
+              />
+              <FormHelperText>
+                O tema Premium oferece um visual moderno com bordas arredondadas e efeito de profundidade.
+              </FormHelperText>
+            </Grid>
+          </Grid>
+        </Box>
+      </Card>
+
       <Card className={classes.sectionCard}>
         <Box className={classes.sectionHeader}>
           <TuneIcon />
@@ -1460,20 +1500,18 @@ export default function Options(props) {
               variant="outlined"
             />
             <Chip
-              label={`Avaliações: ${
-                userRating === "enabled" ? "Ativo" : "Inativo"
-              }`}
+              label={`Avaliações: ${userRating === "enabled" ? "Ativo" : "Inativo"
+                }`}
               color={userRating === "enabled" ? "success" : "default"}
               variant="outlined"
             />
             <Chip
-              label={`Bot: ${
-                chatBotType === "text"
-                  ? "Texto"
-                  : chatBotType === "list"
+              label={`Bot: ${chatBotType === "text"
+                ? "Texto"
+                : chatBotType === "list"
                   ? "Lista"
                   : "Botões"
-              }`}
+                }`}
               color="primary"
               variant="outlined"
             />
@@ -1483,40 +1521,36 @@ export default function Options(props) {
               variant="outlined"
             />
             <Chip
-              label={`Notificações: ${
-                showNotificationPending === "enabled" ? "Ativo" : "Inativo"
-              }`}
+              label={`Notificações: ${showNotificationPending === "enabled" ? "Ativo" : "Inativo"
+                }`}
               color={
                 showNotificationPending === "enabled" ? "success" : "default"
               }
               variant="outlined"
             />
             <Chip
-              label={`Agendamento: ${
-                scheduleType === "disabled"
-                  ? "Desabilitado"
-                  : scheduleType === "queue"
+              label={`Agendamento: ${scheduleType === "disabled"
+                ? "Desabilitado"
+                : scheduleType === "queue"
                   ? "Por Fila"
                   : scheduleType === "company"
-                  ? "Por Empresa"
-                  : "Por Conexão"
-              }`}
+                    ? "Por Empresa"
+                    : "Por Conexão"
+                }`}
               color={scheduleType !== "disabled" ? "info" : "default"}
               variant="outlined"
             />
             <Chip
-              label={`Operador: ${
-                UserRandom === "enabled" ? "Aleatório" : "Sequencial"
-              }`}
+              label={`Operador: ${UserRandom === "enabled" ? "Aleatório" : "Sequencial"
+                }`}
               color={UserRandom === "enabled" ? "warning" : "default"}
               variant="outlined"
             />
             <Chip
-              label={`Audio: ${
-                acceptAudioMessageContact === "enabled"
-                  ? "Permitido"
-                  : "Bloqueado"
-              }`}
+              label={`Audio: ${acceptAudioMessageContact === "enabled"
+                ? "Permitido"
+                : "Bloqueado"
+                }`}
               color={
                 acceptAudioMessageContact === "enabled" ? "success" : "error"
               }

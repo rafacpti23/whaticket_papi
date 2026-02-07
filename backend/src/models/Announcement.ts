@@ -31,8 +31,12 @@ class Announcement extends Model<Announcement> {
   @Column
   get mediaPath(): string | null {
     if (this.getDataValue("mediaPath")) {
-      
-      return `${process.env.BACKEND_URL}${process.env.PROXY_PORT ?`:${process.env.PROXY_PORT}`:""}/public/announcements/${this.getDataValue("mediaPath")}`;
+
+      const backendUrl = process.env.BACKEND_URL;
+      const proxyPort = process.env.PROXY_PORT;
+      const portSuffix = proxyPort && !backendUrl.includes(`:${proxyPort}`) && !backendUrl.match(/:\d+$/) ? `:${proxyPort}` : "";
+
+      return `${backendUrl}${portSuffix}/public/announcements/${this.getDataValue("mediaPath")}`;
 
     }
     return null;

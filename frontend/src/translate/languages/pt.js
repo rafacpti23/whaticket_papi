@@ -787,6 +787,18 @@ const messages = {
           scredule: "Agendamento",
           deleteTicket: "Deletar Ticket",
           quickmessageflash: "Mensagem Rápida",
+          newTicket: "Novo ticket",
+          resolveAll: "Resolver todos",
+          open: "Em aberto",
+          resolved: "Resolvidos",
+          ascending: "Crescente",
+          descending: "Decrescente",
+          loading: "Processando...",
+          yes: "Sim",
+          no: "Não",
+        },
+        confirmation: {
+          resolveAll: "Deseja realmente resolver todos os tickets?",
         },
         closedTicket: {
           closedMessage: "Fechar Ticket Com Mensagem de Despedida",

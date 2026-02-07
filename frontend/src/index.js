@@ -5,13 +5,21 @@ import * as serviceworker from './serviceWorker'
 
 import App from "./App";
 
+window.process = {
+	env: {
+		NODE_ENV: 'development'
+	}
+};
+
 ReactDOM.render(
 	<CssBaseline>
 		<App />
 	</CssBaseline>,
 	document.getElementById("root"),
 	() => {
-		window.finishProgress();
+		if (window.finishProgress) {
+			window.finishProgress();
+		}
 	}
 );
 

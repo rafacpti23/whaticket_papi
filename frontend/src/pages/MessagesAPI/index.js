@@ -38,7 +38,7 @@ const MessagesAPI = () => {
   const history = useHistory();
 
   const [formMessageTextData,] = useState({ token: '', number: '', body: '', userId: '', queueId: '' })
-  const [formMessageMediaData,] = useState({ token: '', number: '', medias: '', body:'', userId: '', queueId: '' })
+  const [formMessageMediaData,] = useState({ token: '', number: '', medias: '', body: '', userId: '', queueId: '' })
   const [file, setFile] = useState({})
   const { user, socket } = useContext(AuthContext);
 
@@ -73,7 +73,7 @@ const MessagesAPI = () => {
         data,
         headers: {
           'Content-type': 'application/json',
-          'Authorization': `Bearer ${values.token}` 
+          'Authorization': `Bearer ${values.token}`
         }
       })
       toast.success('Mensagem enviada com sucesso');
@@ -87,7 +87,7 @@ const MessagesAPI = () => {
       const firstFile = file[0];
       const data = new FormData();
       data.append('number', values.number);
-      data.append('body', values.body ? values.body: firstFile.name);
+      data.append('body', values.body ? values.body : firstFile.name);
       data.append('userId', values.userId);
       data.append('queueId', values.queueId);
       data.append('medias', firstFile);
@@ -162,7 +162,7 @@ const MessagesAPI = () => {
                   required
                 />
               </Grid>
-              <Grid item xs={12}  md={6}>
+              <Grid item xs={12} md={6}>
                 <Field
                   as={TextField}
                   label={i18n.t("messagesAPI.textMessage.userId")}
@@ -174,7 +174,7 @@ const MessagesAPI = () => {
                   className={classes.textField}
                 />
               </Grid>
-              <Grid item xs={12}  md={6}>
+              <Grid item xs={12} md={6}>
                 <Field
                   as={TextField}
                   label={i18n.t("messagesAPI.textMessage.queueId")}
@@ -265,7 +265,7 @@ const MessagesAPI = () => {
                   className={classes.textField}
                 />
               </Grid>
-              <Grid item xs={12}  md={6}>
+              <Grid item xs={12} md={6}>
                 <Field
                   as={TextField}
                   label={i18n.t("messagesAPI.textMessage.userId")}
@@ -277,7 +277,7 @@ const MessagesAPI = () => {
                   className={classes.textField}
                 />
               </Grid>
-              <Grid item xs={12}  md={6}>
+              <Grid item xs={12} md={6}>
                 <Field
                   as={TextField}
                   label={i18n.t("messagesAPI.textMessage.queueId")}
@@ -317,7 +317,7 @@ const MessagesAPI = () => {
   return (
     <Paper
       className={classes.mainPaper}
-      style={{marginLeft: "5px"}}
+      style={{ marginLeft: "5px" }}
       // className={classes.elementMargin}
       variant="outlined"
     >
@@ -325,7 +325,7 @@ const MessagesAPI = () => {
         {i18n.t("messagesAPI.API.title")}
       </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-      {i18n.t("messagesAPI.API.methods.title")}
+        {i18n.t("messagesAPI.API.methods.title")}
       </Typography>
       <Typography component="div">
         <ol>
@@ -334,14 +334,14 @@ const MessagesAPI = () => {
         </ol>
       </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-      {i18n.t("messagesAPI.API.instructions.title")}
+        {i18n.t("messagesAPI.API.instructions.title")}
       </Typography>
       <Typography className={classes.elementMargin} component="div">
         <b>{i18n.t("messagesAPI.API.instructions.comments")}</b><br />
         <ul>
           <li>{i18n.t("messagesAPI.API.instructions.comments1")}</li>
           <li>
-          {i18n.t("messagesAPI.API.instructions.comments2")}
+            {i18n.t("messagesAPI.API.instructions.comments2")}
             <ul>
               <li>{i18n.t("messagesAPI.API.instructions.codeCountry")}</li>
               <li>{i18n.t("messagesAPI.API.instructions.code")}</li>
@@ -351,7 +351,7 @@ const MessagesAPI = () => {
         </ul>
       </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-      {i18n.t("messagesAPI.API.text.title")}
+        {i18n.t("messagesAPI.API.text.title")}
       </Typography>
       <Grid container>
         <Grid item xs={12} sm={6}>
@@ -361,13 +361,13 @@ const MessagesAPI = () => {
             <b>Método: </b> POST <br />
             <b>Headers: </b> Authorization Bearer (token registrado) e Content-Type (application/json) <br />
             <b>Body: </b> {"{"} <br></br>
-             "number": "558599999999" <br></br>
-             "body": "Message" <br></br> 
-             "userId": ID usuário ou "" <br></br>
-             "queueId": ID Fila ou ""<br></br>
-             "sendSignature": Assinar mensagem - true/false <br></br>
-             "closeTicket": Encerrar o ticket - true/false<br></br>
-             {"}"} 
+            "number": "558599999999" <br></br>
+            "body": "Message" <br></br>
+            "userId": ID usuário ou "" <br></br>
+            "queueId": ID Fila ou ""<br></br>
+            "sendSignature": Assinar mensagem - true/false <br></br>
+            "closeTicket": Encerrar o ticket - true/false<br></br>
+            {"}"}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -378,7 +378,7 @@ const MessagesAPI = () => {
         </Grid>
       </Grid>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-      {i18n.t("messagesAPI.API.media.title")}
+        {i18n.t("messagesAPI.API.media.title")}
       </Typography>
       <Grid container>
         <Grid item xs={12} sm={6}>
@@ -418,6 +418,29 @@ const MessagesAPI = () => {
             <b>Teste de Envio</b>
           </Typography>
           {renderFormMessageMedia()}
+        </Grid>
+      </Grid>
+      <Typography variant="h6" color="primary" className={classes.elementMargin}>
+        {i18n.t("messagesAPI.API.buttons.title") || "Botões Simples"}
+      </Typography>
+      <Grid container>
+        <Grid item xs={12} sm={12}>
+          <Typography className={classes.elementMargin} component="div">
+            <p>Envio de mensagens com botões de resposta rápida (Simples). Funciona nativamente no WhatsApp.</p>
+            <b>Endpoint: </b> {process.env.REACT_APP_BACKEND_URL + '/api/messages/send-buttons'} <br />
+            <b>Método: </b> POST <br />
+            <b>Headers: </b> Authorization Bearer (token cadastrado) e Content-Type (application/json) <br />
+            <b>Body: </b> {"{"} <br></br>
+            "number": "558599999999", <br></br>
+            "title": "Título da Mensagem", <br></br>
+            "description": "Texto principal da mensagem", <br></br>
+            "buttons": [ <br></br>
+            &nbsp;&nbsp;{"{"} "buttonText": "Botão 1" {"}"}, <br></br>
+            &nbsp;&nbsp;{"{"} "buttonText": "Botão 2" {"}"}, <br></br>
+            &nbsp;&nbsp;{"{"} "buttonText": "Botão 3" {"}"} <br></br>
+            ] <br></br>
+            {"}"}
+          </Typography>
         </Grid>
       </Grid>
     </Paper>

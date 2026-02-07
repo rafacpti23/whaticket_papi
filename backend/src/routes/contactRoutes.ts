@@ -28,5 +28,6 @@ contactRoutes.get("/contactTags/:contactId", isAuth, ContactController.getContac
 contactRoutes.put("/contacts/toggleDisableBot/:contactId", isAuth, ContactController.toggleDisableBot);
 contactRoutes.put("/contact-wallet/:contactId", isAuth, ContactController.updateContactWallet);
 // contactRoutes.get("/contacts/list-whatsapp", isAuth, ContactController.listWhatsapp);
+contactRoutes.post("/contacts/sync", isAuth, ContactController.syncContacts);
 
 export default contactRoutes;

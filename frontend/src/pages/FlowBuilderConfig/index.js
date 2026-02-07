@@ -54,6 +54,7 @@ import {
   Palette,
   Fullscreen,
   FullscreenExit,
+  AddCircle,
 } from "@mui/icons-material";
 
 import ReactFlow, {
@@ -675,37 +676,37 @@ export const FlowBuilderConfig = () => {
       icon: <RocketLaunch />,
       name: "Inicio",
       type: "start",
-      color: "#3B82F6", // Blue
+      color: "#6366F1", // Indigo
     },
     {
       icon: <LibraryBooks />,
       name: "Conteúdo",
       type: "content",
-      color: "#EC4899", // Pink
+      color: "#F43F5E", // Rose
     },
     {
       icon: <DynamicFeed />,
       name: "Menu",
       type: "menu",
-      color: "#10B981", // Green
+      color: "#22C55E", // Emerald
     },
     {
       icon: <CallSplit />,
       name: "Randomizador",
       type: "random",
-      color: "#F59E0B", // Amber
+      color: "#F97316", // Orange
     },
     {
       icon: <AccessTime />,
       name: "Intervalo",
       type: "interval",
-      color: "#8B5CF6", // Purple
+      color: "#A855F7", // Violet
     },
     {
       icon: <ConfirmationNumber />,
       name: "Ticket",
       type: "ticket",
-      color: "#06B6D4", // Cyan
+      color: "#0EA5E9", // Sky
     },
     {
       icon: (
@@ -714,6 +715,7 @@ export const FlowBuilderConfig = () => {
           sx={{
             width: 24,
             height: 24,
+            filter: "brightness(1.2)",
           }}
           src={typebotIcon}
           alt="icon"
@@ -727,7 +729,7 @@ export const FlowBuilderConfig = () => {
       icon: <SiOpenai style={{ fontSize: 20 }} />,
       name: "OpenAI",
       type: "openai",
-      color: "#F97316", // Orange
+      color: "#F59E0B", // Amber
     },
     {
       icon: <BallotIcon />,
@@ -1151,38 +1153,26 @@ export const FlowBuilderConfig = () => {
               ariaLabel="Menu de ações"
               sx={{
                 position: "absolute",
-                top: 16,
-                left: 16,
+                top: 24,
+                left: 24,
                 zIndex: 1000,
                 display: "flex",
                 "& .MuiFab-primary": {
-                  background: isDark
-                    ? "rgba(255, 255, 255, 0.05)"
-                    : "rgba(255, 255, 255, 0.8)",
-                  backdropFilter: "blur(10px)",
-                  border: isDark
-                    ? "1px solid rgba(255, 255, 255, 0.1)"
-                    : "1px solid rgba(0, 0, 0, 0.1)",
-                  borderRadius: "16px",
-                  width: 56,
-                  height: 56,
-                  boxShadow: isDark
-                    ? "0 4px 12px rgba(0,0,0,0.3)"
-                    : "0 4px 12px rgba(0,0,0,0.08)",
-                  color: isDark ? "#FFFFFF" : "#1F2A44",
+                  background: "linear-gradient(135deg, #5850EC 0%, #7C3AED 100%)",
+                  color: "#FFFFFF",
+                  borderRadius: "20px",
+                  width: 60,
+                  height: 60,
+                  boxShadow: "0 10px 25px rgba(88, 80, 236, 0.4)",
                   "&:hover": {
-                    background: isDark
-                      ? "rgba(255, 255, 255, 0.1)"
-                      : "rgba(255, 255, 255, 0.9)",
-                    transform: "scale(1.1)",
-                    boxShadow: isDark
-                      ? "0 6px 16px rgba(0,0,0,0.4)"
-                      : "0 6px 16px rgba(0,0,0,0.12)",
+                    background: "linear-gradient(135deg, #7C3AED 0%, #5850EC 100%)",
+                    transform: "scale(1.1) rotate(90deg)",
+                    boxShadow: "0 15px 35px rgba(88, 80, 236, 0.6)",
                   },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                 },
               }}
-              icon={<SpeedDialIcon sx={{ fontSize: 24 }} />}
+              icon={<SpeedDialIcon icon={<AddCircle />} openIcon={<AutoAwesome />} />}
               direction="down"
             >
               {actions.map((action, index) => (
@@ -1207,21 +1197,26 @@ export const FlowBuilderConfig = () => {
                   onClick={() => clickActions(action.type)}
                   sx={{
                     "& .MuiSpeedDialAction-fab": {
+                      ...modernStyles.glassmorphism,
                       background: action.color,
-                      color: "#FFFFFF",
+                      color: isDark ? "#FFFFFF" : "#1F2A44",
                       width: 48,
                       height: 48,
                       borderRadius: "12px",
-                      boxShadow: `0 4px 12px ${alpha(action.color, 0.4)}`,
+                      boxShadow: isDark
+                        ? "0 4px 12px rgba(0,0,0,0.3)"
+                        : "0 4px 12px rgba(0,0,0,0.08)",
                       "&:hover": {
                         transform: "scale(1.1)",
-                        boxShadow: `0 6px 16px ${alpha(action.color, 0.6)}`,
+                        background: action.color, // Keep original color on hover
+                        boxShadow: isDark
+                          ? "0 6px 16px rgba(0,0,0,0.4)"
+                          : "0 6px 16px rgba(0,0,0,0.12)",
                       },
-                      transition: `all 0.3s cubic-bezier(0.4, 0, 0.2, 1) ${
-                        index * 50
-                      }ms`,
+                      transition: `all 0.3s cubic-bezier(0.4, 0, 0.2, 1)`,
                     },
                     "& .MuiSpeedDialAction-staticTooltipLabel": {
+                      ...modernStyles.glassmorphism,
                       background: isDark
                         ? "rgba(255, 255, 255, 0.05)"
                         : "rgba(255, 255, 255, 0.8)",
@@ -1593,8 +1588,8 @@ export const FlowBuilderConfig = () => {
         .react-flow__controls button:hover {
           transform: scale(1.1);
           background: ${isDark
-            ? "rgba(255, 255, 255, 0.1)"
-            : "rgba(102, 126, 234, 0.1)"};
+          ? "rgba(255, 255, 255, 0.1)"
+          : "rgba(102, 126, 234, 0.1)"};
           color: #667eea;
         }
 
@@ -1638,8 +1633,8 @@ export const FlowBuilderConfig = () => {
 
         ::-webkit-scrollbar-track {
           background: ${isDark
-            ? "rgba(255, 255, 255, 0.1)"
-            : "rgba(0, 0, 0, 0.1)"};
+          ? "rgba(255, 255, 255, 0.1)"
+          : "rgba(0, 0, 0, 0.1)"};
           border-radius: 10px;
         }
 
@@ -1650,6 +1645,22 @@ export const FlowBuilderConfig = () => {
 
         ::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(88, 80, 236, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 15px rgba(88, 80, 236, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(88, 80, 236, 0);
+          }
+        }
+
+        .MuiFab-primary {
+          animation: pulse 2s infinite;
         }
       `}</style>
     </Box>

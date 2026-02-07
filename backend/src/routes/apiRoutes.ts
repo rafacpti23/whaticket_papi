@@ -19,6 +19,8 @@ ApiRoutes.post("/checkNumber", tokenAuth, ApiController.checkNumber)
 // ApiRoutes.post("/send/toManyLinkPdf", tokenAuth, ApiController.indexToManyLinkPdf);
 // ApiRoutes.post("/send/toManyImage", tokenAuth, ApiController.indexToManyImage);
 
+ApiRoutes.post("/send-buttons", tokenAuth, ApiController.sendButtons);
+
 // retornar os whatsapp e seus status
 // ApiRoutes.get("/getWhatsappsId", tokenAuth, ApiController.indexWhatsappsId);
 

@@ -8,9 +8,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 300,
   },
   inputFile: {
-    display: 'none',  
+    display: 'none',
   },
   buttonFile: {
     marginBottom: theme.spacing(2),
@@ -28,17 +29,33 @@ const useStyles = makeStyles((theme) => ({
   },
   primaryBar: {
     position: 'absolute',
-    top: 0,                
+    top: 0,
     left: 0,
     right: 0,
-    height: '100%',          
-    backgroundColor: theme.palette.primary.main,  
-    zIndex: 1,              
+    height: '100%',
+    backgroundColor: theme.palette.primary.main,
+    zIndex: 1,
   },
   dialogTitle: {
-    position: 'relative',    
-    zIndex: 2,               
-    color: 'white',          
+    position: 'relative',
+    zIndex: 2,
+    color: 'white',
+  },
+  warningText: {
+    color: theme.palette.warning.main,
+    fontSize: '0.85rem',
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(1),
+    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+    borderRadius: theme.spacing(0.5),
+  },
+  successText: {
+    color: theme.palette.success.main,
+    fontSize: '0.85rem',
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(1),
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderRadius: theme.spacing(0.5),
   },
 }));
 
@@ -48,6 +65,7 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [inputList, setInputList] = useState([{ option: "" }]);
+  const [simpleButtonsList, setSimpleButtonsList] = useState([{ text: "" }]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [buttonText, setButtonText] = useState("");
@@ -79,6 +97,25 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
     setInputList(updatedInputs);
   };
 
+  // Funções para Botões Simples
+  const handleAddSimpleButton = () => {
+    if (simpleButtonsList.length < 3) {
+      setSimpleButtonsList([...simpleButtonsList, { text: "" }]);
+    } else {
+      toast.warning("Máximo de 3 botões permitido");
+    }
+  };
+
+  const handleRemoveSimpleButton = (index) => {
+    setSimpleButtonsList((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSimpleButtonChange = (index, event) => {
+    const updatedButtons = [...simpleButtonsList];
+    updatedButtons[index].text = event.target.value;
+    setSimpleButtonsList(updatedButtons);
+  };
+
   const handleUploadListMessage = async (title, description, inputList, ticketId) => {
     setLoading(true);
 
@@ -108,6 +145,45 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
       };
       if (isMounted.current) {
         await api.post(`/messages/lista/${ticketId}`, listMessage);
+        toast.success("Lista enviada com sucesso!");
+      }
+    } catch (err) {
+      toastError(err);
+    } finally {
+      if (isMounted.current) {
+        setLoading(false);
+      }
+    }
+  };
+
+  // Nova função para Botões Simples (formato que funciona)
+  const handleUploadSimpleButtons = async (title, description, simpleButtonsList, ticketId) => {
+    setLoading(true);
+
+    if (!ticketId || isNaN(ticketId)) {
+      console.error('ID do Ticket inválido:', ticketId);
+      toastError('ID do Ticket inválido.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const buttons = simpleButtonsList
+        .filter(btn => btn.text.trim() !== "")
+        .map((btn, index) => ({
+          buttonId: `btn${index + 1}`,
+          buttonText: btn.text,
+        }));
+
+      const payload = {
+        title: title,
+        description: description,
+        buttons: buttons,
+      };
+
+      if (isMounted.current) {
+        await api.post(`/messages/simple-buttons/${ticketId}`, payload);
+        toast.success("Botões enviados com sucesso!");
       }
     } catch (err) {
       toastError(err);
@@ -130,7 +206,7 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
 
     try {
       const payload = {
-        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '', // Remove o prefixo
+        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '',
         title: title,
         description: description,
         buttonText: buttonText,
@@ -139,7 +215,8 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
 
       console.log('PAYLOAD:', payload);
       if (isMounted.current) {
-        await api.post(`/messages/copy/${ticketId}`, payload); // Envia a mensagem para a API
+        await api.post(`/messages/copy/${ticketId}`, payload);
+        toast.success("Mensagem enviada com código para copiar!");
       }
     } catch (err) {
       toastError(err);
@@ -162,15 +239,16 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
 
     try {
       const payload = {
-        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '', // Remove o prefixo
-        title: title, // Título da mensagem
-        description: description, // Descrição da mensagem
-        buttonText: buttonText, // Texto do botão
+        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '',
+        title: title,
+        description: description,
+        buttonText: buttonText,
         copyText: sendCALL,
       };
 
       if (isMounted.current) {
-        await api.post(`/messages/call/${ticketId}`, payload); // Envia a mensagem para a API
+        await api.post(`/messages/call/${ticketId}`, payload);
+        toast.success("Mensagem enviada com telefone!");
       }
     } catch (err) {
       toastError(err);
@@ -193,15 +271,16 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
 
     try {
       const payload = {
-        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '', // Remove o prefixo
-        title: title || 'Botão copiar', // Título da mensagem
-        description: description || 'Muito legal esses botões', // Descrição da mensagem
-        buttonText: buttonText || 'Botão copiar', // Texto do botão
-        copyText: sendURL || 'Texto padrão para copiar', // Texto para copiar
+        image: imageBase64 ? imageBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, '') : '',
+        title: title || 'Botão copiar',
+        description: description || 'Muito legal esses botões',
+        buttonText: buttonText || 'Botão copiar',
+        copyText: sendURL || 'Texto padrão para copiar',
       };
 
       if (isMounted.current) {
-        await api.post(`/messages/URL/${ticketId}`, payload); // Envia a mensagem para a API
+        await api.post(`/messages/URL/${ticketId}`, payload);
+        toast.success("Mensagem enviada com link!");
       }
     } catch (err) {
       toastError(err);
@@ -213,34 +292,34 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
   };
 
   const handleUploadPIX = async (title, sendvalue, sendkey_type, sendmerchant_name, sendKey, ticketId) => {
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    // Verifica se o tipo de chave é PHONE e adiciona +55 ao sendKey
-    if (sendkey_type === 'PHONE' && !sendKey.startsWith('+55')) {
-      sendKey = '+55' + sendKey;
+    try {
+      // Verifica se o tipo de chave é PHONE e adiciona +55 ao sendKey
+      if (sendkey_type === 'PHONE' && !sendKey.startsWith('+55')) {
+        sendKey = '+55' + sendKey;
+      }
+
+      const payload = {
+        title: title,
+        sendvalue: sendvalue,
+        sendkey_type: sendkey_type,
+        sendmerchant_name: sendmerchant_name,
+        sendKey: sendKey,
+      };
+
+      if (isMounted.current) {
+        await api.post(`/messages/PIX/${ticketId}`, payload);
+        toast.success("PIX enviado com sucesso!");
+      }
+    } catch (err) {
+      toastError(err);
+    } finally {
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
-
-    const payload = {
-      title: title,
-      sendvalue: sendvalue,
-      sendkey_type: sendkey_type, 
-      sendmerchant_name: sendmerchant_name,
-      sendKey: sendKey,
-    };
-
-    if (isMounted.current) {
-      await api.post(`/messages/PIX/${ticketId}`, payload); 
-    }
-  } catch (err) {
-    toastError(err);
-  } finally {
-    if (isMounted.current) {
-      setLoading(false);
-    }
-  }
-};
-
+  };
 
 
   const handleImageChange = (event) => {
@@ -270,6 +349,8 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
         await handleUploadURL(title, description, buttonText, sendURL, imageBase64, ticketId);
       } else if (selectedOption === "PIX") {
         await handleUploadPIX(title, sendvalue, sendkey_type, sendmerchant_name, sendKey, ticketId);
+      } else if (selectedOption === "Simples") {
+        await handleUploadSimpleButtons(title, description, simpleButtonsList, ticketId);
       } else {
         let listMessage = null;
         switch (selectedOption) {
@@ -295,6 +376,11 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
       case "Lista":
         return (
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography className={classes.successText}>
+                Esta mensagem será enviada como uma lista interativa.
+              </Typography>
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -348,6 +434,12 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
       case "URL":
         return (
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography className={classes.warningText}>
+                Atenção: O WhatsApp removeu o suporte a botões de URL para mensagens de marketing/conversas livres.
+                Esta mensagem pode chegar como TEXTO COMUM no Android/iOS.
+              </Typography>
+            </Grid>
             <Grid item xs={12}>
               <input
                 accept="image/*"
@@ -410,6 +502,12 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
       case "Copia":
         return (
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography className={classes.warningText}>
+                Atenção: O WhatsApp removeu o suporte nativo a botões de Copiar para mensagens de marketing.
+                Esta mensagem será enviada, mas o botão pode não ser interativo em todos os dispositivos.
+              </Typography>
+            </Grid>
             <Grid item xs={12}>
               <input
                 accept="image/*"
@@ -474,6 +572,12 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
       case "Me Ligue":
         return (
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography className={classes.warningText}>
+                Atenção: Botões de "Ligar" podem não funcionar nativamente em versões recentes do WhatsApp.
+                O número será enviado, mas o botão de ação pode não aparecer.
+              </Typography>
+            </Grid>
             <Grid item xs={12}>
               <input
                 accept="image/*"
@@ -594,6 +698,65 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
           </Grid>
         );
 
+      case "Simples":
+        return (
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography className={classes.successText}>
+                Botões de Resposta Simples (até 3 botões). Funcionam nativamente no WhatsApp.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Título"
+                variant="outlined"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Mensagem"
+                variant="outlined"
+                multiline
+                rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {simpleButtonsList.map((button, index) => (
+                <Grid container key={index} spacing={1} alignItems="center">
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      label={`Botão ${index + 1}`}
+                      value={button.text}
+                      onChange={(e) => handleSimpleButtonChange(index, e)}
+                      variant="outlined"
+                      style={{ marginBottom: "8px" }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleRemoveSimpleButton(index)}
+                    >
+                      X
+                    </Button>
+                  </Grid>
+                </Grid>
+              ))}
+              <Button onClick={handleAddSimpleButton} color="primary" disabled={simpleButtonsList.length >= 3}>
+                Adicionar Botão (Max 3)
+              </Button>
+            </Grid>
+          </Grid>
+        );
+
       default:
         return null;
     }
@@ -624,11 +787,12 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
           <MenuItem value="" disabled>
             Selecione
           </MenuItem>
-          <MenuItem value="Lista">Lista</MenuItem>
-          <MenuItem value="URL">URL</MenuItem>
-          <MenuItem value="Copia">Copiar</MenuItem>
-          <MenuItem value="Me Ligue">Me Ligue</MenuItem>
-          <MenuItem value="PIX">PIX</MenuItem>
+          <MenuItem value="Simples">Botões Simples</MenuItem>
+          <MenuItem value="Lista">Lista de Opções</MenuItem>
+          <MenuItem value="URL">Botão de Link (URL)</MenuItem>
+          <MenuItem value="Copia">Botão de Copiar</MenuItem>
+          <MenuItem value="Me Ligue">Botão de Ligar</MenuItem>
+          <MenuItem value="PIX">Botão PIX</MenuItem>
         </Select>
 
         {/* Renderiza o conteúdo com base na opção selecionada */}

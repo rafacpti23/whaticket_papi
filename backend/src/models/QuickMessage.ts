@@ -29,19 +29,23 @@ class QuickMessage extends Model<QuickMessage> {
   @Column
   get mediaPath(): string | null {
     if (this.getDataValue("mediaPath")) {
-      
-      return `${process.env.BACKEND_URL}${process.env.PROXY_PORT ?`:${process.env.PROXY_PORT}`:""}/public/company${this.companyId}/quickMessage/${this.getDataValue("mediaPath")}`;
+
+      const backendUrl = process.env.BACKEND_URL;
+      const proxyPort = process.env.PROXY_PORT;
+      const portSuffix = proxyPort && !backendUrl.includes(`:${proxyPort}`) && !backendUrl.match(/:\d+$/) ? `:${proxyPort}` : "";
+
+      return `${backendUrl}${portSuffix}/public/company${this.companyId}/quickMessage/${this.getDataValue("mediaPath")}`;
 
     }
     return null;
   }
-  
+
   @Column
   mediaName: string;
 
   @Column
   geral: boolean;
-  
+
   @ForeignKey(() => Company)
   @Column
   companyId: number;

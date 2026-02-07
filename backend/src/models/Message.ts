@@ -49,8 +49,12 @@ class Message extends Model<Message> {
   @Column(DataType.STRING)
   get mediaUrl(): string | null {
     if (this.getDataValue("mediaUrl")) {
-      
-      return `${process.env.BACKEND_URL}${process.env.PROXY_PORT ?`:${process.env.PROXY_PORT}`:""}/public/company${this.companyId}/${this.getDataValue("mediaUrl")}`;
+
+      const backendUrl = process.env.BACKEND_URL;
+      const proxyPort = process.env.PROXY_PORT;
+      const portSuffix = proxyPort && !backendUrl.includes(`:${proxyPort}`) && !backendUrl.match(/:\d+$/) ? `:${proxyPort}` : "";
+
+      return `${backendUrl}${portSuffix}/public/company${this.companyId}/${this.getDataValue("mediaUrl")}`;
 
     }
     return null;
@@ -111,7 +115,7 @@ class Message extends Model<Message> {
 
   @BelongsTo(() => Queue)
   queue: Queue;
-  
+
   @Column
   wid: string;
 

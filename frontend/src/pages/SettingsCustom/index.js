@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     // background: "#f2f5f3",
-    backgroundColor: theme.mode === 'light' ? "#f2f2f2" : "#7f7f7f",
+    backgroundColor: theme.palette.mode === 'light' ? "#f2f2f2" : "rgba(255,255,255,0.05)",
     borderRadius: 4,
   },
   paper: {
@@ -208,11 +208,11 @@ const SettingsCustom = () => {
                       />
                     </TabPanel>
                     <TabPanel
-                    className={classes.container}
-                    value={tab}
-                    name={"uploadercert"}
+                      className={classes.container}
+                      value={tab}
+                      name={"uploadercert"}
                     >
-                    <UploaderCert />
+                      <UploaderCert />
                     </TabPanel>
                   </>
                 )}

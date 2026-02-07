@@ -55,6 +55,7 @@ import {
     ArrowDropDown,
     Backup,
     ContactPhone,
+    Sync,
 } from "@material-ui/icons";
 import { Menu, MenuItem } from "@material-ui/core";
 
@@ -133,7 +134,7 @@ const Contacts = () => {
     const [importContactModalOpen, setImportContactModalOpen] = useState(false);
     const [deletingContact, setDeletingContact] = useState(null);
     const [ImportContacts, setImportContacts] = useState(null);
-    
+
     const [blockingContact, setBlockingContact] = useState(null);
     const [unBlockingContact, setUnBlockingContact] = useState(null);
     const [confirmOpen, setConfirmOpen] = useState(false);
@@ -159,11 +160,11 @@ const Contacts = () => {
             const settingList = await getAllSettings(user.companyId);
 
             for (const [key, value] of Object.entries(settingList)) {
-                
+
                 if (key === "enableLGPD") setEnableLGPD(value === "enabled");
                 if (key === "lgpdHideNumber") setHideNum(value === "enabled");
-                
-              }
+
+            }
 
             // if (settingHideNumber.lgpdHideNumber === "enabled") {
             //     setHideNum(true);
@@ -337,6 +338,15 @@ const Contacts = () => {
         }
     };
 
+    const handleSyncContacts = async () => {
+        try {
+            await api.post("/contacts/sync");
+            toast.success("Sincronização iniciada. As fotos serão atualizadas em breve.");
+        } catch (err) {
+            toastError(err);
+        }
+    };
+
     const loadMore = () => {
         setPageNumber((prevState) => prevState + 1);
     };
@@ -504,6 +514,16 @@ const Contacts = () => {
                                         {i18n.t("contacts.menu.importToExcel")}
 
                                     </MenuItem>
+                                    <MenuItem onClick={handleSyncContacts}>
+                                        <Sync
+                                            fontSize="small"
+                                            color="primary"
+                                            style={{
+                                                marginRight: 10,
+                                            }}
+                                        />
+                                        Sincronizar Fotos
+                                    </MenuItem>
                                     {/* {<MenuItem>
                         
                                        <CSVLink
@@ -613,7 +633,7 @@ const Contacts = () => {
                                                 ? contact.number :
                                                 formatSerializedId(contact?.number) === null ? contact.number.slice(0, -6) + "**-**" + contact?.number.slice(-2) :
                                                     formatSerializedId(contact?.number)?.slice(0, -6) + "**-**" + contact?.number?.slice(-2) :
-                                                    contact.isGroup ? contact.number : formatSerializedId(contact?.number)
+                                            contact.isGroup ? contact.number : formatSerializedId(contact?.number)
                                         )}
                                     </TableCell>
                                     <TableCell align="center">

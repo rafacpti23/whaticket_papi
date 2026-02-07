@@ -638,8 +638,72 @@ export const indexWhatsappsId = async (req: Request, res: Response): Promise<Res
 
   //         wpp.push(wppString)
 
-  //     });
-  // }
-
   // return res.status(200).json(wpp);
+};
+
+export const sendButtons = async (req: Request, res: Response): Promise<Response> => {
+  const newContact: ContactData = req.body;
+  const { title, description, buttons }: { title: string, description: string, buttons: any[] } = req.body;
+  const { whatsappId }: WhatsappData = req.body;
+
+  const authHeader = req.headers.authorization;
+  const [, token] = authHeader.split(" ");
+  const whatsapp = await Whatsapp.findOne({ where: { token } });
+  const companyId = whatsapp.companyId;
+
+  newContact.number = newContact.number.replace(" ", "");
+
+  const schema = Yup.object().shape({
+    number: Yup.string()
+      .required()
+      .matches(/^\d+$/, "Invalid number format. Only numbers is allowed.")
+  });
+
+  try {
+    await schema.validate(newContact);
+  } catch (err: any) {
+    throw new AppError(err.message);
+  }
+
+  const contactAndTicket = await createContact(whatsapp.id, companyId, newContact.number);
+
+  if (!contactAndTicket) {
+    throw new AppError("Não foi possível criar ou recuperar o ticket.");
+  }
+
+  const wbot = getWbot(whatsapp.id);
+
+  try {
+    const buttonMessage = {
+      text: `${title}\n\n${description}`,
+      footer: "",
+      buttons: buttons.map((btn: any) => ({
+        buttonId: `btn_${Math.random().toString(36).substring(7)}`, // ID aleatório se não fornecido
+        buttonText: { displayText: btn.buttonText || btn.displayText || btn.text || "Botão" },
+        type: 1
+      })),
+      headerType: 1
+    };
+
+    const sentMessage = await wbot.sendMessage(
+      `${contactAndTicket.contact.number}@s.whatsapp.net`,
+      buttonMessage
+    );
+
+    await verifyMessage(sentMessage, contactAndTicket, contactAndTicket.contact);
+
+    setTimeout(async () => {
+      await UpdateTicketService({
+        ticketId: contactAndTicket.id,
+        ticketData: { status: "closed", sendFarewellMessage: false, amountUsedBotQueues: 0 },
+        companyId
+      });
+    }, 100);
+
+    return res.status(200).json({ message: "Mensagem com botões enviada", ticketId: contactAndTicket.id });
+
+  } catch (err) {
+    console.log(err);
+    throw new AppError("ERR_SENDING_WAPP_Buttons");
+  }
 };

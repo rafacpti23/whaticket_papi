@@ -57,73 +57,50 @@ export const sendTestButtons = async (req: Request, res: Response): Promise<Resp
     const wbot = getWbot(whatsapp.id);
     const jid = `${targetNumber}@s.whatsapp.net`;
 
-    // 1. Teste de Botões (Native Flow - Copy/Url)
-    const buttonMessage = {
+    // Formato interactiveMessage com nativeFlowMessage (baseado no PAPI source)
+    const interactiveMessage = {
       viewOnceMessage: {
         message: {
           interactiveMessage: {
-            body: { text: "Teste de Botões (Native Flow)" },
-            footer: { text: "Whaileys" },
-            header: { title: "Botões", subtitle: "Teste", hasMediaAttachment: false },
+            body: {
+              text: "💳 Teste Interactive com Native Flow\n\nBotões URL, Ligar e Copiar"
+            },
+            footer: {
+              text: "Footer de teste"
+            },
             nativeFlowMessage: {
               buttons: [
                 {
-                  name: "cta_copy",
+                  name: "cta_url",
                   buttonParamsJson: JSON.stringify({
-                    display_text: "Copiar Código",
-                    copy_code: "123456"
+                    display_text: "🌐 Acessar Site",
+                    url: "https://google.com"
                   })
                 },
                 {
-                  name: "cta_url",
+                  name: "cta_call",
                   buttonParamsJson: JSON.stringify({
-                    display_text: "Acessar Site",
-                    url: "https://google.com",
-                    merchant_url: "https://google.com"
+                    display_text: "📞 Ligar",
+                    phone_number: "+5527999999999"
+                  })
+                },
+                {
+                  name: "cta_copy",
+                  buttonParamsJson: JSON.stringify({
+                    display_text: "📋 Copiar Código",
+                    copy_code: "CODIGO123"
                   })
                 }
-              ],
-              messageParamsJson: ""
+              ]
             }
           }
         }
       }
     };
 
-    const msg1 = generateWAMessageFromContent(jid, buttonMessage, { userJid: wbot.user?.id });
-    await wbot.relayMessage(jid, msg1.message!, { messageId: msg1.key.id });
+    await wbot.relayMessage(jid, interactiveMessage, { messageId: wbot.generateMessageTag() });
 
-    // 2. Teste de Lista (Interactive List)
-    const listMessage = {
-      viewOnceMessage: {
-        message: {
-          interactiveMessage: {
-            body: { text: "Teste de Lista" },
-            footer: { text: "Whaileys" },
-            header: { title: "Lista", subtitle: "Teste", hasMediaAttachment: false },
-            listMessage: {
-              buttonText: "Abrir Lista",
-              description: "Descrição da lista",
-              sections: [
-                {
-                  title: "Seção 1",
-                  rows: [
-                    { header: "Header 1", title: "Opção 1", description: "Desc 1", id: "opt1" },
-                    { header: "Header 2", title: "Opção 2", description: "Desc 2", id: "opt2" }
-                  ]
-                }
-              ],
-              listType: 1 // SINGLE_SELECT
-            }
-          }
-        }
-      }
-    };
-
-    const msg2 = generateWAMessageFromContent(jid, listMessage, { userJid: wbot.user?.id });
-    await wbot.relayMessage(jid, msg2.message!, { messageId: msg2.key.id });
-
-    return res.status(200).json({ message: "Test messages sent (Buttons & List)" });
+    return res.status(200).json({ message: "Interactive native flow sent" });
   } catch (err) {
     console.error("Error sending test message: ", err);
     throw new AppError("Error sending test message", 500);
@@ -174,20 +151,35 @@ export const sendListMessage = async (req: Request, res: Response): Promise<Resp
     if (!contact) {
       throw new AppError("Contact not found", 404);
     }
+
     const wbot = await GetTicketWbot(ticket);
+    const number = `${contact.number}@${ticket.isGroup ? "g.us" : "s.whatsapp.net"}`;
+
+    console.log('Enviando lista para:', number);
+
+    // Format sections according to whaileys documentation
+    // Each section has: title, rows (array of { title, rowId, description? })
+    const formattedSections = sections.map((section: any) => ({
+      title: section.title || "Opções",
+      rows: section.rows.map((row: any) => ({
+        title: row.title,
+        rowId: row.rowId || row.id || row.title,
+        description: row.description || ""
+      }))
+    }));
+
+    // List message format from whaileys documentation
     const listMessage = {
-      text,
-      title,
-      buttonText,
-      footer,
-      sections
+      text: text || "Selecione uma opção",
+      footer: footer || "",
+      title: title || "",
+      buttonText: buttonText || "Ver opções",
+      sections: formattedSections
     };
 
-    const number = `${contact.number}@${ticket.isGroup ? "g.us" : "s.whatsapp.net"}`;
-    console.log('Numero do cliente:', number);
+    console.log('List message payload:', JSON.stringify(listMessage, null, 2));
 
     const sendMsg = await wbot.sendMessage(number, listMessage);
-    await verifyMessage(sendMsg, ticket, contact);
 
     return res.status(200).json({ message: "List message sent successfully", sendMsg });
   } catch (err) {
@@ -209,52 +201,21 @@ export const sendCopyMessage = async (req: Request, res: Response): Promise<Resp
     if (!contact) {
       throw new AppError("Contact not found", 404);
     }
-    const whatsapp = await Whatsapp.findOne({ where: { id: ticket.whatsappId } });
-    if (!whatsapp || !whatsapp.number) {
-      console.error('Número de WhatsApp não encontrado para o ticket:', ticket.whatsappId);
-      throw new Error('Número de WhatsApp não encontrado');
-    }
 
-    const botNumber = whatsapp.number;
     const wbot = await GetTicketWbot(ticket);
-    const copyMessage = {
-      viewOnceMessage: {
-        message: {
-          interactiveMessage: {
-            body: {
-              text: title || 'Botão copiar',
-            },
-            footer: {
-              text: description || 'Botão copiar',
-            },
-            nativeFlowMessage: {
-              buttons: [
-                {
-                  name: 'cta_copy',
-                  buttonParamsJson: JSON.stringify({
-                    display_text: buttonText || 'Botão copiar',
-                    copy_code: copyText || 'Botão copiar',
-                  }),
-                },
-              ],
-              messageParamsJson: JSON.stringify({
-                from: 'apiv2',
-                templateId: '4194019344155670',
-              }),
-            },
-          },
-        },
-      },
-    };
     const number = `${contact.number}@${ticket.isGroup ? "g.us" : "s.whatsapp.net"}`;
-    const newMsg = generateWAMessageFromContent(number, copyMessage, {
-      userJid: botNumber,
+
+    console.log('Enviando Copy message para:', number);
+
+    // WhatsApp doesn't support copy buttons anymore
+    // Send message with the code to copy in the text
+    const messageText = `${title || 'Código para copiar:'}\n\n📋 *${copyText || ''}*\n\n${description || ''}`;
+
+    const sendMsg = await wbot.sendMessage(number, {
+      text: messageText
     });
-    await wbot.relayMessage(number, newMsg.message!, { messageId: newMsg.key.id });
-    if (newMsg) {
-      await wbot.upsertMessage(newMsg, 'notify');
-    }
-    return res.status(200).json({ message: "Copy message sent successfully", newMsg });
+
+    return res.status(200).json({ message: "Copy message sent successfully", sendMsg });
 
   } catch (error) {
     console.error('Erro ao enviar a mensagem de cópia:', error);
@@ -275,62 +236,32 @@ export const sendCALLMessage = async (req: Request, res: Response): Promise<Resp
     if (!contact) {
       throw new AppError("Contact not found", 404);
     }
-    const whatsapp = await Whatsapp.findOne({ where: { id: ticket.whatsappId } });
-    if (!whatsapp || !whatsapp.number) {
-      console.error('Número de WhatsApp não encontrado para o ticket:', ticket.whatsappId);
-      throw new Error('Número de WhatsApp não encontrado');
-    }
 
-    const botNumber = whatsapp.number;
     const wbot = await GetTicketWbot(ticket);
-    const copyMessage = {
-      viewOnceMessage: {
-        message: {
-          interactiveMessage: {
-            body: {
-              text: title || 'Botão copiar',
-            },
-            footer: {
-              text: description || 'Botão copiar',
-            },
-            nativeFlowMessage: {
-              buttons: [
-                {
-                  name: 'cta_call',
-                  buttonParamsJson: JSON.stringify({
-                    display_text: buttonText || 'Botão copiar',
-                    phoneNumber: copyText || 'Botão copiar',
-                  })
-                },
-              ],
-              messageParamsJson: JSON.stringify({
-                from: 'apiv2',
-                templateId: '4194019344155670',
-              }),
-            },
-          },
-        },
-      },
-    };
     const number = `${contact.number}@${ticket.isGroup ? "g.us" : "s.whatsapp.net"}`;
-    const newMsg = generateWAMessageFromContent(number, copyMessage, {
-      userJid: botNumber,
+
+    console.log('Enviando Call message para:', number);
+
+    // WhatsApp doesn't support call buttons anymore
+    // Send message with the phone number in the text
+    const messageText = `${title || 'Ligue para:'}\n\n📞 *${copyText || ''}*\n\n${description || ''}`;
+
+    const sendMsg = await wbot.sendMessage(number, {
+      text: messageText
     });
-    await wbot.relayMessage(number, newMsg.message!, { messageId: newMsg.key.id });
-    if (newMsg) {
-      await wbot.upsertMessage(newMsg, 'notify');
-    }
-    return res.status(200).json({ message: "Copy message sent successfully", newMsg });
+
+    return res.status(200).json({ message: "Call message sent successfully", sendMsg });
 
   } catch (error) {
-    console.error('Erro ao enviar a mensagem de cópia:', error);
-    throw new AppError("Error sending copy message", 500);
+    console.error('Erro ao enviar a mensagem de ligação:', error);
+    throw new AppError("Error sending call message", 500);
   }
 };
 
 export const sendURLMessage = async (req: Request, res: Response): Promise<Response> => {
   const { ticketId } = req.params;
-  const { image, title, description, buttonText, copyText } = req.body;
+  const { title, description, buttonText, copyText } = req.body;
+
   try {
     const ticket = await Ticket.findByPk(ticketId);
     if (!ticket) {
@@ -340,106 +271,25 @@ export const sendURLMessage = async (req: Request, res: Response): Promise<Respo
     if (!contact) {
       throw new AppError("Contact not found", 404);
     }
-    const whatsapp = await Whatsapp.findOne({ where: { id: ticket.whatsappId } });
-    if (!whatsapp || !whatsapp.number) {
-      console.error('Número de WhatsApp não encontrado para o ticket:', ticket.whatsappId);
-      throw new Error('Número de WhatsApp não encontrado');
-    }
 
-    const botNumber = whatsapp.number;
     const wbot = await GetTicketWbot(ticket);
-    let copyMessage: any;
-
-    if (image) {
-      const base64Image = image.split(',')[1];
-      const imageMessageContent = await generateWAMessageContent(
-        {
-          image: {
-            url: `data:image/png;base64,${base64Image}`, // Use a URL data para imagem
-          },
-        },
-        { upload: wbot.waUploadToServer! }
-      );
-
-      // Crie a estrutura com o header e a imagem
-      copyMessage = {
-        viewOnceMessage: {
-          message: {
-            interactiveMessage: {
-              body: {
-                text: title || 'Botão copiar',  // Título da mensagem
-              },
-              footer: {
-                text: description || 'Botão copiar',  // Descrição da mensagem
-              },
-              header: {
-                imageMessage: imageMessageContent,
-                hasMediaAttachment: true,
-              },
-              nativeFlowMessage: {
-                buttons: [
-                  {
-                    name: 'cta_url',
-                    buttonParamsJson: JSON.stringify({
-                      display_text: buttonText || 'Botão copiar',
-                      url: copyText || 'Botão copiar',
-                    })
-                  },
-                ],
-                messageParamsJson: JSON.stringify({
-                  from: 'apiv2',
-                  templateId: '4194019344155670',
-                }),
-              },
-            },
-          },
-        },
-      };
-    } else {
-
-      copyMessage = {
-        viewOnceMessage: {
-          message: {
-            interactiveMessage: {
-              body: {
-                text: title || 'Botão copiar',
-              },
-              footer: {
-                text: description || 'Botão copiar',
-              },
-              nativeFlowMessage: {
-                buttons: [
-                  {
-                    name: 'cta_url',
-                    buttonParamsJson: JSON.stringify({
-                      display_text: buttonText || 'Botão copiar',
-                      url: copyText || 'Botão copiar',
-                    })
-                  },
-                ],
-                messageParamsJson: JSON.stringify({
-                  from: 'apiv2',
-                  templateId: '4194019344155670',
-                }),
-              },
-            },
-          },
-        },
-      };
-    }
     const number = `${contact.number}@${ticket.isGroup ? "g.us" : "s.whatsapp.net"}`;
-    const newMsg = generateWAMessageFromContent(number, copyMessage, {
-      userJid: botNumber,
+
+    console.log('Enviando URL message para:', number);
+
+    // WhatsApp doesn't support URL buttons anymore
+    // Send message with URL in the text
+    const messageText = `${title || 'Acesse o link abaixo:'}\n\n🔗 ${copyText || ''}`;
+
+    const sendMsg = await wbot.sendMessage(number, {
+      text: messageText
     });
-    await wbot.relayMessage(number, newMsg.message!, { messageId: newMsg.key.id });
-    if (newMsg) {
-      await wbot.upsertMessage(newMsg, 'notify');
-    }
-    return res.status(200).json({ message: "Copy message sent successfully", newMsg });
+
+    return res.status(200).json({ message: "URL message sent successfully", sendMsg });
 
   } catch (error) {
-    console.error('Erro ao enviar a mensagem de cópia:', error);
-    throw new AppError("Error sending copy message", 500);
+    console.error('Erro ao enviar a mensagem de URL:', error);
+    throw new AppError("Error sending URL message", 500);
   }
 };
 
@@ -1038,5 +888,56 @@ export const sendMessageFlow = async (
     } else {
       throw new AppError(err.message);
     }
+  }
+};
+
+export const sendSimpleButtonMessage = async (req: Request, res: Response): Promise<Response> => {
+  const { ticketId } = req.params;
+  const { title, description, buttons } = req.body;
+
+  const ticket = await Ticket.findByPk(ticketId, {
+    include: [
+      {
+        model: Contact,
+        as: "contact",
+        attributes: ["number", "name"]
+      },
+      {
+        model: Whatsapp,
+        as: "whatsapp",
+        attributes: ["id", "name"]
+      }
+    ]
+  });
+
+  if (!ticket) {
+    throw new AppError("ERR_NO_TICKET_FOUND", 404);
+  }
+
+  const wbot = getWbot(ticket.whatsappId);
+
+  try {
+    const buttonMessage = {
+      text: `${title}\n\n${description}`,
+      footer: "",
+      buttons: buttons.map((btn: any) => ({
+        buttonId: btn.buttonId,
+        buttonText: { displayText: btn.buttonText },
+        type: 1
+      })),
+      headerType: 1
+    };
+
+    const sentMessage = await wbot.sendMessage(
+      `${ticket.contact.number}@s.whatsapp.net`,
+      buttonMessage
+    );
+
+    await verifyMessage(sentMessage, ticket, ticket.contact);
+
+    return res.status(200).json({ message: "Mensagem enviada" });
+  } catch (err) {
+    console.log(err);
+    throw new AppError("ERR_SENDING_WAPP_MSG");
   }
 };

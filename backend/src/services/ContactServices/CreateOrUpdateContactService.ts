@@ -114,13 +114,14 @@ const CreateOrUpdateContactService = async ({
         oldPath = path.resolve(contact.urlPicture.replace(/\\/g, '/'));
         fileName = path.join(folder, oldPath.split('\\').pop());
       }
-      if (!fs.existsSync(fileName) || contact.profilePicUrl === "") {
+      if (!fs.existsSync(fileName) || !contact.profilePicUrl) {
         if (wbot && ['whatsapp'].includes(channel)) {
           try {
             console.log(120, "CreateUpdateContactService")
-            profilePicUrl = await wbot.profilePictureUrl(remoteJid, "image");
+            const jid = remoteJid.includes("@") ? remoteJid : (isGroup ? `${remoteJid}@g.us` : `${remoteJid}@s.whatsapp.net`);
+            profilePicUrl = await wbot.profilePictureUrl(jid, "image");
           } catch (e) {
-            Sentry.captureException(e);
+            // Sentry.captureException(e);
             profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
           }
           contact.profilePicUrl = profilePicUrl;
@@ -145,9 +146,9 @@ const CreateOrUpdateContactService = async ({
       }
 
       try {
-        profilePicUrl = await wbot.profilePictureUrl(remoteJid, "image");
+        profilePicUrl = await wbot.profilePictureUrl(newRemoteJid, "image");
       } catch (e) {
-        Sentry.captureException(e);
+        // Sentry.captureException(e);
         profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
       }
 
@@ -166,6 +167,7 @@ const CreateOrUpdateContactService = async ({
       });
 
       createContact = true;
+      updateImage = true;
     } else if (['facebook', 'instagram', 'papi'].includes(channel)) {
       contact = await Contact.create({
         name,

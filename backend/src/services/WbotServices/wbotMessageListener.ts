@@ -805,12 +805,12 @@ const verifyContact = async (
   companyId: number
 ): Promise<Contact> => {
   let profilePicUrl: string = "";
-  // try {
-  //   profilePicUrl = await wbot.profilePictureUrl(msgContact.id, "image");
-  // } catch (e) {
-  //   Sentry.captureException(e);
-  //   profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
-  // }
+  try {
+    profilePicUrl = await wbot.profilePictureUrl(msgContact.id, "image");
+  } catch (e) {
+    // Sentry.captureException(e);
+    profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
+  }
 
   const contactData = {
     name: msgContact.name || msgContact.id.replace(/\D/g, ""),
@@ -4101,11 +4101,11 @@ const handleMessage = async (
       msgContact = await getContactMessage(msg, wbot);
     }
 
-    const isGroup = msg.key.remoteJid?.endsWith("@g.us");
+    const isGroup = msg.key.remoteJid?.endsWith("@g.us") || msg.key.remoteJid?.includes("g.us");
 
     const whatsapp = await ShowWhatsAppService(wbot.id!, companyId);
 
-    console.log("log... 2961");
+    console.log("log... 2961", { isGroup, allowGroup: whatsapp.allowGroup });
 
     if (!whatsapp.allowGroup && isGroup) return;
 
@@ -5293,7 +5293,7 @@ const wbotMessageListener = (wbot: Session, companyId: number): void => {
         const newUrl =
           contact.imgUrl === ""
             ? ""
-            : await wbot!.profilePictureUrl(contact.id!).catch(() => null);
+            : await wbot!.profilePictureUrl(contact.id!, "image").catch(() => null);
         const contactData = {
           name: contact.id.replace(/\D/g, ""),
           number: contact.id.replace(/\D/g, ""),
