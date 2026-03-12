@@ -43,7 +43,7 @@ const ListContactsService = async ({
       [Op.or]: [
         {
           name: where(
-            fn("LOWER", fn("unaccent", col("Contact.name"))),
+            fn("public.immutable_unaccent", fn("LOWER", col("Contact.name"))),
             "LIKE",
             `%${sanitizedSearchParam}%`
           )

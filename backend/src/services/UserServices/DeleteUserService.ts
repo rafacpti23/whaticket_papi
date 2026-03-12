@@ -1,5 +1,6 @@
 import User from "../../models/User";
 import AppError from "../../errors/AppError";
+import cacheLayer from "../../libs/cache";
 import Ticket from "../../models/Ticket";
 import UpdateDeletedUserOpenTicketsStatus from "../../helpers/UpdateDeletedUserOpenTicketsStatus";
 
@@ -24,6 +25,7 @@ const DeleteUserService = async (
   }
 
   await user.destroy();
+  await cacheLayer.del(`showuser:${id}:${companyId}`);
 };
 
 export default DeleteUserService;

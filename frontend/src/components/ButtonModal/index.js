@@ -631,7 +631,6 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
                 fullWidth
                 label="Telefone"
                 variant="outlined"
-                defaultValue="5511999999999"
                 value={sendCALL}
                 onChange={(e) => setSendCall(e.target.value)} // Campo para o telefone
               />
@@ -660,22 +659,21 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Select
+              <TextField
+                select
                 fullWidth
-                className={classes.formControl}
+                label="Tipo de Chave"
+                variant="outlined"
                 value={sendkey_type}
-                onChange={(e) => setsendkey_type(e.target.value)} // Atualizando o estado sendkey_type
-                displayEmpty
+                onChange={(e) => setsendkey_type(e.target.value)}
               >
-                <MenuItem value="" disabled>
-                  Tipo de Chave
-                </MenuItem>
+                <MenuItem value="" disabled>Selecione um tipo</MenuItem>
                 <MenuItem value="CNPJ">CNPJ</MenuItem>
                 <MenuItem value="CPF">CPF</MenuItem>
                 <MenuItem value="PHONE">Telefone</MenuItem>
                 <MenuItem value="EMAIL">E-mail</MenuItem>
                 <MenuItem value="EVP">Chave Aleatória</MenuItem>
-              </Select>
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField

@@ -1,16 +1,17 @@
+import { useCallback } from "react";
 import api, { openApi } from "../../services/api";
 
 const useSettings = () => {
-  const getAll = async (params) => {
+  const getAll = useCallback(async (params) => {
     const { data } = await api.request({
       url: "/settings",
       method: "GET",
       params,
     });
     return data;
-  };
+  }, []);
 
-  const update = async (data) => {
+  const update = useCallback(async (data) => {
     const { data: responseData } = await api.request({
       url: `/settings/${data.key}`,
       method: "PUT",
@@ -18,17 +19,17 @@ const useSettings = () => {
     });
     console.log(responseData);
     return responseData;
-  };
+  }, []);
 
-  const get = async (param) => {
+  const get = useCallback(async (param) => {
     const { data } = await api.request({
       url: `/setting/${param}`,
       method: "GET",
     });
     return data;
-  };
+  }, []);
 
-  const getPublicSetting = async (key) => {
+  const getPublicSetting = useCallback(async (key) => {
     const params = {
       token: "wtV"
     }
@@ -39,7 +40,7 @@ const useSettings = () => {
         params
     });
     return data;
-  };
+  }, []);
 
   return {
     getAll,

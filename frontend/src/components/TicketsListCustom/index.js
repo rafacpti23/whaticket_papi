@@ -100,17 +100,19 @@ const reducer = (state, action) => {
     if (action.type === "LOAD_TICKETS") {
         const newTickets = action.payload;
 
-        newTickets.forEach((ticket) => {
-            const ticketIndex = state.findIndex((t) => t.id === ticket.id);
-            if (ticketIndex !== -1) {
-                state[ticketIndex] = ticket;
-                if (ticket.unreadMessages > 0) {
-                    state.unshift(state.splice(ticketIndex, 1)[0]);
+        if (Array.isArray(newTickets)) {
+            newTickets.forEach((ticket) => {
+                const ticketIndex = state.findIndex((t) => t.id === ticket.id);
+                if (ticketIndex !== -1) {
+                    state[ticketIndex] = ticket;
+                    if (ticket.unreadMessages > 0) {
+                        state.unshift(state.splice(ticketIndex, 1)[0]);
+                    }
+                } else {
+                    state.push(ticket);
                 }
-            } else {
-                state.push(ticket);
-            }
-        });
+            });
+        }
         if (sortDir && ['ASC', 'DESC'].includes(sortDir)) {
             sortDir === 'ASC' ? state.sort(ticketSortAsc) : state.sort(ticketSortDesc);
         }
@@ -222,6 +224,8 @@ const TicketsListCustom = (props) => {
     const { user, socket } = useContext(AuthContext);
 
     const { profile, queues } = user;
+    const safeQueues = queues || [];
+    const safeSelectedQueueIds = selectedQueueIds || [];
     const showTicketWithoutQueue = user.allTicket === 'enable';
     const companyId = user.companyId;
 
@@ -270,14 +274,11 @@ const TicketsListCustom = (props) => {
     useEffect(() => {
         const shouldUpdateTicket = ticket => {
             return (!ticket?.userId || ticket?.userId === user?.id || showAll) &&
-                ((!ticket?.queueId && showTicketWithoutQueue) || selectedQueueIds.indexOf(ticket?.queueId) > -1)
-            // (!blockNonDefaultConnections || (ticket.status == 'group' && ignoreUserConnectionForGroups) || !user?.whatsappId || ticket.whatsappId == user?.whatsappId);
+                ((!ticket?.queueId && showTicketWithoutQueue) || safeSelectedQueueIds.indexOf(ticket?.queueId) > -1)
         }
-        // const shouldUpdateTicketUser = (ticket) =>
-        //     selectedQueueIds.indexOf(ticket?.queueId) > -1 && (ticket?.userId === user?.id || !ticket?.userId);
 
         const notBelongsToUserQueues = (ticket) =>
-            ticket.queueId && selectedQueueIds.indexOf(ticket.queueId) === -1;
+            ticket.queueId && safeSelectedQueueIds.indexOf(ticket.queueId) === -1;
 
         const onCompanyTicketTicketsList = (data) => {
             // console.log("onCompanyTicketTicketsList", data)
@@ -376,11 +377,14 @@ const TicketsListCustom = (props) => {
             socket.off(`company-${companyId}-contact`, onCompanyContactTicketsList);
         };
 
-    }, [status, showAll, user, selectedQueueIds, tags, users, profile, queues, sortTickets, showTicketWithoutQueue]);
+    }, [status, showAll, user, safeSelectedQueueIds, tags, users, profile, safeQueues, sortTickets, showTicketWithoutQueue]);
+
+    const prevCountRef = React.useRef();
 
     useEffect(() => {
-        if (typeof updateCount === "function") {
+        if (typeof updateCount === "function" && prevCountRef.current !== ticketsList.length) {
             updateCount(ticketsList.length);
+            prevCountRef.current = ticketsList.length;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketsList]);

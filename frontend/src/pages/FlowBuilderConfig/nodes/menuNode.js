@@ -2,164 +2,133 @@ import {
   ArrowForwardIos,
   ContentCopy,
   Delete,
-  DynamicFeed,
-  ImportExport,
-  Message
+  DynamicFeed
 } from "@mui/icons-material";
 import React, { memo } from "react";
-
 import { Handle } from "react-flow-renderer";
 import { useNodeStorage } from "../../../stores/useNodeStorage";
+import { useTheme, Typography, Box, IconButton, Stack } from "@mui/material";
 
 export default memo(({ data, isConnectable, id }) => {
   const storageItems = useNodeStorage();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   return (
-    <div
-      style={{
-        backgroundColor: "#FAFBFF",
-        padding: "8px",
-        borderRadius: "8px",
-        maxWidth: "155px",
-        boxShadow: "0px 3px 5px rgba(0,0,0,.05)",
-        border: "1px solid rgba(104, 58, 200, 0.25)",
-        width: 180
+    <Box
+      sx={{
+        background: isDark 
+          ? "rgba(30, 41, 59, 0.9)" 
+          : "rgba(255, 255, 255, 0.9)",
+        backdropFilter: "blur(12px)",
+        padding: "12px",
+        borderRadius: "16px",
+        border: `1px solid ${isDark ? "rgba(139, 92, 246, 0.3)" : "rgba(139, 92, 246, 0.15)"}`,
+        boxShadow: isDark 
+          ? "0 10px 30px rgba(0,0,0,0.5)" 
+          : "0 10px 30px rgba(0,0,0,0.1)",
+        minWidth: "200px",
+        position: "relative"
       }}
     >
       <Handle
         type="target"
         position="left"
         style={{
-          background: "#0000FF",
-          width: "18px",
-          height: "18px",
-          top: "20px",
-          left: "-12px",
-          cursor: 'pointer'
+          background: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
+          width: "14px",
+          height: "14px",
+          left: "-7px",
+          top: "24px",
+          border: "3px solid #fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
-        onConnect={params => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       >
-        <ArrowForwardIos
-          sx={{
-            color: "#ffff",
-            width: "10px",
-            height: "10px",
-            marginLeft: "3.5px",
-            marginBottom: "1px",
-            pointerEvents: "none"
-          }}
-        />
+        <ArrowForwardIos sx={{ color: "#fff", fontSize: "6px", ml: "1px" }} />
       </Handle>
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          right: 5,
-          top: 5,
-          cursor: "pointer",
-          gap: 6
-        }}
-      >
-        <ContentCopy
-          onClick={() => {
-            storageItems.setNodesStorage(id);
-            storageItems.setAct("duplicate");
-          }}
-          sx={{ width: "12px", height: "12px", color: "#683AC8" }}
-        />
 
-        <Delete
-          onClick={() => {
-            storageItems.setNodesStorage(id);
-            storageItems.setAct("delete");
-          }}
-          sx={{ width: "12px", height: "12px", color: "#683AC8" }}
-        />
-      </div>
-      <div
-        style={{
-          color: "#ededed",
-          fontSize: "16px",
-          flexDirection: "row",
-          display: "flex"
-        }}
-      >
-        <DynamicFeed
-          sx={{
-            width: "16px",
-            height: "16px",
-            marginRight: "4px",
-            marginTop: "4px",
-            color: "#683AC8"
-          }}
-        />
-        <div style={{ color: "#232323", fontSize: "16px" }}>Menu</div>
-      </div>
-      <div>
-        <div
-          style={{
-            color: "#232323",
-            fontSize: "12px",
-            height: "50px",
-            overflow: "hidden",
-            marginBottom: "8px"
-          }}
-        >
-          {data.message}
-        </div>
-      </div>
-      {data.arrayOption.map(option => (
-        <div
-          style={{
-            marginBottom: "9px",
-            justifyContent: "end",
-            display: "flex"
-          }}
-        >
-          <div
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "10px",
-              position: "relative",
-              display: "flex",
-              color: "#232323",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignSelf: "end"
-            }}
-          >
-            {`[${option.number}] ${option.value}`}
-          </div>
-          <Handle
-            type="source"
-            position="right"
-            id={"a" + option.number}
-            style={{
-              top: 74 + 23 * option.number,
-              background: "#0000FF",
-              width: "18px",
-              height: "18px",
-              right: "-11px",
-              cursor: 'pointer'
-            }}
-            isConnectable={isConnectable}
-          >
-            <ArrowForwardIos
+      <Stack spacing={1.5}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box sx={{ 
+              p: 0.5, 
+              borderRadius: "8px", 
+              backgroundColor: "rgba(139, 92, 246, 0.1)",
+              color: "#8b5cf6",
+              display: "flex"
+            }}>
+              <DynamicFeed sx={{ fontSize: "18px" }} />
+            </Box>
+            <Typography variant="caption" sx={{ fontWeight: 700, color: theme.palette.text.secondary }}>
+              MENU INTERATIVO
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" spacing={0.5}>
+            <IconButton size="small" onClick={() => { storageItems.setNodesStorage(id); storageItems.setAct("duplicate"); }} sx={{ p: "4px" }}>
+              <ContentCopy sx={{ fontSize: "14px" }} />
+            </IconButton>
+            <IconButton size="small" onClick={() => { storageItems.setNodesStorage(id); storageItems.setAct("delete"); }} sx={{ p: "4px", color: theme.palette.error.main }}>
+              <Delete sx={{ fontSize: "14px" }} />
+            </IconButton>
+          </Stack>
+        </Stack>
+
+        <Box sx={{ 
+          p: 1.5, 
+          borderRadius: "12px", 
+          backgroundColor: isDark ? "rgba(0,0,0,0.2)" : "rgba(139, 92, 246, 0.05)",
+        }}>
+          <Typography sx={{ color: theme.palette.text.primary, fontSize: "12px", lineHeight: 1.4 }}>
+            {data.message || "Defina a mensagem do menu..."}
+          </Typography>
+        </Box>
+
+        <Stack spacing={0.8}>
+          {data.arrayOption.map((option, index) => (
+            <Box
+              key={index}
               sx={{
-                color: "#ffff",
-                width: "10px",
-                height: "10px",
-                marginLeft: "2.9px",
-                marginBottom: "1px",
-                pointerEvents: "none"
+                p: "6px 10px",
+                borderRadius: "8px",
+                backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "#fff",
+                border: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`,
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between"
               }}
-            />
-          </Handle>
-        </div>
-      ))}
-    </div>
+            >
+              <Typography sx={{ fontSize: "11px", color: theme.palette.text.primary, fontWeight: 500 }}>
+                {`[${option.number}] ${option.value}`}
+              </Typography>
+              
+              <Handle
+                type="source"
+                position="right"
+                id={"a" + option.number}
+                style={{
+                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                  width: "12px",
+                  height: "12px",
+                  right: "-18px",
+                  border: "3px solid #fff",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+                isConnectable={isConnectable}
+              >
+                <ArrowForwardIos sx={{ color: "#fff", fontSize: "5px", ml: "1px" }} />
+              </Handle>
+            </Box>
+          ))}
+        </Stack>
+      </Stack>
+    </Box>
   );
 });

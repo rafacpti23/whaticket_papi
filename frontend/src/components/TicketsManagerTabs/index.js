@@ -10,13 +10,11 @@ import {
   Badge,
   IconButton,
   Typography,
-  Grid,
   Tooltip,
   Switch,
   Box,
   Fade,
   Button,
-  Chip,
   Snackbar,
   Zoom,
 } from "@material-ui/core";
@@ -35,7 +33,6 @@ import {
   FilterList as FilterListIcon,
 } from "@material-ui/icons";
 import { PlaylistAddCheckOutlined } from "@mui/icons-material";
-import ToggleButton from "@material-ui/lab/ToggleButton";
 
 import NewTicketModal from "../NewTicketModal";
 import TicketsList from "../TicketsListCustom";
@@ -313,7 +310,7 @@ const TicketsManagerTabs = () => {
   const { setSelectedQueuesMessage } = useContext(QueueSelectedContext);
   const { tabOpen, setTabOpen } = useContext(TicketsContext);
 
-  const userQueueIds = user.queues.map((q) => q.id);
+  const userQueueIds = (user.queues || []).map((q) => q.id);
   const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -338,7 +335,7 @@ const TicketsManagerTabs = () => {
     if (tab === "search") {
       searchInputRef.current.focus();
     }
-    setForceSearch(!forceSearch);
+    setForceSearch(f => !f);
   }, [tab]);
 
   let searchTimeout;
@@ -843,7 +840,7 @@ const TicketsManagerTabs = () => {
               showAll={showAllTickets}
               sortTickets={sortTickets ? "ASC" : "DESC"}
               selectedQueueIds={selectedQueueIds}
-              updateCount={(val) => setOpenCount(val)}
+              updateCount={setOpenCount}
               style={applyPanelStyle("open")}
               setTabOpen={setTabOpen}
             />
@@ -856,7 +853,7 @@ const TicketsManagerTabs = () => {
                   ? showAllTickets
                   : false
               }
-              updateCount={(val) => setPendingCount(val)}
+              updateCount={setPendingCount}
               style={applyPanelStyle("pending")}
               setTabOpen={setTabOpen}
             />
@@ -866,7 +863,7 @@ const TicketsManagerTabs = () => {
                 showAll={showAllTickets}
                 sortTickets={sortTickets ? "ASC" : "DESC"}
                 selectedQueueIds={selectedQueueIds}
-                updateCount={(val) => setGroupingCount(val)}
+                updateCount={setGroupingCount}
                 style={applyPanelStyle("group")}
                 setTabOpen={setTabOpen}
               />

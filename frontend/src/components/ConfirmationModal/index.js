@@ -9,10 +9,9 @@ import api from "../../services/api";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Grid, Select, MenuItem, ListItemText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Face, Facebook, WhatsApp } from "@material-ui/icons";
+import { Facebook, WhatsApp } from "@material-ui/icons";
 import { Instagram } from "@mui/icons-material";
 import { i18n } from "../../translate/i18n";
-import ButtonWithSpinner from "../ButtonWithSpinner";
 
 const useStyles = makeStyles((theme) => ({
   online: {
@@ -49,10 +48,12 @@ const ConfirmationModal = ({
           .then(({ data }) => setWhatsapps(data));
       };
 
-      fetchContacts();
+      if(open) {
+          fetchContacts();
+      }
     }, 500);
     return () => clearTimeout(delayDebounceFn);
-  }, [open]);
+  }, [open, companyId]);
 
   const IconChannel = (channel) => {
     switch (channel) {
@@ -71,10 +72,6 @@ const ConfirmationModal = ({
       default:
         return "error";
     }
-  };
-
-  const handleClose = () => {
-    onClose();
   };
 
   return (

@@ -109,13 +109,15 @@ const TicketActionButtonsCustom = ({ ticket
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
+    const isMountedStore = useRef(true);
 
     useEffect(() => {
+        isMountedStore.current = true;
         fetchData();
 
         // Cleanup function to set isMounted to false when the component unmounts
         return () => {
-            setIsMounted(false);
+            isMountedStore.current = false;
         };
     }, []);
 
@@ -123,6 +125,8 @@ const TicketActionButtonsCustom = ({ ticket
     const fetchData = async () => {
         const companyId = user.companyId;
         const planConfigs = await getPlanCompany(undefined, companyId);
+        if(!isMountedStore.current) return;
+        
         setShowSchedules(planConfigs.plan.useSchedules);
         setOpenTicketMessageDialog(false);
         setDisableBot(ticket.contact.disableBot)
@@ -600,7 +604,6 @@ const TicketActionButtonsCustom = ({ ticket
                     </MenuItem>
                 </Menu>
             </div>
-            <>
                 <Formik
                     enableReinitialize={true}
                     validationSchema={SessionSchema}
@@ -639,7 +642,6 @@ const TicketActionButtonsCustom = ({ ticket
                         </Dialog>
                     )}
                 </Formik>
-            </>
         </>
     );
 };

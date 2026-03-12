@@ -1,137 +1,123 @@
 import {
   ArrowForwardIos,
   ContentCopy,
-  Delete,
-  ConfirmationNumber,
+  Delete
 } from "@mui/icons-material";
 import React, { memo } from "react";
-import TextField from "@mui/material/TextField";
-import { useNodeStorage } from "../../../stores/useNodeStorage";
 import { Handle } from "react-flow-renderer";
-import { Typography, Box } from "@material-ui/core";
+import { useNodeStorage } from "../../../stores/useNodeStorage";
+import { useTheme, Typography, Box, IconButton, Stack } from "@mui/material";
 import { SiOpenai } from "react-icons/si";
 
 export default memo(({ data, isConnectable, id }) => {
   const storageItems = useNodeStorage();
-  console.log(12, "ticketNode", data);
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   return (
-    <div
-      style={{
-        backgroundColor: "#ffffff",
-        padding: "8px",
-        borderRadius: "8px",
-        boxShadow: "rgba(0, 0, 0, 0.05) 0px 3px 5px",
-        border: "1px solid rgba(33, 94, 151, 0.25)",
+    <Box
+      sx={{
+        background: isDark 
+          ? "rgba(10, 25, 41, 0.95)" 
+          : "rgba(255, 255, 255, 0.9)",
+        backdropFilter: "blur(12px)",
+        padding: "12px",
+        borderRadius: "20px",
+        border: `2px solid ${isDark ? "rgba(16, 185, 129, 0.4)" : "rgba(16, 185, 129, 0.2)"}`,
+        boxShadow: isDark 
+          ? "0 0 20px rgba(16, 185, 129, 0.2)" 
+          : "0 10px 30px rgba(16, 185, 129, 0.1)",
+        minWidth: "220px",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
+      <Box sx={{ 
+        position: "absolute", 
+        top: -20, 
+        right: -20, 
+        width: 60, 
+        height: 60, 
+        background: "rgba(16, 185, 129, 0.1)", 
+        borderRadius: "50%", 
+        filter: "blur(20px)" 
+      }} />
+
       <Handle
         type="target"
         position="left"
         style={{
-          background: "#0872b9",
-          width: "18px",
-          height: "18px",
-          top: "20px",
-          left: "-12px",
-          cursor: "pointer",
+          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          width: "14px",
+          height: "14px",
+          left: "-7px",
+          border: "3px solid #fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
-        onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       >
-        <ArrowForwardIos
-          sx={{
-            color: "#ffff",
-            width: "10px",
-            height: "10px",
-            marginLeft: "2.9px",
-            marginBottom: "1px",
-            pointerEvents: "none",
-          }}
-        />
+        <ArrowForwardIos sx={{ color: "#fff", fontSize: "6px", ml: "1px" }} />
       </Handle>
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          right: 5,
-          top: 5,
-          cursor: "pointer",
-          gap: 6,
-        }}
-      >
-        <ContentCopy
-          onClick={() => {
-            storageItems.setNodesStorage(id);
-            storageItems.setAct("duplicate");
-          }}
-          sx={{ width: "12px", height: "12px", color: "#F7953B" }}
-        />
 
-        <Delete
-          onClick={() => {
-            storageItems.setNodesStorage(id);
-            storageItems.setAct("delete");
-          }}
-          sx={{ width: "12px", height: "12px", color: "#F7953B" }}
-        />
-      </div>
-      <div
-        style={{
-          color: "#ededed",
-          fontSize: "16px",
-          flexDirection: "row",
-          display: "flex",
-        }}
-      >
-       <SiOpenai
-          sx={{
-            width: "16px",
-            height: "16px",
-            marginRight: "4px",
-            marginTop: "4px",
-            color: "#3aba38"
-          }}
-        />
-        <div style={{ color: "#232323", fontSize: "16px" }}>OpenAI</div>
-      </div>
-      <div style={{ color: "#232323", fontSize: "12px", width: 180 }}>
-        <div
-          style={{
-            backgroundColor: "#F6EEEE",
-            marginBottom: "3px",
-            borderRadius: "5px",
-          }}
-        >
-          <div style={{ gap: "5px", padding: "6px" }}>
-            <div style={{ textAlign: "center" }}>OpenAI</div>
-          </div>
-        </div>
-      </div>
+      <Stack spacing={1}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box sx={{ 
+              p: 0.8, 
+              borderRadius: "10px", 
+              backgroundColor: "rgba(16, 185, 129, 0.15)",
+              color: "#10b981",
+              display: "flex"
+            }}>
+              <SiOpenai style={{ fontSize: "20px" }} />
+            </Box>
+            <Typography variant="body2" sx={{ fontWeight: 900, color: theme.palette.text.primary, letterSpacing: "1px" }}>
+              OPENAI (IA)
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" spacing={0.5}>
+            <IconButton size="small" onClick={() => { storageItems.setNodesStorage(id); storageItems.setAct("duplicate"); }}>
+              <ContentCopy sx={{ fontSize: "14px" }} />
+            </IconButton>
+            <IconButton size="small" onClick={() => { storageItems.setNodesStorage(id); storageItems.setAct("delete"); }} sx={{ color: theme.palette.error.main }}>
+              <Delete sx={{ fontSize: "14px" }} />
+            </IconButton>
+          </Stack>
+        </Stack>
+
+        <Box sx={{ 
+          mt: 1, 
+          p: 1.5, 
+          borderRadius: "12px", 
+          backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.02)",
+          border: `1px solid ${isDark ? "rgba(16, 185, 129, 0.1)" : "rgba(16, 185, 129, 0.05)"}`
+        }}>
+          <Typography sx={{ color: theme.palette.text.secondary, fontSize: "11px", fontWeight: 500 }}>
+            Configurado com inteligência GPT. Este bloco processa linguagem natural.
+          </Typography>
+        </Box>
+      </Stack>
+
       <Handle
         type="source"
         position="right"
-        id="a"
         style={{
-          background: "#0872b9",
-          width: "18px",
-          height: "18px",
-          top: "70%",
-          right: "-11px",
-          cursor: "pointer",
+          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          width: "14px",
+          height: "14px",
+          right: "-7px",
+          border: "3px solid #fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
         isConnectable={isConnectable}
       >
-        <ArrowForwardIos
-          sx={{
-            color: "#ffff",
-            width: "10px",
-            height: "10px",
-            marginLeft: "2.9px",
-            marginBottom: "1px",
-            pointerEvents: "none",
-          }}
-        />
+        <ArrowForwardIos sx={{ color: "#fff", fontSize: "6px", ml: "1px" }} />
       </Handle>
-    </div>
+    </Box>
   );
 });

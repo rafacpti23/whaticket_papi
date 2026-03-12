@@ -634,7 +634,7 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
   };
 
   const checkMessageMedia = (message) => {
-    console.log(message);
+    // console.log(message);
     if (message.mediaType === "eventMessage") {
       try {
         // Parsear o dataJson diretamente da coluna do banco de dados
@@ -747,7 +747,7 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
         if (viewOnceMessage.header?.imageMessage?.jpegThumbnail) {
           imagem = viewOnceMessage.header.imageMessage.jpegThumbnail;
         } else {
-          console.log("Nenhuma imagem encontrada no header.");
+          // console.log("Nenhuma imagem encontrada no header.");
         }
         return (
           <ButtonPreview
@@ -868,7 +868,7 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
       );
     } else if (message.mediaType === "adMetaPreview") {
       // Adicionado para renderizar o componente de preview de anúncio
-      console.log("Entrou no MetaPreview");
+      // console.log("Entrou no MetaPreview");
       let [image, sourceUrl, title, body, messageUser] =
         message.body.split("|");
       return (

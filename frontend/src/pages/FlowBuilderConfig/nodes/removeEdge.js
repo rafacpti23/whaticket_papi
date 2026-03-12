@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   getBezierPath,
   getEdgeCenter,
-  getMarkerEnd
 } from "react-flow-renderer";
 
 import "./css/buttonedge.css";
@@ -23,8 +22,7 @@ export default function removeEdge({
   targetPosition,
   style = {},
   data,
-  arrowHeadType,
-  markerEndId
+  markerEnd
 }) {
   const edgePath = getBezierPath({
     sourceX,
@@ -34,7 +32,7 @@ export default function removeEdge({
     targetY,
     targetPosition
   });
-  const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+
   const [edgeCenterX, edgeCenterY] = getEdgeCenter({
     sourceX,
     sourceY,

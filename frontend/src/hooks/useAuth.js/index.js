@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { has, isArray } from "lodash";
 
@@ -15,48 +15,71 @@ const useAuth = () => {
   const history = useHistory();
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ queues: [] });
   const [socket, setSocket] = useState({})
  
 
-  api.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        setIsAuth(true);
-      }
-      return config;
-    },
-    (error) => {
-      Promise.reject(error);
-    }
-  );
+  const interceptorsAdded = useRef(false);
 
-  api.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    async (error) => {
-      const originalRequest = error.config;
-      if (error?.response?.status === 403 && !originalRequest._retry) {
-        originalRequest._retry = true;
-
-        const { data } = await api.post("/auth/refresh_token");
-        if (data) {
-          localStorage.setItem("token", JSON.stringify(data.token));
-          api.defaults.headers.Authorization = `Bearer ${data.token}`;
+  useEffect(() => {
+    if (!interceptorsAdded.current) {
+      const requestInterceptor = api.interceptors.request.use(
+        (config) => {
+          const token = localStorage.getItem("token");
+          if (token) {
+            config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`;
+            setIsAuth(true);
+          }
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
         }
-        return api(originalRequest);
-      }
-      if (error?.response?.status === 401) {
-        localStorage.removeItem("token");
-        api.defaults.headers.Authorization = undefined;
-        setIsAuth(false);
-      }
-      return Promise.reject(error);
+      );
+
+      const responseInterceptor = api.interceptors.response.use(
+        (response) => {
+          return response;
+        },
+        async (error) => {
+          const originalRequest = error.config;
+          if (error?.response?.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+              const { data } = await api.post("/auth/refresh_token");
+              if (data) {
+                localStorage.setItem("token", JSON.stringify(data.token));
+                api.defaults.headers.Authorization = `Bearer ${data.token}`;
+                return api(originalRequest);
+              }
+            } catch (err) {
+               // Falha no refresh, deslogar
+               localStorage.removeItem("token");
+               api.defaults.headers.Authorization = undefined;
+               setIsAuth(false);
+               history.push("/login");
+            }
+          }
+          if (error?.response?.status === 401) {
+            localStorage.removeItem("token");
+            api.defaults.headers.Authorization = undefined;
+            setIsAuth(false);
+            history.push("/login");
+          }
+          return Promise.reject(error);
+        }
+      );
+
+      interceptorsAdded.current = true;
+
+      return () => {
+        api.interceptors.request.eject(requestInterceptor);
+        api.interceptors.response.eject(responseInterceptor);
+        interceptorsAdded.current = false;
+      };
     }
-  );
+  }, [history]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -68,7 +91,12 @@ const useAuth = () => {
           setIsAuth(true);
           setUser(data.user);
         } catch (err) {
-          toastError(err);
+          console.error("Erro ao renovar token:", err);
+          localStorage.removeItem("token");
+          api.defaults.headers.Authorization = undefined;
+          setIsAuth(false);
+          setLoading(false);
+          history.push("/login");
         }
       }
       setLoading(false);
@@ -100,7 +128,7 @@ const useAuth = () => {
     }
   }, [user]);
 
-  const handleLogin = async (userData) => {
+  const handleLogin = useCallback(async (userData) => {
     setLoading(true);
 
     try {
@@ -183,9 +211,9 @@ Entre em contato com o Suporte para mais informações! `);
       toastError(err);
       setLoading(false);
     }
-  };
+  }, [history]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -203,9 +231,9 @@ Entre em contato com o Suporte para mais informações! `);
       toastError(err);
       setLoading(false);
     }
-  };
+  }, [history]);
 
-  const getCurrentUserInfo = async () => {
+  const getCurrentUserInfo = useCallback(async () => {
     try {
       const { data } = await api.get("/auth/me");
       console.log(data)
@@ -213,7 +241,7 @@ Entre em contato com o Suporte para mais informações! `);
     } catch (_) {
       return null;
     }
-  };
+  }, []);
 
   return {
     isAuth,
@@ -222,7 +250,7 @@ Entre em contato com o Suporte para mais informações! `);
     handleLogin,
     handleLogout,
     getCurrentUserInfo,
-    socket
+    socket,
   };
 };
 

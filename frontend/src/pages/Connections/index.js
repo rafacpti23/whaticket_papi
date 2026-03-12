@@ -724,9 +724,9 @@ const Connections = () => {
     fetchData();
   }, []);
 
-  var before = moment(moment().format()).isBefore(user.company.dueDate);
+  var before = user.company ? moment(moment().format()).isBefore(user.company.dueDate) : true;
 
-  if (before !== true) {
+  if (user.company && before !== true) {
     handleLogout();
   }
 

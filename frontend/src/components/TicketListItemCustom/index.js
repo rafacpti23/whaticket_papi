@@ -214,9 +214,9 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
     const { get: getSetting } = useCompanySettings();
 
     useEffect(() => {
-        console.log("======== TicketListItemCustom ===========")
-        console.log(ticket)
-        console.log("=========================================")
+        // console.log("======== TicketListItemCustom ===========")
+        // console.log(ticket)
+        // console.log("=========================================")
     }, [ticket])
 
     useEffect(() => {
@@ -540,17 +540,15 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
                             // style={console.log('ticket.lastMessage', ticket.lastMessage)}
                             >
                                 {ticket.lastMessage ? (
-                                    <>
-                                        {ticket.lastMessage.includes('fb.me') ? (
-                        <MarkdownWrapper>Clique de Anúncio</MarkdownWrapper> //Clique de Anúncio adicionado
-                      ) : ticket.lastMessage.includes('data:image/png;base64') ?
-                                            <MarkdownWrapper>Localização</MarkdownWrapper> :
-                                            <> {ticket.lastMessage.includes('BEGIN:VCARD') ?
-                                                <MarkdownWrapper>Contato</MarkdownWrapper> :
-                                                <MarkdownWrapper>{truncate(ticket.lastMessage, 40)}</MarkdownWrapper>}
-                                            </>
-                                        }
-                                    </>
+                                    ticket.lastMessage.includes('fb.me') ? (
+                                        <MarkdownWrapper>Clique de Anúncio</MarkdownWrapper> //Clique de Anúncio adicionado
+                                    ) : ticket.lastMessage.includes('data:image/png;base64') ? (
+                                            <MarkdownWrapper>Localização</MarkdownWrapper>
+                                    ) : ticket.lastMessage.includes('BEGIN:VCARD') ? (
+                                            <MarkdownWrapper>Contato</MarkdownWrapper>
+                                    ) : (
+                                            <MarkdownWrapper>{truncate(ticket.lastMessage, 40)}</MarkdownWrapper>
+                                    )
                                 ) : (
                                     <br />
                                 )}
@@ -664,8 +662,7 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
                     <span className={classes.secondaryContentSecond} >
                         {(ticket.status === "open" || ticket.status === "group") && (
                             <ButtonWithSpinner
-                                //color="primary"
-                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', bottom: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
+                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
                                 variant="contained"
                                 className={classes.acceptButton}
                                 size="small"
@@ -682,8 +679,7 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
                     <span className={classes.secondaryContentSecond} >
                         {((ticket.status === "pending" || ticket.status === "lgpd") && (user.userClosePendingTicket === "enabled" || user.profile === "admin")) && (
                             <ButtonWithSpinner
-                                //color="primary"
-                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', bottom: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
+                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
                                 variant="contained"
                                 className={classes.acceptButton}
                                 size="small"
@@ -699,8 +695,7 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
                     <span className={classes.secondaryContentSecond} >
                         {(ticket.status === "closed" && (ticket.queueId === null || ticket.queueId === undefined)) && (
                             <ButtonWithSpinner
-                                //color="primary"
-                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', bottom: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
+                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
                                 variant="contained"
                                 className={classes.acceptButton}
                                 size="small"
@@ -717,8 +712,7 @@ const TicketListItemCustom = ({ setTabOpen, ticket }) => {
                     <span className={classes.secondaryContentSecond} >
                         {(ticket.status === "closed" && ticket.queueId !== null) && (
                             <ButtonWithSpinner
-                                //color="primary"
-                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', bottom: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
+                                style={{ backgroundColor: 'transparent', boxShadow: 'none', border: 'none', color: theme.mode === "light" ? "#0872B9" : "#FFF", padding: '0px', borderRadius: "50%", right: '1px', fontSize: '0.6rem', bottom: '-30px', minWidth: '2em', width: 'auto' }}
                                 variant="contained"
                                 className={classes.acceptButton}
                                 size="small"

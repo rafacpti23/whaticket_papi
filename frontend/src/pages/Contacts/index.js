@@ -138,8 +138,8 @@ const Contacts = () => {
     const [blockingContact, setBlockingContact] = useState(null);
     const [unBlockingContact, setUnBlockingContact] = useState(null);
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [exportContact, setExportContact] = useState(false);
     const [confirmChatsOpen, setConfirmChatsOpen] = useState(false);
+    const [exportContact, setExportContact] = useState(false);
     const [hasMore, setHasMore] = useState(false);
     const [newTicketModalOpen, setNewTicketModalOpen] = useState(false);
     const [contactTicket, setContactTicket] = useState({});
@@ -232,7 +232,7 @@ const Contacts = () => {
         return () => {
             socket.off(`company-${companyId}-contact`, onContactEvent);
         };
-    }, [socket]);
+    }, [socket, user.companyId]);
 
     const handleSelectTicket = (ticket) => {
         const code = uuidv4();

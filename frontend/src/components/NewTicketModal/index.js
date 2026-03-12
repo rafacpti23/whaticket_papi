@@ -89,8 +89,9 @@ const NewTicketModal = ({ modalOpen, onClose, initialContact }) => {
         setSelectedWhatsapp(whatsappId)
       }
 
-      if (user.queues.length === 1) {
-        setSelectedQueue(user.queues[0].id)
+      const safeQueues = user.queues || [];
+      if (safeQueues.length === 1) {
+        setSelectedQueue(safeQueues[0].id)
       }
       fetchContacts();
       setLoading(false);
@@ -293,10 +294,8 @@ const NewTicketModal = ({ modalOpen, onClose, initialContact }) => {
   }
 
   return (
-    <>
-
-      <Dialog open={modalOpen} onClose={handleClose}>
-        <DialogTitle id="form-dialog-title">
+    <Dialog open={modalOpen} onClose={handleClose}>
+      <DialogTitle id="form-dialog-title">
           {i18n.t("newTicketModal.title")}
         </DialogTitle>
         <DialogContent dividers>
@@ -428,7 +427,6 @@ const NewTicketModal = ({ modalOpen, onClose, initialContact }) => {
           />
         )}
       </Dialog >
-    </>
   );
 };
 export default NewTicketModal;

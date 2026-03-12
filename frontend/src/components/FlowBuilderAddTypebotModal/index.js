@@ -11,10 +11,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { i18n } from "../../translate/i18n";
-import api from "../../services/api";
-import toastError from "../../errors/toastError";
-import { Stack } from "@mui/material";
-import { FormControl, Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,27 +77,16 @@ const FlowBuilderTypebotModal = ({ open, onSave, data, onUpdate, close }) => {
   };
   const [activeModal, setActiveModal] = useState(false);
   const [integration, setIntegration] = useState();
-  const [labels, setLabels] = useState({
-    title: "Adicionar Typebot ao fluxo",
-    btn: "Adicionar",
-  });
+
 
   useEffect(() => {
     if (open === "edit") {
-      setLabels({
-        title: "Editar Typebot ao fluxo",
-        btn: "Salvar",
-      });
       console.log("FlowTybebotEdit", data);
       setIntegration({
         ...data.data.typebotIntegration,
       });
       setActiveModal(true);
     } else if (open === "create") {
-      setLabels({
-        title: "Editar Typebot do fluxo",
-        btn: "Salvar",
-      });
       setIntegration(initialState);
       setActiveModal(true);
     }
@@ -108,7 +94,7 @@ const FlowBuilderTypebotModal = ({ open, onSave, data, onUpdate, close }) => {
     return () => {
       isMounted.current = false;
     };
-  }, [open]);
+  }, [open, data, initialState]);
 
   const handleClose = () => {
     close(null);

@@ -94,12 +94,12 @@ const CampaignReport = () => {
     if (mounted.current && has(campaign, "shipping")) {
       if (has(campaign, "contactList")) {
         const contactList = get(campaign, "contactList");
-        const valids = contactList.contacts.filter((c) => c.isWhatsappValid);
+        const valids = (contactList?.contacts || []).filter((c) => c.isWhatsappValid);
         setValidContacts(valids.length);
       }
 
       if (has(campaign, "shipping")) {
-        const contacts = get(campaign, "shipping");
+        const contacts = get(campaign, "shipping") || [];
         const delivered = contacts.filter((c) => !isNull(c.deliveredAt));
         const confirmationRequested = contacts.filter(
           (c) => !isNull(c.confirmationRequestedAt)
@@ -110,7 +110,6 @@ const CampaignReport = () => {
         setDelivered(delivered.length);
         setConfirmationRequested(confirmationRequested.length);
         setConfirmed(confirmed.length);
-        setDelivered(delivered.length);
       }
     }
   }, [campaign]);

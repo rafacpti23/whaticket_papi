@@ -8,14 +8,12 @@ import {
   FormHelperText,
   TextField,
   Card,
-  CardContent,
   Typography,
   Box,
   Divider,
   Switch,
   FormControlLabel,
   Chip,
-  Paper,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -37,7 +35,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import useSettings from "../../hooks/useSettings";
-import { i18n } from "../../translate/i18n";
 import useCompanySettings from "../../hooks/useSettings/companySettings";
 import ColorModeContext from "../../layout/themeContext";
 import { Palette as PaletteIcon } from "@mui/icons-material";
@@ -178,7 +175,6 @@ const ModernSwitch = ({
   icon,
 }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const isChecked = value === "enabled" || value === true || value === "true";
   return (
     <Box className={classes.switchField}>

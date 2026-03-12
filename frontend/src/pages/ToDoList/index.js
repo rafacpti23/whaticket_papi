@@ -111,7 +111,10 @@ const ToDoList = () => {
         <List>
           {tasks.map((task, index) => (
             <ListItem key={index} className={classes.list}>
-              <ListItemText primary={task.text} secondary={task.updatedAt.toLocaleString()} />
+              <ListItemText 
+                primary={task.text} 
+                secondary={new Date(task.updatedAt).toLocaleString()} 
+              />
               <ListItemSecondaryAction>
                 <IconButton onClick={() => handleEditTask(index)}>
                   <EditIcon />

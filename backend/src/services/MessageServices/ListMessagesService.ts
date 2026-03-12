@@ -53,7 +53,7 @@ const ListMessagesService = async ({
 
   const ticketsFilter: any[] | null = [];
 
-  const isAllHistoricEnabled = await isQueueIdHistoryBlocked({ userRequest: user.id });
+  const isAllHistoricEnabled = user?.allHistoric === "enabled";
 
   let ticketIds = [];
   if (!isAllHistoricEnabled) {

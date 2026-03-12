@@ -53,11 +53,11 @@ const useTickets = ({
             
             let tickets = [];
             
-            tickets = data.tickets;
+            tickets = data?.tickets || [];
           
             setTickets(tickets);
-            setHasMore(data.hasMore);
-            setCount(data.count)
+            setHasMore(data?.hasMore || false);
+            setCount(data?.count || 0);
             setLoading(false);
           } catch (err) {
             setLoading(false);
@@ -86,7 +86,7 @@ const useTickets = ({
 
             // console.log(data)
             let tickets = [];
-            tickets = data.filter(item => item.userId == userFilter);            
+            tickets = (data || []).filter(item => item.userId == userFilter);            
 
             setTickets(tickets);
             setHasMore(null);

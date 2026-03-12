@@ -45,7 +45,7 @@ const QueueSelect = ({ selectedQueueIds, onChange }) => {
 				<Select
 					multiple
 					labelWidth={60}
-					value={selectedQueueIds}
+					value={Array.isArray(selectedQueueIds) ? selectedQueueIds : []}
 					onChange={handleChange}
 					MenuProps={{
 						anchorOrigin: {

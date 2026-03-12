@@ -9,7 +9,7 @@ import {  ReportProblem, VisibilityOutlined } from "@mui/icons-material";
 // import { SocketContext } from "../../context/Socket/SocketContext";
 import { toast } from "react-toastify";
 import { yellow } from "@mui/material/colors";
-import { Avatar, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography, Card, makeStyles, Container, Badge, Grid, Tooltip } from "@material-ui/core";
+import { Avatar, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography, makeStyles, Badge, Grid, Tooltip } from "@material-ui/core";
 import { format, isSameDay, parseISO } from "date-fns";
 import { grey } from "@material-ui/core/colors";
 import { getBackendUrl } from "../../config";
@@ -89,10 +89,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginRight: "1px",
   },
-  pending: {
-    color: yellow[600],
-    fontSize: '20px'
-  },
 }));
 
 const DashboardManage = () => {
@@ -103,68 +99,67 @@ const DashboardManage = () => {
 
   const [tickets, setTickets] = useState([]);
   const [update, setUpdate] = useState(false);
-  const [ticketNot, setTicketNot] = useState(0);
   const companyId = user.companyId;
 
-
-  const userQueueIds = user.queues.map((q) => q.id);
-  const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
-
- 
-
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       try {
         const { data } = await api.get("/usersMoments");
         console.log(data)
-        setTickets(data);
-        setUpdate(!update);
+        if(isMounted) {
+          setTickets(data);
+          setUpdate(prev => !prev);
+        }
       } catch (err) {
-        if (err.response?.status !== 500) {
-          toastError(err);
-        } else {
-          toast.error(`${i18n.t("frontEndErrors.getUsers")}`);
+        if(isMounted) {
+          if (err.response?.status !== 500) {
+            toastError(err);
+          } else {
+            toast.error(`${i18n.t("frontEndErrors.getUsers")}`);
+          }
         }
       }
     })();
+    return () => { isMounted = false };
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     const companyId = user.companyId;
     console.log("socket painel")
-    // const socket = socketManager.GetSocket();
-  
-    // const onConnect = () => {
-    //   socket.emit("joinChatBox", `${ticketId}`);
-    // }
+    
     const onAppMessage = (data) => {
       if (data.action === "create" || data.action === "update" || data.action === "delete") {
         (async () => {
           try {
             const { data } = await api.get("/usersMoments");
-            setTickets(data);
-            setUpdate(!update);
+            if(isMounted) {
+              setTickets(data);
+              setUpdate(prev => !prev);
+            }
           } catch (err) {
-            if (err.response?.status !== 500) {
-              toastError(err);
-            } else {
-              toast.error(`${i18n.t("frontEndErrors.getUsers")}`);
+            if(isMounted) {
+              if (err.response?.status !== 500) {
+                toastError(err);
+              } else {
+                toast.error(`${i18n.t("frontEndErrors.getUsers")}`);
+              }
             }
           }
         })();
       }
     }
   
-    // socket.on("connect", onConnect);
     socket.on(`company-${companyId}-ticket`, onAppMessage)
     socket.on(`company-${companyId}-appMessage`, onAppMessage);
   
     return () => {
-      // socket.off("connect", onConnect);
+      isMounted = false;
       socket.off(`company-${companyId}-ticket`, onAppMessage)
       socket.off(`company-${companyId}-appMessage`, onAppMessage);
     };
-  }, [socket]);
+  }, [socket, user.companyId]);
 
   const Moments = useMemo(() => {
     // console.log(tickets)
@@ -265,7 +260,7 @@ const DashboardManage = () => {
     } else {
       return null;
     }
-  }, [update]);
+  }, [classes.card, classes.cardHeader, classes.changeWarap, classes.connectionTag, classes.lastMessageTime, classes.lastMessageTimeUnread, classes.main, companyId, history, tickets, user.id, user.profile]);
 
   const MomentsPending = useMemo(() => {
     if (tickets && tickets.length > 0) {
@@ -338,15 +333,13 @@ const DashboardManage = () => {
     } else {
       return null;
     }
-  }, [update]);
+  }, [classes.card, classes.cardHeaderPending, classes.changeWarap, classes.connectionTag, classes.lastMessageTime, classes.lastMessageTimeUnread, classes.main, classes.pending, tickets]);
 
   return (
-    <Fragment>
-      <Grid container spacing={2}>
-        {Moments}
-        {MomentsPending}
-      </Grid>
-    </Fragment>
+    <Grid container spacing={2}>
+      {Moments}
+      {MomentsPending}
+    </Grid>
   );
 };
 

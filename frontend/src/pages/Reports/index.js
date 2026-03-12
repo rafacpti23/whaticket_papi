@@ -165,7 +165,7 @@ const Reports = () => {
       });
 
 
-      const ticketsData = data.tickets.map(ticket => {
+      const ticketsData = (data.tickets || []).map(ticket => {
         // Convertendo o campo createdAt para um objeto Date
         const createdAt = new Date(ticket.createdAt);
         const closedAt = new Date(ticket.closedAt);
@@ -231,12 +231,12 @@ const Reports = () => {
         onlyRated: onlyRated ? "true" : "false"
       });
 
-      setTotalTickets(data.totalTickets.total);
+      setTotalTickets(data.totalTickets?.total || 0);
 
       // Verifica se há mais resultados para definir hasMore
-      setHasMore(data.tickets.length === pageSize);
+      setHasMore(data.tickets?.length === pageSize);
 
-      setTickets(data.tickets); // Se for a primeira página, substitua os tickets
+      setTickets(data.tickets || []); // Se for a primeira página, substitua os tickets
 
       setPageNumber(pageNumber); // Atualiza o estado da página atual
     } catch (error) {

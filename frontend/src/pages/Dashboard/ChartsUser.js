@@ -89,10 +89,10 @@ export const ChatsUser = () => {
 
     const dataCharts = {
 
-        labels: ticketsData && ticketsData?.data.length > 0 && ticketsData?.data.map((item) => item.nome),
+        labels: (ticketsData?.data || []).map((item) => item.nome),
         datasets: [
             {
-                data: ticketsData?.data.length > 0 && ticketsData?.data.map((item, index) => {
+                data: (ticketsData?.data || []).map((item, index) => {
                     return item.quantidade
                 }),
                 backgroundColor: theme.palette.primary.main,

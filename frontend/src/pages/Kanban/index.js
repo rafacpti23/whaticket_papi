@@ -167,7 +167,7 @@ const Kanban = () => {
   const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
 
-  const jsonString = user.queues.map((queue) => queue.UserQueue.queueId);
+  const jsonString = (user.queues || []).map((queue) => queue.UserQueue.queueId);
 
   useEffect(() => {
     fetchTags();
@@ -247,7 +247,7 @@ const Kanban = () => {
 
   const popularCards = (jsonString) => {
     const filteredTickets = tickets.filter(
-      (ticket) => ticket.tags.length === 0
+      (ticket) => (ticket.tags || []).length === 0
     );
 
     const lanes = [
@@ -348,7 +348,8 @@ const Kanban = () => {
       },
       ...tags.map((tag) => {
         const filteredTickets = tickets.filter((ticket) => {
-          const tagIds = ticket.tags.map((tag) => tag.id);
+          const tagIds = (ticket.tags || []).map((tag) => tag.id);
+          const userQueueIds = (user.queues || []).map((q) => q.id);
           return tagIds.includes(tag.id);
         });
 

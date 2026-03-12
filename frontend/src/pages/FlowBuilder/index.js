@@ -6,19 +6,14 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 
 import api from "../../services/api";
-import TableRowSkeleton from "../../components/TableRowSkeleton";
-import ContactModal from "../../components/ContactModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 
 import { i18n } from "../../translate/i18n";
@@ -28,18 +23,13 @@ import MainHeaderButtonsWrapper from "../../components/MainHeaderButtonsWrapper"
 import MainContainer from "../../components/MainContainer";
 import toastError from "../../errors/toastError";
 import { AuthContext } from "../../context/Auth/AuthContext";
-import { Can } from "../../components/Can";
 import NewTicketModal from "../../components/NewTicketModal";
-import { SocketContext } from "../../context/Socket/SocketContext";
-import WebhookModal from "../../components/WebhookModal";
 import {
   AddCircle,
   Build,
   ContentCopy,
   DevicesFold,
-  MoreVert,
-  WebhookOutlined,
-  FileDownload
+  MoreVert
 } from "@mui/icons-material";
 
 import {
@@ -57,12 +47,8 @@ import {
 import FlowBuilderModal from "../../components/FlowBuilderModal";
 
 import {
-  colorBackgroundTable,
-  colorLineTable,
-  colorLineTableHover,
   colorPrimary,
-  colorTitleTable,
-  colorTopTable
+  colorTitleTable
 } from "../../styles/styles";
 
 const reducer = (state, action) => {
@@ -429,13 +415,13 @@ const FlowBuilder = () => {
       >
         <Stack>
           <Grid container style={{ padding: "8px" }}>
-            <Grid item xs={4} style={{ color: "#1C2E36", fontWeight: 500 }}>
+            <Grid item xs={4} sx={{ color: theme => theme.palette.text.primary, fontWeight: 500 }}>
               {i18n.t("contacts.table.name")}
             </Grid>
-            <Grid item xs={4} style={{ color: "#1C2E36", fontWeight: 500 }} align="center">
+            <Grid item xs={4} sx={{ color: theme => theme.palette.text.primary, fontWeight: 500 }} align="center">
               Status
             </Grid>
-            <Grid item xs={4} align="end" style={{ color: "#1C2E36", fontWeight: 500 }}>
+            <Grid item xs={4} align="end" sx={{ color: theme => theme.palette.text.primary, fontWeight: 500 }}>
               {i18n.t("contacts.table.actions")}
             </Grid>
           </Grid>
@@ -464,7 +450,7 @@ const FlowBuilder = () => {
                   <Stack
                     justifyContent={"center"}
                     height={"100%"}
-                    sx={{ color: "#1C2E36" }}
+                    sx={{ color: theme => theme.palette.text.primary }}
                   >
                     <Stack direction={"row"} alignItems="center" spacing={2}>
                       <DevicesFold sx={{ 
@@ -576,7 +562,7 @@ const FlowBuilder = () => {
                   handleClose()
                   hadleEditContact()
                 }}>
-                <EditIcon sx={{ fontSize: 20, color: '#1C2E36' }} />
+                <EditIcon sx={{ fontSize: 20, color: 'text.secondary' }} />
                 Editar nome
               </MenuItem>
               <MenuItem
@@ -584,7 +570,7 @@ const FlowBuilder = () => {
                   handleClose()
                   exportLink()
                 }}>
-                <Build sx={{ fontSize: 20, color: '#1C2E36' }} />
+                <Build sx={{ fontSize: 20, color: 'text.secondary' }} />
                 Editar fluxo
               </MenuItem>
               <MenuItem
@@ -592,7 +578,7 @@ const FlowBuilder = () => {
                   handleClose()
                   setConfirmDuplicateOpen(true);
                 }}>
-                <ContentCopy sx={{ fontSize: 20, color: '#1C2E36' }} />
+                <ContentCopy sx={{ fontSize: 20, color: 'text.secondary' }} />
                 Duplicar
               </MenuItem>
               <MenuItem

@@ -80,11 +80,11 @@ const Ticket = () => {
   const [dragDropFiles, setDragDropFiles] = useState([]);
   const { companyId } = user;
 
-  useEffect(() => {
-    console.log("======== Ticket ===========");
-    console.log(ticket);
-    console.log("===========================");
-  }, [ticket]);
+  // useEffect(() => {
+  //   console.log("======== Ticket ===========");
+  //   console.log(ticket);
+  //   console.log("===========================");
+  // }, [ticket]);
 
   useEffect(() => {
     setLoading(true);

@@ -10,7 +10,7 @@ const reducer = (state, action) => {
   if (action.type === "LOAD_WHATSAPPS") {
     const whatsApps = action.payload;
 
-    return [...whatsApps];
+    return [...(Array.isArray(whatsApps) ? whatsApps : [])];
   }
 
   if (action.type === "UPDATE_WHATSAPPS") {
@@ -68,18 +68,27 @@ const useWhatsApps = () => {
 
 
   useEffect(() => {
+    let isMounted = true;
     setLoading(true);
     const fetchSession = async () => {
       try {
         const { data } = await api.get("/whatsapp/?session=0");
-        dispatch({ type: "LOAD_WHATSAPPS", payload: data });
-        setLoading(false);
+        if (isMounted) {
+          dispatch({ type: "LOAD_WHATSAPPS", payload: data });
+          setLoading(false);
+        }
       } catch (_) {
-        setLoading(false);
-        // toastError(err);
+        if (isMounted) {
+          setLoading(false);
+          // toastError(err);
+        }
       }
     };
     fetchSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {

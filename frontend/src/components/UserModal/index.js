@@ -145,7 +145,7 @@ const UserModal = ({ open, onClose, userId }) => {
 
 	const [user, setUser] = useState(initialState);
 	const [selectedQueueIds, setSelectedQueueIds] = useState([]);
-	const [whatsappId, setWhatsappId] = useState(false);
+	const [whatsappId, setWhatsappId] = useState("");
 	// const [allTicket, setAllTicket] = useState("disable");
 	const { loading, whatsApps } = useWhatsApps();
 	const [profileUrl, setProfileUrl] = useState(null)
@@ -157,27 +157,36 @@ const UserModal = ({ open, onClose, userId }) => {
 
 
 	useEffect(() => {
+		let isMounted = true;
 		const fetchUser = async () => {
 
 			if (!userId) return;
 			try {
 				const { data } = await api.get(`/users/${userId}`);
-				setUser(prevState => {
-					return { ...prevState, ...data };
-				});
+				if (isMounted) {
+					setUser(prevState => {
+						return { ...prevState, ...data };
+					});
 
-				const { profileImage } = data;
-				setProfileUrl(`${backendUrl}/public/company${data.companyId}/user/${profileImage}`);
+					const { profileImage } = data;
+					setProfileUrl(`${backendUrl}/public/company${data.companyId}/user/${profileImage}`);
 
-				const userQueueIds = data.queues?.map(queue => queue.id);
-				setSelectedQueueIds(userQueueIds);
-				setWhatsappId(data.whatsappId ? data.whatsappId : '');
+					const userQueueIds = data.queues?.map(queue => queue.id);
+					setSelectedQueueIds(userQueueIds);
+					setWhatsappId(data.whatsappId ? data.whatsappId : "");
+				}
 			} catch (err) {
-				toastError(err);
+				if (isMounted) {
+					toastError(err);
+				}
 			}
 		};
 
 		fetchUser();
+
+		return () => {
+			isMounted = false;
+		};
 	}, [userId, open]);
 
 	const handleClose = () => {
@@ -261,7 +270,7 @@ const UserModal = ({ open, onClose, userId }) => {
 						}, 400);
 					}}
 				>
-					{({ touched, errors, isSubmitting, setFieldValue }) => (
+					{({ values, touched, errors, isSubmitting, setFieldValue }) => (
 						<Form>
 							<Paper className={classes.mainPaper} elevation={1}>
 								<Tabs
@@ -392,7 +401,7 @@ const UserModal = ({ open, onClose, userId }) => {
 													perform="user-modal:editQueues"
 													yes={() => (
 														<QueueSelect
-															selectedQueueIds={selectedQueueIds}
+															selectedQueueIds={Array.isArray(selectedQueueIds) ? selectedQueueIds : []}
 															onChange={values => setSelectedQueueIds(values)}
 															fullWidth
 														/>
@@ -496,6 +505,7 @@ const UserModal = ({ open, onClose, userId }) => {
 											rows={4}
 											fullWidth
 											name="farewellMessage"
+											value={values.farewellMessage || ""}
 											error={touched.farewellMessage && Boolean(errors.farewellMessage)}
 											helperText={touched.farewellMessage && errors.farewellMessage}
 											variant="outlined"

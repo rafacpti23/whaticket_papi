@@ -5,12 +5,24 @@ import Chatbot from "../../models/Chatbot";
 import { FindOptions } from "sequelize/types";
 import Prompt from "../../models/Prompt";
 import { FlowBuilderModel } from "../../models/FlowBuilder";
+import cacheLayer from "../../libs/cache";
 
 const ShowWhatsAppService = async (
   id: string | number,
   companyId: number,
   session?: any
 ): Promise<Whatsapp> => {
+  const cacheKey = `showwhatsapp:${id}:${companyId}:${session}`;
+  const cached = await cacheLayer.get(cacheKey);
+
+  if (cached) {
+    const data = JSON.parse(cached);
+    const cachedWhatsapp = Whatsapp.build(data, { isNewRecord: false });
+    if (data.queues) cachedWhatsapp.queues = data.queues;
+    if (data.prompt) cachedWhatsapp.prompt = data.prompt;
+    return cachedWhatsapp;
+  }
+
   const findOptions: FindOptions = {
     include: [
       {
@@ -31,6 +43,7 @@ const ShowWhatsAppService = async (
       {
         model: Prompt,
         as: "prompt",
+        attributes: ["id", "name"]
       }
     ],
     order: [
@@ -52,6 +65,8 @@ const ShowWhatsAppService = async (
   if (!whatsapp) {
     throw new AppError("ERR_NO_WAPP_FOUND", 404);
   }
+
+  await cacheLayer.set(cacheKey, JSON.stringify(whatsapp.toJSON()), "EX", 3600);
 
   return whatsapp;
 };

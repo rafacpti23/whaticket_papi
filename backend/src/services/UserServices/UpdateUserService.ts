@@ -4,6 +4,7 @@ import AppError from "../../errors/AppError";
 import ShowUserService from "./ShowUserService";
 import Company from "../../models/Company";
 import User from "../../models/User";
+import cacheLayer from "../../libs/cache";
 
 interface UserData {
   email?: string;
@@ -122,6 +123,8 @@ const UpdateUserService = async ({
   });
 
   await user.$set("queues", queueIds);
+
+  await cacheLayer.del(`showuser:${userId}:${companyId}`);
 
   await user.reload();
 

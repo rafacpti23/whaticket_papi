@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -53,28 +53,37 @@ const AcceptTicketWithouSelectQueue = ({ modalOpen, onClose, ticketId, ticket })
 	const [ userTicketOpen, setUserTicketOpen] = useState("");
 	const [ queueTicketOpen, setQueueTicketOpen] = useState("");
 	const { tabOpen, setTabOpen } = useContext(TicketsContext);
+	const isMounted = useRef(true);
 
 	const {get:getSetting} = useCompanySettings();
 
 useEffect(() => {
+	return () => {
+		isMounted.current = false;
+	};
+}, []);
+
+useEffect(() => {
 	try {
-	if (user.queues.length === 1) {
+	if (user.queues && user.queues.length === 1) {
         setSelectedQueue(user.queues[0].id)
       }
 	} catch (err) {
-		setLoading(false);
+		if(isMounted.current) setLoading(false);
 		toastError(err);
 	}
-},[selectedQueue])
+}, [user.queues])
 
 const handleClose = () => {
 	onClose();
-	setSelectedQueue("");
+	setSelectedQueue(""); // note that testing isMounted here is unnecessary because onClose will unmount this, but it will be fine.
 };
 
 const handleCloseAlert = () => {
-	setOpenAlert(false);
-	setLoading(false)
+	if(isMounted.current) {
+		setOpenAlert(false);
+		setLoading(false)
+	}
 };
 
 const handleSendMessage = async (id) => {
@@ -128,17 +137,19 @@ const handleUpdateTicketStatus = async (queueId) => {
 
 		if (otherTicket.data.id !== ticket.id) {
 			if (otherTicket.data.userId !== user?.id) {
-				setOpenAlert(true)
-				setUserTicketOpen(otherTicket.data.user.name)
-				setQueueTicketOpen(otherTicket.data.queue.name)
+				if(isMounted.current) {
+					setOpenAlert(true)
+					setUserTicketOpen(otherTicket.data.user.name)
+					setQueueTicketOpen(otherTicket.data.queue.name)
+				}
 			} else {
-				setLoading(false);
+				if(isMounted.current) setLoading(false);
 				setTabOpen(otherTicket.isGroup ? "group" : "open");
 				history.push(`/tickets/${otherTicket.data.uuid}`);
 			}
 		} else {
 			handleSendMessage(ticket.id)
-			setLoading(false);
+			if(isMounted.current) setLoading(false);
 			setTabOpen(ticket.isGroup ? "group" : "open");
 			history.push(`/tickets/${ticket.uuid}`);
 			handleClose();
@@ -149,8 +160,7 @@ const handleUpdateTicketStatus = async (queueId) => {
 	}
 };
 
-return (
-	<>
+	return (
 		<Dialog open={modalOpen} onClose={handleClose}>
 			<DialogTitle id="form-dialog-title">
 				{i18n.t("ticketsList.acceptModal.title")}
@@ -165,7 +175,7 @@ return (
 						label={i18n.t("ticketsList.acceptModal.queue")}
 					>
 						<MenuItem value={''}>&nbsp;</MenuItem>
-						{user.queues.map((queue) => (
+						{(user.queues || []).map((queue) => (
 							<MenuItem key={queue.id} value={queue.id}>{queue.name}</MenuItem>
 						))}
 					</Select>
@@ -198,8 +208,7 @@ return (
 				queue={queueTicketOpen}
 			/>
 		</Dialog>
-	</>
-);
+	);
 };
 
 export default AcceptTicketWithouSelectQueue;

@@ -49,6 +49,7 @@ const ModalImageCors = ({ imageUrl }) => {
 			return;
 		}
 
+		let isMounted = true;
 		const fetchImage = async () => {
 			try {
 				const { data, headers } = await api.get(imageUrl, {
@@ -57,14 +58,20 @@ const ModalImageCors = ({ imageUrl }) => {
 				const url = window.URL.createObjectURL(
 					new Blob([data], { type: headers["content-type"] })
 				);
-				setBlobUrl(url);
-				setFetching(false);
+				if (isMounted) {
+					setBlobUrl(url);
+					setFetching(false);
+				}
 			} catch (error) {
-				console.error('Error fetching image:', error);
-				setFetching(false);
+				if (isMounted) {
+					setFetching(false);
+				}
 			}
 		};
 		fetchImage();
+		return () => {
+			isMounted = false;
+		};
 	}, [imageUrl]);
 
 	return (

@@ -85,7 +85,8 @@
 	<!-- Issue workaround for React v16. -->
 	<script>
         // See https://github.com/facebook/react/issues/20829#issuecomment-802088260
-        if (!crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
+        if (!window.crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
+        window.process = { env: { NODE_ENV: 'development' } };
     </script>
 </head>
 
@@ -120,18 +121,20 @@
         clearInterval(interval);
 		    setTimeout(() => {
           const splashScreen = document.getElementById('splash-screen');
-          splashScreen.remove();
+          if(splashScreen) splashScreen.remove();
 		    }, 500);
 		  }
 		}, 1000);
-    window.finishProgress=() => {
+
+    window.finishProgress = () => {
       progress = 100;
     }
-	// Remover a tela de carregamento quando todos os elementos terminarem de carregar
+
+	// Remover a tela de carregamento quando tudo terminar
 	window.onload = () => {
-            const splashOverlay = document.getElementById('splash-overlay');
-            // splashOverlay.remove();
-        };
+      const splashScreen = document.getElementById('splash-screen');
+      if(splashScreen) splashScreen.remove();
+    };
 	</script>	
 </body>
 

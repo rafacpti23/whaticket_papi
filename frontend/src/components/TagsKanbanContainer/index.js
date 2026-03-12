@@ -148,24 +148,28 @@ export function TagsKanbanContainer({ ticket }) {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
-  const loadTags = useCallback(async () => {
+  const loadTags = useCallback(async (isMounted = { current: true }) => {
     try {
       setLoading(true);
       const { data } = await api.get(`/tags/list`, { params: { kanban: 1 } });
-      setTags(data);
-      setLoading(false);
+      if (isMounted.current) {
+        setTags(data);
+        setLoading(false);
+      }
     } catch (err) {
-      toastError(err);
-      setLoading(false);
+      if (isMounted.current) {
+        toastError(err);
+        setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
+    const isMounted = { current: true };
 
     const initializeComponent = async () => {
-      await loadTags();
-      if (isMounted && ticket.tags && ticket.tags.length > 0) {
+      await loadTags(isMounted);
+      if (isMounted.current && ticket.tags && ticket.tags.length > 0) {
         setSelected(ticket.tags[0].id);
       }
     };
@@ -173,7 +177,7 @@ export function TagsKanbanContainer({ ticket }) {
     initializeComponent();
 
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
   }, [ticket.tags, loadTags]);
 

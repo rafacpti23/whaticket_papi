@@ -134,7 +134,7 @@ const MessageOptionsMenu = ({
   const handleTranscriptionAudioToText = async () => {
 		try {
 			const audioUrl = String(message.mediaUrl);
-			const match = audioUrl.match(/\/([^\/]+\.ogg)$/);
+			const match = audioUrl.match(/\/([^/]+\.ogg)$/);
 			const extractedPart = match ? match[1] : null;
 			if (!extractedPart) {
 				throw new Error('Formato de URL de áudio inesperado');

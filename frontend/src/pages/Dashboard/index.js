@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useTheme, alpha } from "@mui/material/styles";
 import {
   Box,
@@ -124,26 +124,36 @@ const Dashboard = () => {
   const { find } = useDashboard();
 
   // Função para buscar dados - versão estável
-  const fetchData = async () => {
+  const fetchData = useCallback(async (isMounted) => {
     setLoading(true);
     try {
       const params = { filterType, period, dateFrom, dateTo };
       const response = await find(params);
-      const dataCounters = response?.counters || response || {};
-      setCounters(dataCounters);
+      if (isMounted) {
+        const dataCounters = response?.counters || response || {};
+        setCounters(dataCounters);
+      }
     } catch (err) {
       console.error("Erro ao buscar dados:", err);
-      toast.error("Erro ao carregar dados do dashboard");
-      setCounters({});
+      if (isMounted) {
+        toast.error("Erro ao carregar dados do dashboard");
+        setCounters({});
+      }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
-  };
+  }, [find, filterType, period, dateFrom, dateTo]);
 
   // Carregamento inicial
   useEffect(() => {
-    fetchData();
-  }, []);
+    let isMounted = true;
+    fetchData(isMounted);
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchData]);
 
   const handleChangeTab = (event, newValue) => setTab(newValue);
 
@@ -336,7 +346,7 @@ const Dashboard = () => {
             <Card sx={baseCardStyle}>
               <CardContent sx={{ p: 3, height: 400 }}>
                 <Typography variant="h6" fontWeight="bold" gutterBottom>
-                  📊 Atendimentos por Período
+                  <span role="img" aria-label="Gráfico de Atendimentos">📊</span> Atendimentos por Período
                 </Typography>
                 <ChartsDate
                   dateFrom={dateFrom}
@@ -351,7 +361,7 @@ const Dashboard = () => {
             <Card sx={baseCardStyle}>
               <CardContent sx={{ p: 3, height: 400 }}>
                 <Typography variant="h6" fontWeight="bold" gutterBottom>
-                  🍩 Distribuição de Avaliações
+                  <span role="img" aria-label="Rosquinha">🍩</span> Distribuição de Avaliações
                 </Typography>
                 <ChartDonut
                   data={[
@@ -386,7 +396,7 @@ const Dashboard = () => {
                 startIcon={loading ? <CircularProgress size={20} /> : null}
                 sx={{ borderRadius: 99, px: 4 }}
               >
-                {loading ? "Carregando..." : "🔄 Recarregar Dados"}
+                {loading ? "Carregando..." : <><span role="img" aria-label="Recarregar">🔄</span> Recarregar Dados</>}
               </Button>
             </Box>
           </Grid>
@@ -399,7 +409,7 @@ const Dashboard = () => {
         <Card sx={baseCardStyle}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              📈 Desempenho por Atendente
+              <span role="img" aria-label="Desempenho">📈</span> Desempenho por Atendente
             </Typography>
             <ChatsUser
               dateFrom={dateFrom}
@@ -416,7 +426,7 @@ const Dashboard = () => {
         <Card sx={baseCardStyle}>
           <CardContent sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              👥 Status dos Atendentes
+              <span role="img" aria-label="Grupo">👥</span> Status dos Atendentes
             </Typography>
             <TableAttendantsStatus
               loading={loading}
@@ -450,7 +460,7 @@ const Dashboard = () => {
             }}
           >
             <Typography variant="h4" fontWeight="bold" color="text.primary">
-              📊 Dashboard
+              <span role="img" aria-label="Dashboard">📊</span> Dashboard
             </Typography>
             <Stack direction="row" spacing={1} alignItems="center">
               <Tooltip title="Filtros">
@@ -487,7 +497,7 @@ const Dashboard = () => {
           {showFilter && (
             <Paper sx={{ p: { xs: 2, md: 3 }, ...baseCardStyle }}>
               <Typography variant="h6" gutterBottom>
-                🔍 Filtros do Dashboard
+                <span role="img" aria-label="Filtros">🔍</span> Filtros do Dashboard
               </Typography>
 
               <Grid container spacing={3}>
@@ -600,7 +610,7 @@ const Dashboard = () => {
             }}
           >
             <Tab value="metricas" label="📊 Métricas" />
-            <Tab value="graXficos" label="📈 Gráficos" />
+            <Tab value="graficos" label="📈 Gráficos" />
             <Tab value="atendentes" label="👥 Atendentes" />
           </Tabs>
 

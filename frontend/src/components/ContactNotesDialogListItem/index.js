@@ -10,8 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
-import EditIcon from "@material-ui/icons/Edit";
-
 const useStyles = makeStyles((theme) => ({
     inline: {
         width: '100%'
@@ -19,15 +17,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ContactNotesDialogListItem(props) {
-    const { note, deleteItem, editItem } = props;
+    const { note, deleteItem } = props;
     const classes = useStyles();
 
     const handleDelete = (item) => {
         deleteItem(item);
-    }
-
-    const handleEdit = (item) => {
-        editItem(item);
     }
     return (
         <ListItem alignItems="flex-start">
@@ -36,22 +30,16 @@ export default function ContactNotesDialogListItem(props) {
             </ListItemAvatar>
             <ListItemText
                 primary={
-                    <>
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                        >
-                            {note.note}
-                        </Typography>
-                    </>
+                    <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                    >
+                        {note.note}
+                    </Typography>
                 }
-                secondary={
-                    <>
-                        {note.user.name}, {moment(note.createdAt).format('DD/MM/YY HH:mm')}
-                    </>
-                }
+                secondary={`${note.user.name}, ${moment(note.createdAt).format('DD/MM/YY HH:mm')}`}
             />
             <ListItemSecondaryAction style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* <IconButton onClick={() => handleEdit(note)} edge="end" aria-label="edit">

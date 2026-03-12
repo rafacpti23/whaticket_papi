@@ -55,11 +55,18 @@ export function ContactNotes({ ticket }) {
     const [editingNote, setEditingNote] = useState(null);
 
     useEffect(() => {
+        let isMounted = true;
         async function openAndFetchData() {
-            handleResetState()
-            await loadNotes()
+            if (isMounted) handleResetState()
+            const load_notes = await listNotes({ ticketId, contactId })
+            if (isMounted) {
+                setNotes(load_notes)
+                setLoading(false)
+            }
         }
         openAndFetchData()
+        
+        return () => { isMounted = false };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

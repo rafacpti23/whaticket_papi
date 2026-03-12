@@ -279,7 +279,7 @@ function ListItemLink(props) {
                     fontWeight: isActive ? 600 : 500,
                     color: isActive
                       ? iconStyle.color
-                      : (themeStyle === "premium" ? "#FFFFFF" : theme.palette.text.primary),
+                      : (theme.palette.mode === "dark" ? "#FFFFFF" : theme.palette.text.primary),
                   }}
                 >
                   {primary}
@@ -376,11 +376,17 @@ const MainListItems = ({ collapsed, drawerClose }) => {
   const [hasHelps, setHasHelps] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     async function checkHelps() {
       const helps = await list();
-      setHasHelps(helps.length > 0);
+      if (isMounted) {
+        setHasHelps(Array.isArray(helps) && helps.length > 0);
+      }
     }
     checkHelps();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const isManagementActive =
@@ -418,11 +424,17 @@ const MainListItems = ({ collapsed, drawerClose }) => {
   const { getVersion } = useVersion();
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchVersion() {
       const _version = await getVersion();
-      setVersion(_version.version);
+      if (isMounted) {
+        setVersion(_version.version);
+      }
     }
     fetchVersion();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -431,21 +443,32 @@ const MainListItems = ({ collapsed, drawerClose }) => {
   }, [searchParam]);
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchData() {
       const companyId = user.companyId;
-      const planConfigs = await getPlanCompany(undefined, companyId);
-
-      setShowCampaigns(planConfigs.plan.useCampaigns);
-      setShowKanban(planConfigs.plan.useKanban);
-      setShowOpenAi(planConfigs.plan.useOpenAi);
-      setShowIntegrations(planConfigs.plan.useIntegrations);
-      setShowSchedules(planConfigs.plan.useSchedules);
-      setShowInternalChat(planConfigs.plan.useInternalChat);
-      setShowExternalApi(planConfigs.plan.useExternalApi);
-      setPlanExpired(moment(moment().format()).isBefore(user.company.dueDate));
+      if (!companyId) return; // aguarda o user estar carregado
+      try {
+        const planConfigs = await getPlanCompany(undefined, companyId);
+        if (isMounted) {
+          setShowCampaigns(planConfigs.plan.useCampaigns);
+          setShowKanban(planConfigs.plan.useKanban);
+          setShowOpenAi(planConfigs.plan.useOpenAi);
+          setShowIntegrations(planConfigs.plan.useIntegrations);
+          setShowSchedules(planConfigs.plan.useSchedules);
+          setShowInternalChat(planConfigs.plan.useInternalChat);
+          setShowExternalApi(planConfigs.plan.useExternalApi);
+          const dueDate = user.company?.dueDate || '2999-12-31';
+          setPlanExpired(moment(moment().format()).isBefore(dueDate));
+        }
+      } catch (err) {
+        console.error('Erro ao carregar plano:', err);
+      }
     }
     fetchData();
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [user.companyId]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -493,7 +516,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (whatsApps.length > 0) {
+      if (whatsApps && whatsApps.length > 0) {
         const offlineWhats = whatsApps.filter((whats) => {
           return (
             whats.status === "qrcode" ||
@@ -534,7 +557,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
             fontWeight: 700,
             fontSize: "0.75rem",
             textTransform: "uppercase",
-            color: themeStyle === "premium" ? alpha("#FFFFFF", 0.5) : theme.palette.text.secondary,
+            color: theme.palette.mode === "dark" ? alpha("#FFFFFF", 0.5) : theme.palette.text.secondary,
             padding: "16px 16px 8px",
             lineHeight: 1,
             letterSpacing: "0.5px",
@@ -617,7 +640,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
                     fontWeight: isActive ? 600 : 500,
                     color: isActive
                       ? iconStyle.color
-                      : theme.palette.text.primary,
+                      : (theme.palette.mode === "dark" ? "#FFFFFF" : theme.palette.text.primary),
                   }}
                 >
                   {primary}

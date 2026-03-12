@@ -56,13 +56,14 @@ const NotificationsPopOver = (volume) => {
   // const socketManager = useContext(SocketContext);
   const { user, socket } = useContext(AuthContext);
   const { profile, queues } = user;
+  const safeQueues = queues || [];
 
   const ticketIdUrl = +history.location.pathname.split("/")[2];
   const ticketIdRef = useRef(ticketIdUrl);
   const anchorEl = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const queueIds = queues.map((q) => q.id);
+  const queueIds = safeQueues.map((q) => q.id);
   const { get: getSetting } = useCompanySettings();
   const { setCurrentTicket, setTabOpen } = useContext(TicketsContext);
 
@@ -139,7 +140,7 @@ const NotificationsPopOver = (volume) => {
     const companyId = user.companyId;
     // const socket = socketManager.GetSocket();
     if (user.id) {
-      const queueIds = queues.map((q) => q.id);
+      const queueIds = safeQueues.map((q) => q.id);
 
       const onConnectNotificationsPopover = () => {
         socket.emit("joinNotification");
@@ -249,7 +250,7 @@ const NotificationsPopOver = (volume) => {
   }, [
     user,
     profile,
-    queues,
+    safeQueues,
     showTicketWithoutQueue,
     socket,
     showNotificationPending,
@@ -319,16 +320,14 @@ const NotificationsPopOver = (volume) => {
       document.title = theme.appName || "...";
     }
     return (
-      <>
-        <Favicon
-          animated={true}
-          url={
-            theme?.appLogoFavicon ? theme.appLogoFavicon : defaultLogoFavicon
-          }
-          alertCount={notifications.length}
-          iconSize={195}
-        />
-      </>
+      <Favicon
+        animated={true}
+        url={
+          theme?.appLogoFavicon ? theme.appLogoFavicon : defaultLogoFavicon
+        }
+        alertCount={notifications.length}
+        iconSize={195}
+      />
     );
   };
 

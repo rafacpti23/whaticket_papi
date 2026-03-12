@@ -61,8 +61,6 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
   addEdge,
 } from "react-flow-renderer";
 
@@ -226,8 +224,27 @@ export const FlowBuilderConfig = () => {
   };
 
   // Estados para os nós e conexões do fluxo
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  // Estados para os nós e conexões do fluxo (Padrão interno)
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+
+  // Memoizando os elementos para compatibilidade com React Flow v10
+  const elements = React.useMemo(() => [...nodes, ...edges], [nodes, edges]);
+
+  useEffect(() => {
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  }, [initialNodes, initialEdges]);
+
+  // Handler para remoção de elementos (Padrão v10)
+  const onElementsRemove = useCallback(
+    (elementsToRemove) => {
+      setNodes((nds) => nds.filter((n) => !elementsToRemove.some((e) => e.id === n.id)));
+      setEdges((eds) => eds.filter((e) => !elementsToRemove.some((el) => el.id === e.id)));
+      setHasUnsavedChanges(true);
+    },
+    []
+  );
 
   // Callback para conectar nós com animação
   const onConnect = useCallback(
@@ -1420,16 +1437,16 @@ export const FlowBuilderConfig = () => {
               <ReactFlow
                 nodes={nodes}
                 edges={edges}
-                deleteKeyCode={["Backspace", "Delete"]}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
+                elements={elements}
                 onNodeDoubleClick={doubleClick}
                 onNodeClick={clickNode}
                 onEdgeClick={clickEdge}
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
-                onNodeAction={handleNodeAction}
+                edgeTypes={edgeTypes}
                 fitView
+                snapToGrid={true}
+                snapGrid={[15, 15]}
                 connectionLineStyle={connectionLineStyle}
                 style={{
                   background: isDark
@@ -1437,7 +1454,6 @@ export const FlowBuilderConfig = () => {
                     : `linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)`,
                   borderRadius: "24px",
                 }}
-                edgeTypes={edgeTypes}
                 defaultEdgeOptions={{
                   style: {
                     stroke: isDark ? "#3b82f6" : "#1e40af",
@@ -1507,7 +1523,7 @@ export const FlowBuilderConfig = () => {
       )}
 
       {/* Estilos CSS globais modernos */}
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .react-flow__node {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           border-radius: 16px !important;
@@ -1567,13 +1583,13 @@ export const FlowBuilderConfig = () => {
         .react-flow__minimap {
           border-radius: 16px;
           overflow: hidden;
-          backdropfilter: blur(20px);
+          backdrop-filter: blur(20px);
         }
 
         .react-flow__controls {
           border-radius: 16px;
           overflow: hidden;
-          backdropfilter: blur(20px);
+          backdrop-filter: blur(20px);
         }
 
         .react-flow__controls button {
@@ -1662,7 +1678,7 @@ export const FlowBuilderConfig = () => {
         .MuiFab-primary {
           animation: pulse 2s infinite;
         }
-      `}</style>
+      ` }} />
     </Box>
   );
 };

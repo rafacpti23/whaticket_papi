@@ -75,22 +75,17 @@ export const ChartsDate = () => {
   }, [companyId]);
 
   const dataCharts = {
-    labels:
-      ticketsData &&
-      ticketsData?.data.length > 0 &&
-      ticketsData?.data.map((item) =>
-        item.hasOwnProperty("horario")
-          ? `Das ${item.horario}:00 as ${item.horario}:59`
-          : item.data
-      ),
+    labels: (ticketsData?.data || []).map((item) =>
+      item.hasOwnProperty("horario")
+        ? `Das ${item.horario}:00 as ${item.horario}:59`
+        : item.data
+    ),
     datasets: [
       {
         // label: 'Dataset 1',
-        data:
-          ticketsData?.data.length > 0 &&
-          ticketsData?.data.map((item, index) => {
-            return item.total;
-          }),
+        data: (ticketsData?.data || []).map((item, index) => {
+          return item.total;
+        }),
         backgroundColor: theme.palette.primary.main,
       },
     ],

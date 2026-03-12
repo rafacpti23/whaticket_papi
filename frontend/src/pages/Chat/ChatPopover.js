@@ -129,26 +129,51 @@ export default function ChatPopover() {
   }, [searchParam]);
 
   useEffect(() => {
+    let isMounted = true;
     setLoading(true);
+    
+    const fetchChats = async () => {
+      try {
+        const { data } = await api.get("/chats/", {
+          params: { searchParam, pageNumber },
+        });
+        if (isMounted) {
+          dispatch({ type: "LOAD_CHATS", payload: data.records });
+          setHasMore(data.hasMore);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          toastError(err);
+          setLoading(false);
+        }
+      }
+    };
+
     const delayDebounceFn = setTimeout(() => {
       fetchChats();
     }, 500);
-    return () => clearTimeout(delayDebounceFn);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(delayDebounceFn);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
   useEffect(() => {
+    let isMounted = true;
     if (user.companyId) {
-
       const companyId = user.companyId;
-//    const socket = socketManager.GetSocket();
 
       const onCompanyChatPopover = (data) => {
+        if (!isMounted) return;
         if (data.action === "new-message") {
           dispatch({ type: "CHANGE_CHAT", payload: data });
           if (data.newMessage.senderId !== user.id) {
-
-            soundAlertRef.current();
+            if (soundAlertRef.current) {
+              soundAlertRef.current();
+            }
           }
         }
         if (data.action === "update") {
@@ -159,12 +184,11 @@ export default function ChatPopover() {
       socket.on(`company-${companyId}-chat`, onCompanyChatPopover);
 
       return () => {
+        isMounted = false;
         socket.off(`company-${companyId}-chat`, onCompanyChatPopover);
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
+  }, [user, socket]);
 
   useEffect(() => {
     let unreadsCount = 0;
@@ -183,19 +207,6 @@ export default function ChatPopover() {
       setInvisible(true);
     }
   }, [chats, user.id]);
-
-  const fetchChats = async () => {
-    try {
-      const { data } = await api.get("/chats/", {
-        params: { searchParam, pageNumber },
-      });
-      dispatch({ type: "LOAD_CHATS", payload: data.records });
-      setHasMore(data.hasMore);
-      setLoading(false);
-    } catch (err) {
-      toastError(err);
-    }
-  };
 
   const loadMore = () => {
     setPageNumber((prevState) => prevState + 1);

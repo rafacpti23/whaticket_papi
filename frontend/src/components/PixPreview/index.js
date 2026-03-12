@@ -77,9 +77,9 @@ const PixPreview = ({ companyId, avatarUser, avatarName, avatarUrl, name, numero
                         PIX:
                     </Typography>
                     <img
-                        src="https://www.imagensempng.com.br/wp-content/uploads/2023/06/Logo-Pix-Png-1024x1024.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo%E2%80%94pix_salvando_vidas_%28vari%C3%A3o_2%29.svg/1200px-Logo%E2%80%94pix_salvando_vidas_%28vari%C3%A3o_2%29.svg.png"
                         alt="PIX Logo"
-                        style={{ width: '30px', height: '30px' }}
+                        style={{ width: '30px', height: '30px', objectFit: 'contain' }}
                     />
                 </div>
                 <Divider style={{ margin: '10px 0' }} />

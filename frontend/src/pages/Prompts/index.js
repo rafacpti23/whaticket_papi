@@ -52,14 +52,16 @@ const reducer = (state, action) => {
     const prompts = action.payload;
     const newPrompts = [];
 
-    prompts.forEach((prompt) => {
-      const promptIndex = state.findIndex((p) => p.id === prompt.id);
-      if (promptIndex !== -1) {
-        state[promptIndex] = prompt;
-      } else {
-        newPrompts.push(prompt);
-      }
-    });
+    if (Array.isArray(prompts)) {
+      prompts.forEach((prompt) => {
+        const promptIndex = state.findIndex((p) => p.id === prompt.id);
+        if (promptIndex !== -1) {
+          state[promptIndex] = prompt;
+        } else {
+          newPrompts.push(prompt);
+        }
+      });
+    }
 
     return [...state, ...newPrompts];
   }
@@ -242,7 +244,7 @@ const Prompts = () => {
                   {prompts.map((prompt) => (
                     <TableRow key={prompt.id}>
                       <TableCell align="left">{prompt.name}</TableCell>
-                      <TableCell align="left">{prompt.queue.name}</TableCell>
+                      <TableCell align="left">{prompt.queue?.name || "Sem Fila"}</TableCell>
                       <TableCell align="left">{prompt.maxTokens}</TableCell>
                       <TableCell align="center">
                         <IconButton
