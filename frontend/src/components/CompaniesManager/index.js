@@ -104,14 +104,11 @@ export function CompanyForm(props) {
 
   useEffect(() => {
     setRecord((prev) => {
-      if (moment(initialValue).isValid()) {
-        initialValue.dueDate = moment(initialValue.dueDate).format(
-          "YYYY-MM-DD"
-        );
-      }
+      const dueDate = moment(initialValue?.dueDate, moment.ISO_8601, true);
       return {
         ...prev,
         ...initialValue,
+        dueDate: dueDate.isValid() ? dueDate.format("YYYY-MM-DD") : "",
       };
     });
   }, [initialValue]);
@@ -246,7 +243,7 @@ export function CompanyForm(props) {
               </Grid>
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="plan-selection">{i18n.t("compaies.table.plan")}</InputLabel>
+                  <InputLabel id="plan-selection-label" htmlFor="plan-selection">{i18n.t("compaies.table.plan")}</InputLabel>
                   <Field
                     as={Select}
                     id="plan-selection"
@@ -266,7 +263,7 @@ export function CompanyForm(props) {
               </Grid>
               <Grid xs={12} sm={6} md={1} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="status-selection">{i18n.t("compaies.table.active")}</InputLabel>
+                  <InputLabel id="status-selection-label" htmlFor="status-selection">{i18n.t("compaies.table.active")}</InputLabel>
                   <Field
                     as={Select}
                     id="status-selection"
@@ -341,14 +338,14 @@ export function CompanyForm(props) {
               </Grid>
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="recorrencia-selection">
+                  <InputLabel id="recurrence-selection-label" htmlFor="recurrence-selection">
                   {i18n.t("compaies.table.recurrence")}
                   </InputLabel>
                   <Field
                     as={Select}
                     label="Recorrência"
-                    labelId="recorrencia-selection-label"
-                    id="recurrence"
+                    labelId="recurrence-selection-label"
+                    id="recurrence-selection"
                     name="recurrence"
                     margin="dense"
                   >

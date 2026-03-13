@@ -3,7 +3,7 @@ import { createContext } from "react";
 const ColorModeContext = createContext({
     toggleColorMode: () => { },
     setThemeStyle: () => { },
-    themeStyle: "default"
+    themeStyle: "classic"
 });
 
 export default ColorModeContext;

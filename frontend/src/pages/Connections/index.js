@@ -1587,7 +1587,7 @@ const Connections = () => {
         )}
       </Container>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse {
           0% {
             transform: scale(1);

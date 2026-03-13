@@ -63,16 +63,21 @@ const useWhatsApps = () => {
   const [whatsApps, dispatch] = useReducer(reducer, []);
   const [loading, setLoading] = useState(true);
   //   const socketManager = useContext(SocketContext);
-  const { user, socket } = useContext(AuthContext);
+  const { user, socket, isAuth } = useContext(AuthContext);
 
 
 
   useEffect(() => {
+    if (!isAuth) {
+      setLoading(false);
+      return;
+    }
+
     let isMounted = true;
     setLoading(true);
     const fetchSession = async () => {
       try {
-        const { data } = await api.get("/whatsapp/?session=0");
+        const { data } = await api.get("/whatsapp/");
         if (isMounted) {
           dispatch({ type: "LOAD_WHATSAPPS", payload: data });
           setLoading(false);
@@ -89,7 +94,7 @@ const useWhatsApps = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [isAuth]);
 
   useEffect(() => {
     if (user.companyId) {

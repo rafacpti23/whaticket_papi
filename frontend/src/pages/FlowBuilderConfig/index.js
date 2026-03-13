@@ -62,6 +62,8 @@ import ReactFlow, {
   Controls,
   Background,
   addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
 } from "react-flow-renderer";
 
 import audioNode from "./nodes/audioNode";
@@ -101,7 +103,7 @@ import FlowBuilderTypebotModal from "../../components/FlowBuilderAddTypebotModal
 import FlowBuilderOpenAIModal from "../../components/FlowBuilderAddOpenAIModal";
 import FlowBuilderAddQuestionModal from "../../components/FlowBuilderAddQuestionModal";
 
-import "reactflow/dist/style.css";
+import "react-flow-renderer/dist/style.css";
 import { colorPrimary } from "../../styles/styles";
 
 // Função para gerar ID aleatório
@@ -228,13 +230,24 @@ export const FlowBuilderConfig = () => {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  // Memoizando os elementos para compatibilidade com React Flow v10
-  const elements = React.useMemo(() => [...nodes, ...edges], [nodes, edges]);
-
   useEffect(() => {
     setNodes(initialNodes);
     setEdges(initialEdges);
   }, [initialNodes, initialEdges]);
+
+  const onNodesChange = useCallback((changes) => {
+    setNodes((nds) => applyNodeChanges(changes, nds));
+    if (changes.some((change) => change.type !== "select")) {
+      setHasUnsavedChanges(true);
+    }
+  }, []);
+
+  const onEdgesChange = useCallback((changes) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds));
+    if (changes.length) {
+      setHasUnsavedChanges(true);
+    }
+  }, []);
 
   // Handler para remoção de elementos (Padrão v10)
   const onElementsRemove = useCallback(
@@ -275,6 +288,20 @@ export const FlowBuilderConfig = () => {
     },
     [setEdges, isDark]
   );
+
+  const onNodeDragStop = useCallback((event, draggedNode) => {
+    setNodes((currentNodes) =>
+      currentNodes.map((node) =>
+        node.id === draggedNode.id
+          ? {
+              ...node,
+              position: draggedNode.position,
+            }
+          : node
+      )
+    );
+    setHasUnsavedChanges(true);
+  }, []);
 
   // Função para adicionar um novo nó
   const addNode = (type, data) => {
@@ -1437,13 +1464,16 @@ export const FlowBuilderConfig = () => {
               <ReactFlow
                 nodes={nodes}
                 edges={edges}
-                elements={elements}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
                 onNodeDoubleClick={doubleClick}
                 onNodeClick={clickNode}
+                onNodeDragStop={onNodeDragStop}
                 onEdgeClick={clickEdge}
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
+                nodesDraggable
                 fitView
                 snapToGrid={true}
                 snapGrid={[15, 15]}
@@ -1533,7 +1563,6 @@ export const FlowBuilderConfig = () => {
         }
 
         .react-flow__node:hover {
-          transform: translateY(-4px);
           box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
         }
 

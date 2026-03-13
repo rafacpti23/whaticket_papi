@@ -438,7 +438,11 @@ const AllConnections = () => {
           <Paper className={classes.mainPaper} style={{ overflow: "hidden" }} variant="outlined">
             <MainHeader>
               <Stack>
-                <Typography variant="h5" color="black" style={{ fontWeight: "bold", marginLeft: "10px", marginTop: "10px" }} gutterBottom>
+                <Typography
+                  variant="h5"
+                  style={{ color: "#000", fontWeight: "bold", marginLeft: "10px", marginTop: "10px" }}
+                  gutterBottom
+                >
                   {i18n.t("connections.title")}
                 </Typography>
                 <Typography style={{ marginTop: "-10px", marginLeft: "10px" }} variant="caption" color="textSecondary">
@@ -547,7 +551,6 @@ const AllConnections = () => {
                       <TableRowSkeleton />
                     ) : (
                       <>
-                        {console.log(companies, whats)}
                         {companies?.length > 0 && companies.map(company => (
                           <TableRow key={company.id}>
                             <TableCell align="center">

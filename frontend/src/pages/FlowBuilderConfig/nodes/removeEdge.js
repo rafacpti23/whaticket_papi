@@ -5,12 +5,6 @@ import {
 } from "react-flow-renderer";
 
 import "./css/buttonedge.css";
-import { Delete } from "@mui/icons-material";
-
-const onEdgeClick = (evt, id) => {
-  evt.stopPropagation();
-  //removeEdgeList(id);
-};
 
 export default function removeEdge({
   id,
@@ -59,14 +53,14 @@ export default function removeEdge({
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
-        <body>
+        <div xmlns="http://www.w3.org/1999/xhtml">
           {/* <button
             className="edgebutton"
             onClick={event => onEdgeClick(event, id)}
           >
             <Delete sx={{ width: "12px", height: "12px", color: "#0000FF" }} />
           </button> */}
-        </body>
+        </div>
       </foreignObject>
     </>
   );

@@ -30,8 +30,10 @@ const App = () => {
   const [mode, setMode] = useState(
     preferredTheme ? preferredTheme : prefersDarkMode ? "dark" : "light"
   );
-  const savedThemeStyle = localStorage.getItem("themeStyle") || "default";
-  const [themeStyle, setThemeStyle] = useState(savedThemeStyle);
+  const savedThemeStyle = localStorage.getItem("themeStyle") || "classic";
+  const normalizedThemeStyle =
+    savedThemeStyle === "default" ? "classic" : savedThemeStyle;
+  const [themeStyle, setThemeStyle] = useState(normalizedThemeStyle);
   const [primaryColorLight, setPrimaryColorLight] =
     useState(appColorLocalStorage);
   const [primaryColorDark, setPrimaryColorDark] =
@@ -58,8 +60,9 @@ const App = () => {
       setAppLogoFavicon,
       setAppName,
       setThemeStyle: (style) => {
-        setThemeStyle(style);
-        window.localStorage.setItem("themeStyle", style);
+        const nextStyle = style === "default" ? "classic" : style;
+        setThemeStyle(nextStyle);
+        window.localStorage.setItem("themeStyle", nextStyle);
       },
       appLogoLight,
       appLogoDark,
@@ -584,10 +587,6 @@ const App = () => {
   }, [mode]);
 
   useEffect(() => {
-    console.log("|=========== handleSaveSetting ==========|");
-    console.log("APP START");
-    console.log("|========================================|");
-
     getPublicSetting("primaryColorLight")
       .then((color) => {
         setPrimaryColorLight(color || "#008ff0");
