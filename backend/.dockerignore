@@ -1,0 +1,10 @@
+node_modules
+certs
+.env
+.env.*
+backend-dev.log
+backend_log.txt
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+Dockerfile*

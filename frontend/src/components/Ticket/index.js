@@ -113,60 +113,50 @@ const Ticket = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [ticketId, user, history]);
+  }, [ticketId, history, setTabOpen]);
 
   useEffect(() => {
-    if (
-      !ticket &&
-      !ticket.id &&
-      ticket.uuid !== ticketId &&
-      ticketId === "undefined"
-    ) {
+    if (!socket || !companyId || !ticket?.id || ticketId === "undefined") {
       return;
     }
 
-    if (user.companyId) {
-      //    const socket = socketManager.GetSocket();
+    const onConnectTicket = () => {
+      socket.emit("joinChatBox", `${ticket.id}`);
+    };
 
-      const onConnectTicket = () => {
-        socket.emit("joinChatBox", `${ticket.id}`);
-      };
+    const onCompanyTicket = (data) => {
+      if (data.action === "update" && data.ticket.id === ticket.id) {
+        setTicket((prevState) => ({ ...prevState, ...data.ticket }));
+      }
 
-      const onCompanyTicket = (data) => {
-        if (data.action === "update" && data.ticket.id === ticket?.id) {
-          setTicket(data.ticket);
-        }
+      if (data.action === "delete" && data.ticketId === ticket.id) {
+        history.push("/tickets");
+      }
+    };
 
-        if (data.action === "delete" && data.ticketId === ticket?.id) {
-          history.push("/tickets");
-        }
-      };
+    const onCompanyContactTicket = (data) => {
+      if (data.action === "update") {
+        setContact((prevState) => {
+          if (prevState.id === data.contact?.id) {
+            return { ...prevState, ...data.contact };
+          }
+          return prevState;
+        });
+      }
+    };
 
-      const onCompanyContactTicket = (data) => {
-        if (data.action === "update") {
-          // if (isMounted) {
-          setContact((prevState) => {
-            if (prevState.id === data.contact?.id) {
-              return { ...prevState, ...data.contact };
-            }
-            return prevState;
-          });
-          // }
-        }
-      };
+    socket.on("connect", onConnectTicket);
+    socket.on(`company-${companyId}-ticket`, onCompanyTicket);
+    socket.on(`company-${companyId}-contact`, onCompanyContactTicket);
+    socket.emit("joinChatBox", `${ticket.id}`);
 
-      socket.on("connect", onConnectTicket);
-      socket.on(`company-${companyId}-ticket`, onCompanyTicket);
-      socket.on(`company-${companyId}-contact`, onCompanyContactTicket);
-
-      return () => {
-        socket.emit("joinChatBoxLeave", `${ticket.id}`);
-        socket.off("connect", onConnectTicket);
-        socket.off(`company-${companyId}-ticket`, onCompanyTicket);
-        socket.off(`company-${companyId}-contact`, onCompanyContactTicket);
-      };
-    }
-  }, [ticketId, ticket, history]);
+    return () => {
+      socket.emit("joinChatBoxLeave", `${ticket.id}`);
+      socket.off("connect", onConnectTicket);
+      socket.off(`company-${companyId}-ticket`, onCompanyTicket);
+      socket.off(`company-${companyId}-contact`, onCompanyContactTicket);
+    };
+  }, [ticket.id, ticketId, history, companyId, socket]);
 
   const handleDrawerOpen = useCallback(() => {
     setDrawerOpen(true);

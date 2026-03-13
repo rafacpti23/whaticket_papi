@@ -413,14 +413,18 @@ const MessageInput = ({ ticketId, ticketStatus, droppedFiles, contactId, ticketC
   }, []);
 
   useEffect(() => {
-    inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     if (editingMessage) {
       setInputMessage(editingMessage.body);
     }
   }, [replyingMessage, editingMessage]);
 
   useEffect(() => {
-    inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     return () => {
       setInputMessage("");
       setShowEmoji(false);
@@ -1189,10 +1193,7 @@ const MessageInput = ({ ticketId, ticketStatus, droppedFiles, contactId, ticketC
                 <div className={classes.flexItem}>
                   <div className={classes.messageInputWrapperPrivate}>
                     <InputBase
-                      inputRef={(input) => {
-                        input && input.focus();
-                        input && (inputRef.current = input);
-                      }}
+                      inputRef={inputRef}
                       className={classes.messageInputPrivate}
                       placeholder={
                         ticketStatus === "open" || ticketStatus === "group"
@@ -1242,10 +1243,7 @@ const MessageInput = ({ ticketId, ticketStatus, droppedFiles, contactId, ticketC
                 <div className={classes.flexItem}>
                   <div className={classes.messageInputWrapper}>
                     <InputBase
-                      inputRef={(input) => {
-                        input && input.focus();
-                        input && (inputRef.current = input);
-                      }}
+                      inputRef={inputRef}
                       className={classes.messageInput}
                       placeholder={placeholderText}
                       multiline
