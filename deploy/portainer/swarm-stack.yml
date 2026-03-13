@@ -1,0 +1,247 @@
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres # alterar se quiser outro usuario do banco
+      POSTGRES_PASSWORD: master123 # alterar para a senha real do postgres
+      POSTGRES_DB: whaticket # alterar se quiser outro nome para o banco
+      TZ: America/Sao_Paulo # alterar timezone se necessario
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - whaticket
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - whaticket
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  backend:
+    image: node:20-bullseye
+    environment:
+      TZ: America/Sao_Paulo # alterar timezone se necessario
+      APP_REPOSITORY: https://github.com/rafacpti23/whaticket_papi.git # alterar para o repositorio correto
+      APP_REF: codex/v11 # alterar para branch ou tag desejada
+      NODE_ENV: production
+      PORT: 8081 # porta interna do backend
+      PROXY_PORT: 443 # manter 443 se o acesso publico vier pelo Traefik com https
+      BACKEND_URL: https://api.seudominio.com # alterar para o dominio real do backend
+      FRONTEND_URL: https://app.seudominio.com # alterar para o dominio real do frontend
+      DB_DIALECT: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: whaticket # manter alinhado com POSTGRES_DB
+      DB_USER: postgres # manter alinhado com POSTGRES_USER
+      DB_PASS: master123 # manter alinhado com POSTGRES_PASSWORD
+      REDIS_URI: redis://redis:6379
+      REDIS_OPT_LIMITER_MAX: 1
+      REDIS_OPT_LIMITER_DURATION: 3000
+      JWT_SECRET: change-me-jwt-secret # alterar obrigatoriamente
+      JWT_REFRESH_SECRET: change-me-refresh-secret # alterar obrigatoriamente
+      MASTER_KEY: change-me-master-key # alterar obrigatoriamente
+      COMPANY_TOKEN: whaticket # alterar se voce usa token proprio da instalacao
+      VERIFY_TOKEN: whaticket # alterar se usa webhook Meta/Facebook
+      CERTIFICADOS: "false" # manter false quando o SSL termina no Traefik
+      HTTPS: "false" # manter false quando o SSL termina no Traefik
+      SSL_CRT_FILE: /workspace/app/backend/certs/fullchain.pem # usar so se CERTIFICADOS=true
+      SSL_KEY_FILE: /workspace/app/backend/certs/privkey.pem # usar so se CERTIFICADOS=true
+      FACEBOOK_APP_ID: "" # preencher se usar Facebook/Instagram
+      FACEBOOK_APP_SECRET: "" # preencher se usar Facebook/Instagram
+      MAIL_HOST: "" # preencher se usar envio de email
+      MAIL_USER: "" # preencher se usar envio de email
+      MAIL_PASS: "" # preencher se usar envio de email
+      MAIL_FROM: "" # preencher se usar envio de email
+      MAIL_PORT: "" # preencher se usar envio de email
+      STRIPE_PRIVATE: "" # preencher se usar Stripe
+      STRIPE_OK_URL: "" # preencher se usar Stripe
+      STRIPE_CANCEL_URL: "" # preencher se usar Stripe
+      MP_ACCESS_TOKEN: "" # preencher se usar Mercado Pago
+      MP_NOTIFICATION_URL: "" # preencher se usar Mercado Pago
+      ASAAS_TOKEN: "" # preencher se usar Asaas
+      GERENCIANET_SANDBOX: "false"
+      GERENCIANET_CLIENT_ID: "" # preencher se usar Gerencianet
+      GERENCIANET_CLIENT_SECRET: "" # preencher se usar Gerencianet
+      GERENCIANET_PIX_CERT: "" # preencher se usar Gerencianet
+      GERENCIANET_PIX_KEY: "" # preencher se usar Gerencianet
+      OPENAI_API_KEY: "" # preencher se usar recursos OpenAI
+      SENTRY_DSN: "" # preencher se usar Sentry
+      BULL_BOARD: "false"
+      BULL_USER: admin # alterar se habilitar BULL_BOARD
+      BULL_PASS: admin # alterar se habilitar BULL_BOARD
+    working_dir: /workspace/app/backend
+    command:
+      - /bin/bash
+      - -lc
+      - |
+        set -e
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y --no-install-recommends git python3 make g++ netcat-openbsd ca-certificates
+        rm -rf /var/lib/apt/lists/*
+
+        mkdir -p /workspace /workspace/runtime
+
+        if [ -d /workspace/app ] && [ ! -d /workspace/app/.git ]; then
+          rm -rf /workspace/app
+        fi
+
+        if [ ! -d /workspace/app/.git ]; then
+          git clone "$$APP_REPOSITORY" /workspace/app
+        fi
+
+        cd /workspace/app
+        git fetch --all --tags --prune
+        git checkout "$$APP_REF"
+        git reset --hard "origin/$$APP_REF" || true
+
+        until nc -z postgres 5432; do
+          echo "Waiting for postgres..."
+          sleep 3
+        done
+
+        until nc -z redis 6379; do
+          echo "Waiting for redis..."
+          sleep 3
+        done
+
+        cd /workspace/app/backend
+        npm ci
+        npm run build
+        npx sequelize db:migrate
+
+        if [ "$${RUN_DB_SEED:-true}" = "true" ] && [ ! -f /workspace/runtime/.db-seeded ]; then
+          npx sequelize db:seed:all
+          touch /workspace/runtime/.db-seeded
+        fi
+
+        node dist/server.js
+    volumes:
+      - backend_source:/workspace
+      - backend_public:/workspace/app/backend/public
+      - backend_private:/workspace/app/backend/private
+      - backend_certs:/workspace/app/backend/certs
+    networks:
+      - whaticket
+      - traefik-public
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:' + (process.env.PORT || 8081), r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 180s
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.http.routers.whaticket-backend.rule=Host(`api.seudominio.com`) # alterar dominio do backend
+        - traefik.http.routers.whaticket-backend.entrypoints=websecure
+        - traefik.http.routers.whaticket-backend.tls.certresolver=letsencrypt
+        - traefik.http.services.whaticket-backend.loadbalancer.server.port=8081
+
+  frontend:
+    image: node:20-bullseye
+    environment:
+      TZ: America/Sao_Paulo # alterar timezone se necessario
+      APP_REPOSITORY: https://github.com/rafacpti23/whaticket_papi.git # alterar para o repositorio correto
+      APP_REF: codex/v11 # alterar para branch ou tag desejada
+      NODE_ENV: production
+      REACT_APP_BACKEND_URL: https://api.seudominio.com # alterar para o dominio real do backend
+      REACT_APP_HOURS_CLOSE_TICKETS_AUTO: 24
+      REACT_APP_FACEBOOK_APP_ID: "" # preencher se usar Facebook/Instagram
+      REACT_APP_NUMBER_SUPPORT: "" # preencher se quiser numero de suporte
+      REACT_APP_NAME: WORKZAP # alterar nome exibido no frontend
+      REACT_APP_LOGO_URL: "" # preencher se quiser logo personalizada
+      REACT_APP_LOGO_BRANCO_URL: "" # preencher se quiser logo branca personalizada
+      REACT_APP_FAVICON_URL: "" # preencher se quiser favicon personalizado
+    working_dir: /workspace/app/frontend
+    command:
+      - /bin/bash
+      - -lc
+      - |
+        set -e
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y --no-install-recommends git ca-certificates
+        rm -rf /var/lib/apt/lists/*
+
+        mkdir -p /workspace
+
+        if [ -d /workspace/app ] && [ ! -d /workspace/app/.git ]; then
+          rm -rf /workspace/app
+        fi
+
+        if [ ! -d /workspace/app/.git ]; then
+          git clone "$$APP_REPOSITORY" /workspace/app
+        fi
+
+        cd /workspace/app
+        git fetch --all --tags --prune
+        git checkout "$$APP_REF"
+        git reset --hard "origin/$$APP_REF" || true
+
+        cd /workspace/app/frontend
+        npm ci
+        npm run build
+        node server.js
+    volumes:
+      - frontend_source:/workspace
+    networks:
+      - whaticket
+      - traefik-public
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:3000', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 180s
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.http.routers.whaticket-frontend.rule=Host(`app.seudominio.com`) # alterar dominio do frontend
+        - traefik.http.routers.whaticket-frontend.entrypoints=websecure
+        - traefik.http.routers.whaticket-frontend.tls.certresolver=letsencrypt
+        - traefik.http.services.whaticket-frontend.loadbalancer.server.port=3000
+
+networks:
+  whaticket:
+    driver: overlay
+    attachable: true
+  traefik-public:
+    external: true # alterar se a rede externa do seu Traefik tiver outro nome
+
+volumes:
+  postgres_data:
+  redis_data:
+  backend_source:
+  frontend_source:
+  backend_public:
+  backend_private:
+  backend_certs:
