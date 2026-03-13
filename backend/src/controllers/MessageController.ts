@@ -31,7 +31,7 @@ import ShowContactService from "../services/ContactServices/ShowContactService";
 import FindOrCreateTicketService from "../services/TicketServices/FindOrCreateTicketService";
 
 import Contact from "../models/Contact";
-import { verifyMessage, } from "../services/WbotServices/wbotMessageListener";
+import { getBodyMessage, verifyMessage } from "../services/WbotServices/wbotMessageListener";
 import UpdateTicketService from "../services/TicketServices/UpdateTicketService";
 import ListSettingsService from "../services/SettingServices/ListSettingsService";
 import ShowMessageService, { GetWhatsAppFromMessage } from "../services/MessageServices/ShowMessageService";
@@ -211,9 +211,21 @@ export const sendCopyMessage = async (req: Request, res: Response): Promise<Resp
     // Send message with the code to copy in the text
     const messageText = `${title || 'Código para copiar:'}\n\n📋 *${copyText || ''}*\n\n${description || ''}`;
 
-    const sendMsg = await wbot.sendMessage(number, {
-      text: messageText
-    });
+    const templateMessage = {
+      text: title || "Ligue para:",
+      footer: description || "",
+      templateButtons: [
+        {
+          index: 1,
+          callButton: {
+            displayText: buttonText || "Ligar",
+            phoneNumber: copyText || ""
+          }
+        }
+      ]
+    };
+
+    const sendMsg = await wbot.sendMessage(number, templateMessage);
 
     return res.status(200).json({ message: "Copy message sent successfully", sendMsg });
 
@@ -246,9 +258,21 @@ export const sendCALLMessage = async (req: Request, res: Response): Promise<Resp
     // Send message with the phone number in the text
     const messageText = `${title || 'Ligue para:'}\n\n📞 *${copyText || ''}*\n\n${description || ''}`;
 
-    const sendMsg = await wbot.sendMessage(number, {
-      text: messageText
-    });
+    const templateMessage = {
+      text: title || "Ligue para:",
+      footer: description || "",
+      templateButtons: [
+        {
+          index: 1,
+          callButton: {
+            displayText: buttonText || "Ligar",
+            phoneNumber: copyText || ""
+          }
+        }
+      ]
+    };
+
+    const sendMsg = await wbot.sendMessage(number, templateMessage);
 
     return res.status(200).json({ message: "Call message sent successfully", sendMsg });
 
@@ -905,7 +929,7 @@ export const sendSimpleButtonMessage = async (req: Request, res: Response): Prom
       {
         model: Whatsapp,
         as: "whatsapp",
-        attributes: ["id", "name"]
+        attributes: ["id", "name", "number"]
       }
     ]
   });
@@ -914,30 +938,106 @@ export const sendSimpleButtonMessage = async (req: Request, res: Response): Prom
     throw new AppError("ERR_NO_TICKET_FOUND", 404);
   }
 
-  const wbot = getWbot(ticket.whatsappId);
+  if (!ticket.whatsapp || !ticket.whatsapp.number) {
+    throw new AppError("ERR_WAPP_NOT_INITIALIZED", 400);
+  }
+
+  const whatsapp = ticket.whatsapp;
+  const wbot = await GetTicketWbot(ticket);
 
   try {
+    const validButtons = Array.isArray(buttons)
+      ? buttons
+          .filter((btn: any) => btn?.buttonText?.trim())
+          .slice(0, 3)
+      : [];
+
+    if (validButtons.length === 0) {
+      throw new AppError("Informe pelo menos um botao valido.", 400);
+    }
+
+    const jid = `${ticket.contact.number}@s.whatsapp.net`;
     const buttonMessage = {
-      text: `${title}\n\n${description}`,
-      footer: "",
-      buttons: buttons.map((btn: any) => ({
-        buttonId: btn.buttonId,
-        buttonText: { displayText: btn.buttonText },
+      text: title || "Selecione uma opcao:",
+      footer: description || "",
+      buttons: validButtons.map((btn: any, index: number) => ({
+        buttonId: btn.buttonId || `btn${index + 1}`,
+        buttonText: { displayText: btn.buttonText.trim() },
         type: 1
       })),
       headerType: 1
     };
 
-    const sentMessage = await wbot.sendMessage(
-      `${ticket.contact.number}@s.whatsapp.net`,
-      buttonMessage
-    );
+    let sentMessage;
 
-    await verifyMessage(sentMessage, ticket, ticket.contact);
+    try {
+      sentMessage = await wbot.sendMessage(jid, buttonMessage);
+    } catch (buttonError) {
+      const bodyText = [title, description].filter(Boolean).join("\n\n").trim();
+      const interactiveMessage = {
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: {
+              body: {
+                text: bodyText || "Selecione uma opcao:"
+              },
+              nativeFlowMessage: {
+                buttons: validButtons.map((btn: any, index: number) => ({
+                  name: "quick_reply",
+                  buttonParamsJson: JSON.stringify({
+                    display_text: btn.buttonText.trim(),
+                    id: btn.buttonId || `btn${index + 1}`
+                  })
+                }))
+              }
+            }
+          }
+        }
+      };
+
+      const newMsg = generateWAMessageFromContent(jid, interactiveMessage, {
+        userJid: `${whatsapp.number}@s.whatsapp.net`
+      });
+
+      await wbot.relayMessage(jid, newMsg.message!, {
+        messageId: newMsg.key.id
+      });
+
+      sentMessage = newMsg;
+    }
+
+    const fallbackBody = [
+      "[BUTTON]",
+      title || "Selecione uma opcao:",
+      description || "",
+      ...validButtons.map((btn: any) => btn.buttonText.trim())
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    await ticket.update({
+      lastMessage: fallbackBody
+    });
+
+    await CreateMessageService({
+      messageData: {
+        wid: sentMessage.key.id,
+        ticketId: ticket.id,
+        body: fallbackBody,
+        fromMe: true,
+        read: true,
+        mediaType: "buttonsMessage",
+        ack: 2,
+        remoteJid: sentMessage.key.remoteJid,
+        participant: sentMessage.key.participant,
+        dataJson: JSON.stringify(sentMessage)
+      } as any,
+      companyId: ticket.companyId
+    });
 
     return res.status(200).json({ message: "Mensagem enviada" });
   } catch (err) {
     console.log(err);
-    throw new AppError("ERR_SENDING_WAPP_MSG");
+    throw new AppError((err as Error)?.message || "ERR_SENDING_WAPP_MSG");
   }
 };

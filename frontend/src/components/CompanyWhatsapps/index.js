@@ -1019,7 +1019,7 @@ const WhatsAppModalCompany = ({
       </Dialog>
 
       {/* Animações CSS */}
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse {
           0% {
             transform: scale(1);

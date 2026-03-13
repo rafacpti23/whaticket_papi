@@ -175,6 +175,11 @@ const ButtonModal = ({ modalOpen, onClose, ticketId }) => {
           buttonText: btn.text,
         }));
 
+      if (buttons.length === 0) {
+        toastError("Adicione pelo menos um botao simples.");
+        return;
+      }
+
       const payload = {
         title: title,
         description: description,

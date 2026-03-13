@@ -122,7 +122,7 @@ export function PlanManagerForm(props) {
                         </Grid>
                         <Grid xs={12} sm={6} md={2} xl={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="status-selection">{i18n.t("plans.form.public")}</InputLabel>
+                                <InputLabel id="status-selection-label" htmlFor="status-selection">{i18n.t("plans.form.public")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="status-selection"
@@ -191,7 +191,7 @@ export function PlanManagerForm(props) {
                         {/* WHATSAPP */}
                         <Grid xs={12} sm={6} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useWhatsapp-selection">Whatsapp</InputLabel>
+                                <InputLabel id="useWhatsapp-selection-label" htmlFor="useWhatsapp-selection">Whatsapp</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useWhatsapp-selection"
@@ -209,7 +209,7 @@ export function PlanManagerForm(props) {
                         {/* FACEBOOK */}
                         <Grid xs={12} sm={6} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useFacebook-selection">Facebook</InputLabel>
+                                <InputLabel id="useFacebook-selection-label" htmlFor="useFacebook-selection">Facebook</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useFacebook-selection"
@@ -227,7 +227,7 @@ export function PlanManagerForm(props) {
                         {/* INSTAGRAM */}
                         <Grid xs={12} sm={6} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useInstagram-selection">Instagram</InputLabel>
+                                <InputLabel id="useInstagram-selection-label" htmlFor="useInstagram-selection">Instagram</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useInstagram-selection"
@@ -245,7 +245,7 @@ export function PlanManagerForm(props) {
                         {/* CAMPANHAS */}
                         <Grid xs={12} sm={6} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useCampaigns-selection">{i18n.t("plans.form.campaigns")}</InputLabel>
+                                <InputLabel id="useCampaigns-selection-label" htmlFor="useCampaigns-selection">{i18n.t("plans.form.campaigns")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useCampaigns-selection"
@@ -263,7 +263,7 @@ export function PlanManagerForm(props) {
                         {/* AGENDAMENTOS */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useSchedules-selection">{i18n.t("plans.form.schedules")}</InputLabel>
+                                <InputLabel id="useSchedules-selection-label" htmlFor="useSchedules-selection">{i18n.t("plans.form.schedules")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useSchedules-selection"
@@ -281,7 +281,7 @@ export function PlanManagerForm(props) {
                         {/* CHAT INTERNO */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useInternalChat-selection">Chat Interno</InputLabel>
+                                <InputLabel id="useInternalChat-selection-label" htmlFor="useInternalChat-selection">Chat Interno</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useInternalChat-selection"
@@ -299,7 +299,7 @@ export function PlanManagerForm(props) {
                         {/* API Externa */}
                         <Grid xs={12} sm={8} md={4} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useExternalApi-selection">API Externa</InputLabel>
+                                <InputLabel id="useExternalApi-selection-label" htmlFor="useExternalApi-selection">API Externa</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useExternalApi-selection"
@@ -317,7 +317,7 @@ export function PlanManagerForm(props) {
                         {/* KANBAN */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useKanban-selection">Kanban</InputLabel>
+                                <InputLabel id="useKanban-selection-label" htmlFor="useKanban-selection">Kanban</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useKanban-selection"
@@ -335,7 +335,7 @@ export function PlanManagerForm(props) {
                         {/* OPENAI */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useOpenAi-selection">Talk.Ai</InputLabel>
+                                <InputLabel id="useOpenAi-selection-label" htmlFor="useOpenAi-selection">Talk.Ai</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useOpenAi-selection"

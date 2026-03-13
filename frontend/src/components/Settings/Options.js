@@ -229,6 +229,12 @@ const ModernSelect = ({
   fullWidth = true,
 }) => {
   const classes = useStyles();
+  const optionValues = options.map((option) => option.value);
+  const normalizedValue =
+    value === "default" && optionValues.includes("classic")
+      ? "classic"
+      : value;
+  const safeValue = optionValues.includes(normalizedValue) ? normalizedValue : "";
   return (
     <FormControl
       fullWidth={fullWidth}
@@ -237,7 +243,7 @@ const ModernSelect = ({
       disabled={loading}
     >
       <InputLabel>{label}</InputLabel>
-      <Select value={value || ""} onChange={onChange} label={label}>
+      <Select value={safeValue} onChange={onChange} label={label}>
         {options.map((option, index) => (
           <MenuItem key={index} value={option.value}>
             {option.label}

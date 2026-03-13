@@ -31,6 +31,9 @@ import { grey, blue } from "@material-ui/core/colors";
 import { Tabs, Tab } from "@material-ui/core";
 import ButtonWithSpinner from "../ButtonWithSpinner";
 
+const EFI_PIX_TAB_VALUE = "efi-pix-cert";
+const EFI_PIX_FILE_INPUT_ID = "efi-pix-cert-upload";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -199,6 +202,7 @@ return (
   <>
     <Grid spacing={3} container>
       <Tabs
+        value={EFI_PIX_TAB_VALUE}
         indicatorColor="primary"
         textColor="primary"
         scrollButtons="on"
@@ -209,7 +213,7 @@ return (
           marginTop: 20
         }}
       >
-        <Tab label="Certificado Efí - API PIX (p12)" />
+        <Tab value={EFI_PIX_TAB_VALUE} label="Certificado Efí - API PIX (p12)" />
       </Tabs>
 
       <form onSubmit={handleSubmit} className={classes.fullWidth}>
@@ -231,8 +235,9 @@ return (
 
         <Grid item xs={12} sm={12} md={12} style={{ display: 'flex' }}>
   			<FormControl className={classes.fullWidth}>
-   				<label className={classes.fileInputLabel}>
+   				<label className={classes.fileInputLabel} htmlFor={EFI_PIX_FILE_INPUT_ID}>
       			<input
+                    id={EFI_PIX_FILE_INPUT_ID}
         			type="file"
         			onChange={handleFileChange}
         			className={classes.fileInput}
