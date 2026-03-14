@@ -15,6 +15,11 @@ import defaultLogoDark from "./assets/logo-black.png";
 import defaultLogoFavicon from "./assets/favicon.ico";
 import useSettings from "./hooks/useSettings";
 import { BrowserRouter } from "react-router-dom";
+import { 
+  createTheme as createThemeV5, 
+  ThemeProvider as ThemeProviderV5, 
+  StyledEngineProvider 
+} from "@mui/material/styles";
 
 const queryClient = new QueryClient();
 
@@ -97,143 +102,40 @@ const App = () => {
             },
           },
           palette: {
-            mode: mode,
+            type: mode,
             primary: {
-              main: themeStyle === "premium"
-                ? (mode === "light" ? "#4F46E5" : "#6366F1")
-                : (mode === "light" ? "#008ff0" : "#008ff0")
+              main: mode === "light" ? primaryColorLight : primaryColorDark,
             },
             secondary: {
               main: themeStyle === "premium"
                 ? "#10B981"
-                : (mode === "light" ? "#151718" : "#151718")
+                : (mode === "light" ? "#151718" : "#cfd8dc")
             },
-            textPrimary: mode === "light" ? "#1C2E36" : "#FFFFFF",
-            borderPrimary: mode === "light" ? "#E0E0E0" : "#2D3133",
-            dark: { main: mode === "light" ? "#1C2E36" : "#FFFFFF" },
-            light: { main: mode === "light" ? "#F3F3F3" : "#1C2E36" },
-            fontColor: mode === "light" ? "#1C2E36" : "#FFFFFF",
             background: {
               default: themeStyle === "premium"
-                ? (mode === "light" ? "#F8FAFC" : "#0B0E14")
-                : (mode === "light" ? "#eef2f6" : "#151718"),
+                ? (mode === "light" ? "#F8FAFC" : "#0F172A")
+                : (mode === "light" ? "#eef2f6" : "#121212"),
               paper: themeStyle === "premium"
-                ? (mode === "light" ? "#FFFFFF" : "#111827")
-                : (mode === "light" ? "#FFFFFF" : "#1E2021"),
+                ? (mode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(30, 41, 59, 0.7)")
+                : (mode === "light" ? "#FFFFFF" : "#1E1E1E"),
             },
             text: {
-              primary: mode === "light" ? "#1C2E36" : "#FFFFFF",
-              secondary: mode === "light" ? "#637381" : "#D1D5DB",
+              primary: mode === "light" ? "#1C2E36" : "#F1F5F9",
+              secondary: mode === "light" ? "#637381" : "#94A3B8",
             },
             action: {
               hover:
                 mode === "light"
-                  ? "rgba(0, 210, 255, 0.1)"
-                  : "rgba(0, 210, 255, 0.2)",
+                  ? "rgba(79, 70, 229, 0.08)"
+                  : "rgba(129, 140, 248, 0.12)",
               selected:
                 mode === "light"
-                  ? "rgba(0, 210, 255, 0.2)"
-                  : "rgba(0, 210, 255, 0.3)",
+                  ? "rgba(79, 70, 229, 0.12)"
+                  : "rgba(129, 140, 248, 0.16)",
             },
             divider: themeStyle === "premium"
               ? (mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)")
               : (mode === "light" ? "#E0E0E0" : "#2D3133"),
-            tabHeaderBackground: mode === "light" ? "#fff" : "#1E2021",
-            optionsBackground: mode === "light" ? "#fafafa" : "#1E2021",
-            fancyBackground: mode === "light" ? "#fafafa" : "#1E2021",
-            total: mode === "light" ? "#fff" : "#1E2021",
-            messageIcons: mode === "light" ? "#1C2E36" : "#FFFFFF",
-            inputBackground: mode === "light" ? "#FFFFFF" : "#1E2021",
-            barraSuperior: themeStyle === "premium" || mode === "dark"
-              ? "#5850EC"
-              : (mode === "light" ? "#008ff0" : "#151718"),
-            barraLateral: themeStyle === "premium" || mode === "dark"
-              ? "#5850EC"
-              : "#F7F5F2", // Base bege clara
-            boxticket: mode === "light" ? "#EEE" : "#1E2021",
-            campaigntab: mode === "light" ? "#ededed" : "#1E2021",
-            corIconesbarra: themeStyle === "premium" || mode === "dark" ? "#FFFFFF" : "#2D3748",
-            fundologoLateral: themeStyle === "premium" || mode === "dark"
-              ? "#5850EC"
-              : "#FDFBF7",
-            corTextobarraLateral: themeStyle === "premium" || mode === "dark" ? "#FFFFFF" : "#2D3748",
-            options: mode === "light" ? "#fafafa" : "#333",
-            fontecor: mode === "light" ? "#1C2E36" : "#008ff0",
-            bordabox: mode === "light" ? "#eee" : "#333",
-            newmessagebox: mode === "light" ? "#eee" : "#333",
-            inputdigita: mode === "light" ? "#fff" : "#333",
-            contactdrawer: mode === "light" ? "#fff" : "#333",
-            announcements: mode === "light" ? "#ededed" : "#333",
-            login: mode === "light" ? "#fff" : "#333",
-            announcementspopover: mode === "light" ? "#fff" : "#333",
-            chatlist: mode === "light" ? "#eee" : "#333",
-            boxlist: mode === "light" ? "#ededed" : "#333",
-            boxchatlist: mode === "light" ? "#ededed" : "#333",
-            MuiAppBar: {
-              root: {
-                background: themeStyle === "premium" || mode === "dark"
-                  ? "#5850EC !important"
-                  : (mode === "light" ? "#008ff0 !important" : "#151718 !important"),
-                boxShadow: themeStyle === "premium" ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none",
-                borderBottom: themeStyle === "premium" ? "1px solid rgba(255,255,255,0.05)" : "none",
-                "& .MuiToolbar-root": {
-                  backgroundColor: "transparent !important",
-                  "& .MuiTypography-root": {
-                    color: "#FFFFFF",
-                    fontWeight: 700,
-                  },
-                  "& .MuiSvgIcon-root": {
-                    color: "#FFFFFF",
-                  },
-                  "& .MuiIconButton-root": {
-                    color: "#FFFFFF",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.15)",
-                    },
-                  },
-                },
-              },
-            },
-            MuiIconButton: {
-              root: {
-                color: mode === "light" ? "#1C2E36" : "#FFFFFF",
-                "&:hover": {
-                  backgroundColor: "rgba(1, 161, 154, 0.1)",
-                  color: mode === "light" ? "#1C2E36" : "#FFFFFF",
-                },
-              },
-            },
-            MuiToolbar: {
-              root: {
-                backgroundColor: mode === "light" ? "#008ff0" : "#151718",
-                color: "#FFFFFF",
-                "& .MuiTypography-root": {
-                  color: "#FFFFFF",
-                },
-                "& .MuiSvgIcon-root": {
-                  color: "#FFFFFF",
-                },
-                "& .MuiIconButton-root": {
-                  color: "#FFFFFF",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  },
-                },
-                "& .MuiButton-root": {
-                  color: "#FFFFFF",
-                },
-              },
-            },
-            MuiTypography: {
-              root: {
-                color: mode === "light" ? "#1C2E36" : "#FFFFFF !important",
-              },
-            },
-            MuiSvgIcon: {
-              root: {
-                color: mode === "light" ? "#1C2E36" : "#FFFFFF",
-              },
-            },
           },
           mode,
           borderRadius: themeStyle === "premium" ? "20px" : "16px",
@@ -263,6 +165,68 @@ const App = () => {
             },
           },
           overrides: {
+            MuiAppBar: {
+              root: {
+                background: themeStyle === "premium"
+                  ? (mode === "light" ? "rgba(255, 255, 255, 0.7) !important" : "rgba(15, 23, 42, 0.7) !important")
+                  : (mode === "light" ? (mode === "light" ? primaryColorLight : primaryColorDark) + " !important" : "#151718 !important"),
+                backdropFilter: themeStyle === "premium" ? "blur(12px) saturate(180%)" : "none",
+                boxShadow: themeStyle === "premium" ? "0 4px 6px -1px rgba(0, 0, 0, 0.05)" : "none",
+                borderBottom: themeStyle === "premium" ? (mode === "light" ? "1px solid rgba(0,0,0,0.05)" : "1px solid rgba(255,255,255,0.05)") : "none",
+                transition: "all 0.3s ease",
+                color: mode === "light" ? "#1E293B !important" : "#F8FAFC !important",
+                "& .MuiToolbar-root": {
+                  color: "inherit",
+                  "& .MuiTypography-root": {
+                    color: "inherit",
+                    fontWeight: 700,
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "inherit",
+                  },
+                  "& .MuiIconButton-root": {
+                    color: "inherit",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.04)",
+                    },
+                  },
+                },
+              },
+            },
+            MuiIconButton: {
+              root: {
+                borderRadius: 12,
+                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              },
+            },
+            MuiToolbar: {
+              root: {
+                backgroundColor: themeStyle === "premium" 
+                  ? "transparent"
+                  : (mode === "light" ? "#F8FAFC" : "#0F172A"),
+                color: mode === "light" ? "#1E293B" : "#F8FAFC",
+                "& .MuiTypography-root": {
+                  color: "inherit",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: "inherit",
+                },
+              },
+            },
+            MuiTypography: {
+              root: {
+                color: mode === "light" ? "#1E293B" : "#F8FAFC",
+              },
+            },
+            MuiSvgIcon: {
+              root: {
+                color: "inherit",
+              },
+            },
             MuiFormLabel: {
               root: {
                 color: mode === "dark" ? "#FFFFFF" : "inherit",
@@ -291,30 +255,33 @@ const App = () => {
                   height: "4px",
                 },
                 "*::-webkit-scrollbar-thumb": {
-                  backgroundColor: mode === "light" ? "#F3F3F3" : "#2D3133",
+                  backgroundColor: mode === "light" ? "#CBD5E1" : "#334155",
                   borderRadius: "2px",
                 },
                 "*::-webkit-scrollbar-track": {
-                  backgroundColor: mode === "light" ? "#fafafa" : "#151718",
+                  backgroundColor: "transparent",
                 },
                 body: {
-                  backgroundColor: mode === "light" ? "#eef2f6" : "#151718",
+                  backgroundColor: themeStyle === "premium"
+                    ? (mode === "light" ? "#F8FAFC" : "#0F172A")
+                    : (mode === "light" ? "#eef2f6" : "#121212"),
+                  transition: "background-color 0.3s ease",
                 },
                 ".MuiPaper-root": {
                   backgroundColor: themeStyle === "premium"
-                    ? (mode === "light" ? "#FFFFFF" : "#111827")
-                    : (mode === "light" ? "#FFFFFF" : "#1E2021 !important"),
-                },
-                ".MuiCard-root": {
-                  backgroundColor: themeStyle === "premium"
-                    ? (mode === "light" ? "#FFFFFF" : "#111827")
-                    : (mode === "light" ? "#FFFFFF" : "#1E2021 !important"),
+                    ? (mode === "light" ? "rgba(255, 255, 255, 0.8) !important" : "rgba(30, 41, 59, 0.7) !important")
+                    : (mode === "light" ? "#FFFFFF" : "#1E1E1E !important"),
+                  backdropFilter: themeStyle === "premium" ? "blur(12px) saturate(180%)" : "none",
+                  boxShadow: themeStyle === "premium" ? "0 8px 32px 0 rgba(31, 38, 135, 0.07)" : "none",
+                  border: themeStyle === "premium" ? (mode === "light" ? "1px solid rgba(255, 255, 255, 0.18)" : "1px solid rgba(255, 255, 255, 0.08)") : "none",
                 },
                 ".MuiDrawer-paper": {
-                  background: themeStyle === "premium" || mode === "dark"
-                    ? "#5850EC !important"
-                    : "linear-gradient(180deg, #FDFBF7 0%, #F2EFE9 100%) !important",
-                  borderRight: mode === "light" ? "1px solid #E2E8F0" : "none",
+                  background: themeStyle === "premium"
+                    ? (mode === "light" ? "rgba(255, 255, 255, 0.8) !important" : "rgba(15, 23, 42, 0.9) !important")
+                    : (mode === "light" ? "linear-gradient(180deg, #FDFBF7 0%, #F2EFE9 100%)" : "#151718 !important"),
+                  backdropFilter: themeStyle === "premium" ? "blur(16px) saturate(180%)" : "none",
+                  borderRight: mode === "light" ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.08)",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important",
                 },
               },
             },
@@ -336,12 +303,12 @@ const App = () => {
                 },
               },
               containedPrimary: {
-                backgroundColor: themeStyle === "premium" ? "#00D2FF" : "rgba(4, 197, 188, 0.2)",
-                color: themeStyle === "premium" ? "#0B0E14" : "#008ff0",
+                backgroundColor: mode === "light" ? primaryColorLight : primaryColorDark,
+                color: mode === "light" ? "#FFFFFF" : "#0B0E14",
                 fontWeight: themeStyle === "premium" ? "600" : "400",
                 "&:hover": {
-                  backgroundColor: themeStyle === "premium" ? "#00B4D8" : "rgba(4, 197, 188, 0.3)",
-                  color: themeStyle === "premium" ? "#0B0E14" : "#008ff0",
+                  backgroundColor: mode === "light" ? primaryColorLight : primaryColorDark,
+                  filter: "brightness(0.9)",
                 },
               },
               outlined: {
@@ -412,23 +379,23 @@ const App = () => {
               root: {
                 borderRadius: themeStyle === "premium" ? "0 20px 20px 0" : 12,
                 margin: themeStyle === "premium" ? "4px 8px 4px 0" : 0,
-                color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                color: mode === "light" ? "#1C2E36" : "#FFFFFF",
                 "& .MuiListItemIcon-root": {
-                  color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                  color: mode === "light" ? "#1C2E36" : "#FFFFFF",
                   minWidth: "40px",
                   "& .MuiSvgIcon-root": {
-                    color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                    color: "inherit",
                     fontSize: "20px",
                   },
                 },
                 "& .MuiListItemText-primary": {
-                  color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                  color: mode === "light" ? "#1C2E36" : "#FFFFFF",
                   fontSize: "14px",
                   fontWeight: 500,
                 },
                 "&$selected": {
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  color: "#FFFFFF",
+                  backgroundColor: mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)",
+                  color: mode === "light" ? primaryColorLight : primaryColorDark,
                   borderLeft: "none",
                   "& .MuiListItemIcon-root": {
                     color: "inherit",
@@ -437,21 +404,21 @@ const App = () => {
                     },
                   },
                   "& .MuiListItemText-primary": {
-                    color: "#FFFFFF",
+                    color: "inherit",
                     fontWeight: 700,
                   },
                   "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.08)",
+                    backgroundColor: mode === "light" ? "rgba(79, 70, 229, 0.12)" : "rgba(129, 140, 248, 0.16)",
                   },
                 },
                 "&:hover": {
-                  backgroundColor: themeStyle === "premium" ? "rgba(255, 255, 255, 0.05)" : "rgba(1, 161, 154, 0.1)",
-                  color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                  backgroundColor: mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)",
+                  color: mode === "light" ? primaryColorLight : "#FFFFFF",
                   "& .MuiListItemIcon-root": {
-                    color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                    color: "inherit",
                   },
                   "& .MuiListItemText-primary": {
-                    color: themeStyle === "premium" ? "#FFFFFF" : (mode === "light" ? "#1C2E36" : "#FFFFFF"),
+                    color: "inherit",
                   },
                 },
               },
@@ -471,7 +438,7 @@ const App = () => {
                 padding: "6px 30px",
                 color: mode === "dark" ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.54)",
                 "&.Mui-selected": {
-                  color: themeStyle === "premium" ? "#FFFFFF" : "#008ff0",
+                  color: mode === "light" ? primaryColorLight : "#FFFFFF",
                   fontWeight: "bold",
                 },
                 "&:hover": {
@@ -487,6 +454,15 @@ const App = () => {
               },
               sizeSmall: {
                 height: "20px",
+              },
+            },
+            MuiListSubheader: {
+              root: {
+                color: mode === "light" ? "#637381" : "#94A3B8",
+                fontWeight: 700,
+                fontSize: "11px",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
               },
             },
           },
@@ -552,6 +528,7 @@ const App = () => {
             }
             return appLogoDark;
           },
+          mode,
           appLogoLight,
           appLogoDark,
           appLogoFavicon,
@@ -569,6 +546,23 @@ const App = () => {
       primaryColorDark,
       primaryColorLight,
     ]
+  );
+
+  const themeV5 = useMemo(
+    () =>
+      createThemeV5({
+        palette: {
+          mode: mode,
+          primary: {
+            main: mode === "light" ? primaryColorLight : primaryColorDark,
+          },
+          text: {
+            primary: mode === "light" ? "#1C2E36" : "#F1F5F9",
+            secondary: mode === "light" ? "#637381" : "#94A3B8",
+          },
+        },
+      }),
+    [mode, primaryColorLight, primaryColorDark]
   );
 
   useEffect(() => {
@@ -640,16 +634,20 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Favicon url={appLogoFavicon} />
-      <ColorModeContext.Provider value={{ colorMode }}>
-        <ThemeProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            <ActiveMenuProvider>
-              <Routes />
-            </ActiveMenuProvider>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProviderV5 theme={themeV5}>
+          <Favicon url={appLogoFavicon} />
+          <ColorModeContext.Provider value={{ colorMode }}>
+            <ThemeProvider theme={theme}>
+              <QueryClientProvider client={queryClient}>
+                <ActiveMenuProvider>
+                  <Routes />
+                </ActiveMenuProvider>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </ColorModeContext.Provider>
+        </ThemeProviderV5>
+      </StyledEngineProvider>
     </BrowserRouter>
   );
 };

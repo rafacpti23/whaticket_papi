@@ -87,7 +87,7 @@ export interface ReplyTo {
   mid: string;
 }
 
-const verifyContact = async (msgContact: any, token: any, companyId: any) => {
+export const verifyContact = async (msgContact: any, token: any, companyId: any) => {
   if (!msgContact) return null;
 
   const contactData = {

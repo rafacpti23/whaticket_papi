@@ -42,6 +42,8 @@ import CheckContactNumber from "../services/WbotServices/CheckNumber";
 import TranscribeAudioMessageToText from "../services/MessageServices/TranscribeAudioMessageService";
 import { generateWAMessageFromContent, generateWAMessageContent, proto } from "whaileys";
 import { getWbot } from "../libs/wbot";
+import { sendMessage as sendCloudMessage } from "../services/FacebookServices/WhatsAppCloudApiService";
+import { sendMessage as sendMLMessage } from "../services/MercadoLivreServices/MercadoLivreApiService";
 
 export const sendTestButtons = async (req: Request, res: Response): Promise<Response> => {
   console.log("sendTestButtons called");
@@ -520,6 +522,35 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
             await SendWhatsAppMedia({ media, ticket, body: Array.isArray(body) ? body[index] : body, isPrivate: isPrivate === "true", isForwarded: false });
           }
 
+          if (ticket.channel === "whatsapp_cloud") {
+            const cloudResponse = await sendCloudMessage(ticket.whatsapp, {
+              number: ticket.contact.number,
+              body: Array.isArray(body) ? body[index] : body,
+              type: media.mimetype.split("/")[0],
+              mediaUrl: `${process.env.BACKEND_URL}/public/company${companyId}/${media.filename}`
+            });
+
+            const messageData = {
+              wid: cloudResponse?.messages?.[0]?.id || `cloud_${Date.now()}_${index}`,
+              ticketId: ticket.id,
+              contactId: undefined,
+              body: Array.isArray(body) ? body[index] : body,
+              fromMe: true,
+              mediaType: media.mimetype.split("/")[0],
+              mediaUrl: `company${companyId}/${media.filename}`,
+              read: true,
+              quotedMsgId: null,
+              ack: 2,
+              remoteJid: ticket.contact?.remoteJid,
+              participant: null,
+              dataJson: null,
+              ticketTrakingId: null,
+              isPrivate: false
+            };
+
+            await CreateMessageService({ messageData, companyId: ticket.companyId });
+          }
+
           if (["facebook", "instagram"].includes(ticket.channel)) {
             try {
               const sentMedia = await sendFacebookMessageMedia({
@@ -548,6 +579,55 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     } else {
       if (["whatsapp", "papi"].includes(ticket.channel) && isPrivate === "false") {
         await SendWhatsAppMessage({ body, ticket, quotedMsg, vCard });
+      } else if (ticket.channel === "whatsapp_cloud" && isPrivate === "false") {
+        const cloudResponse = await sendCloudMessage(ticket.whatsapp, {
+          number: ticket.contact.number,
+          body
+        });
+
+        const messageData = {
+          wid: cloudResponse?.messages?.[0]?.id || `cloud_${Date.now()}`,
+          ticketId: ticket.id,
+          contactId: undefined,
+          body,
+          fromMe: true,
+          mediaType: "extendedTextMessage",
+          read: true,
+          quotedMsgId: null,
+          ack: 2,
+          remoteJid: ticket.contact?.remoteJid,
+          participant: null,
+          dataJson: null,
+          ticketTrakingId: null,
+          isPrivate: false
+        };
+
+        await CreateMessageService({ messageData, companyId: ticket.companyId });
+      } else if (ticket.channel === "mercadolivre" && isPrivate === "false") {
+        // ML messages use remoteJid as pack_id
+        const packId = ticket.contact?.remoteJid?.replace("ml_", "") || "";
+        if (packId) {
+          await sendMLMessage(ticket.whatsapp, packId, body);
+        }
+
+        const messageData = {
+          wid: `ml_${Date.now()}`,
+          ticketId: ticket.id,
+          contactId: undefined,
+          body,
+          fromMe: true,
+          mediaType: "extendedTextMessage",
+          read: true,
+          quotedMsgId: null,
+          ack: 2,
+          remoteJid: ticket.contact?.remoteJid,
+          participant: null,
+          dataJson: null,
+          ticketTrakingId: null,
+          isPrivate: false
+        };
+
+        await CreateMessageService({ messageData, companyId: ticket.companyId });
       } else if (["whatsapp", "papi"].includes(ticket.channel) && isPrivate === "true") {
         const messageData = {
           wid: `PVT${ticket.updatedAt.toString().replace(' ', '')}`,

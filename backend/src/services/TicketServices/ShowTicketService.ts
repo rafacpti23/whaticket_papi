@@ -85,7 +85,7 @@ const ShowTicketService = async (
       {
         model: Whatsapp,
         as: "whatsapp",
-        attributes: ["id", "name", "groupAsTicket", "greetingMediaAttachment", "facebookUserToken", "facebookUserId", "status"]
+        attributes: ["id", "name", "groupAsTicket", "greetingMediaAttachment", "facebookUserToken", "facebookUserId", "facebookPageUserId", "tokenMeta", "channel", "status", "mlUserId", "mlAccessToken", "mlRefreshToken", "mlTokenExpiry"]
 
       },
       {

@@ -47,6 +47,9 @@ interface WhatsappData {
   flowIdNotPhrase?: number;
   flowIdWelcome?: number;
   channel?: string;
+  wabaId?: string;
+  tokenMeta?: string;
+  facebookPageUserId?: string;
 }
 
 interface Request {
@@ -110,7 +113,10 @@ const UpdateWhatsAppService = async ({
     queueIdImportMessages,
     flowIdNotPhrase,
     flowIdWelcome,
-    channel
+    channel,
+    wabaId,
+    tokenMeta,
+    facebookPageUserId
   } = whatsappData;
 
   try {
@@ -179,7 +185,10 @@ const UpdateWhatsAppService = async ({
     queueIdImportMessages,
     flowIdNotPhrase,
     flowIdWelcome,
-    channel
+    channel,
+    wabaId,
+    tokenMeta,
+    facebookPageUserId
   });
 
   if (!requestQR) {

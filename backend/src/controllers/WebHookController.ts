@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Whatsapp from "../models/Whatsapp";
 import { handleMessage } from "../services/FacebookServices/facebookMessageListener";
+import { handleCloudMessage } from "../services/FacebookServices/WhatsAppCloudWebhookService";
 // import { handleMessage } from "../services/FacebookServices/facebookMessageListener";
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
@@ -52,6 +53,29 @@ export const webHook = async (
           });
         }
       });
+
+      return res.status(200).json({
+        message: "EVENT_RECEIVED"
+      });
+    }
+
+    if (body.object === "whatsapp_business_account") {
+      const { entry } = body;
+      if (entry) {
+        entry.forEach(async (e: any) => {
+          const whatsapp = await Whatsapp.findOne({
+            where: {
+              wabaId: e.id,
+              channel: "whatsapp_cloud"
+            }
+          });
+
+          if (whatsapp) {
+            console.log("WhatsApp Cloud Event for WABA:", e.id);
+            await handleCloudMessage(whatsapp, e.changes);
+          }
+        });
+      }
 
       return res.status(200).json({
         message: "EVENT_RECEIVED"

@@ -310,13 +310,19 @@ const TicketsManagerTabs = () => {
   const { setSelectedQueuesMessage } = useContext(QueueSelectedContext);
   const { tabOpen, setTabOpen } = useContext(TicketsContext);
 
-  const userQueueIds = (user.queues || []).map((q) => q.id);
-  const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
+  const [selectedQueueIds, setSelectedQueueIds] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedWhatsapp, setSelectedWhatsapp] = useState([]);
   const [forceSearch, setForceSearch] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
+
+  useEffect(() => {
+    if (user.queues) {
+      const userQueueIds = user.queues.map((q) => q.id);
+      setSelectedQueueIds(userQueueIds);
+    }
+  }, [user.queues]);
 
   useEffect(() => {
     setSelectedQueuesMessage(selectedQueueIds);

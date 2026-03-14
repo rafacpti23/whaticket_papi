@@ -1,10 +1,10 @@
 [
   {
-    "id": "554591111217@s.whatsapp.net",
-    "name": "Claudeir Ribeiro"
+    "id": "557191329885@s.whatsapp.net",
+    "name": "Jessika Oliveira"
   },
   {
-    "id": "5527995892531@s.whatsapp.net",
-    "name": "Rodrigo Do Bar"
+    "id": "5519994248586@s.whatsapp.net",
+    "name": "Claudio Felix"
   }
 ]

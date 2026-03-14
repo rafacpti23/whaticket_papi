@@ -35,13 +35,13 @@ import { Store } from "./store";
 
 const msgRetryCounterCache = new NodeCache({
   stdTTL: 600,
-  maxKeys: 1000,
+  maxKeys: 10000,
   checkperiod: 300,
   useClones: false
 });
 const msgCache = new NodeCache({
   stdTTL: 60,
-  maxKeys: 1000,
+  maxKeys: 10000,
   checkperiod: 300,
   useClones: false
 });
@@ -145,7 +145,7 @@ export var dataMessages: any = {};
 export const msgDB = msg();
 
 export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       (async () => {
         const io = getIO();
@@ -192,10 +192,9 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
           },
           browser: Browsers.appropriate("Desktop"),
           defaultQueryTimeoutMs: undefined,
-          msgRetryCounterCache,
+          msgRetryCounterMap: msgRetryCounterCache as any,
           markOnlineOnConnect: false,
           retryRequestDelayMs: 500,
-          maxMsgRetryCount: 5,
           emitOwnEvents: true,
           fireInitQueries: true,
           transactionOpts: { maxCommitRetries: 10, delayBetweenTriesMs: 3000 },
@@ -212,7 +211,7 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
 
               message.listMessage.listType = proto.Message.ListMessage.ListType.SINGLE_SELECT;
             }
-            return message; // Adicionei este retorno que estava faltando
+            return message; 
           }
         });
 

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useReducer, useContext, useMemo } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
+import { FixedSizeList as ListWindow } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 import TicketListItem from "../TicketListItemCustom";
 import TicketsListSkeleton from "../TicketsListSkeleton";
@@ -25,26 +27,9 @@ const useStyles = makeStyles((theme) => ({
     ticketsList: {
         flex: 1,
         maxHeight: "100%",
-        overflowY: "scroll",
+        overflow: "hidden", 
         ...theme.scrollbarStyles,
         borderTop: "2px solid rgba(0, 0, 0, 0.12)",
-    },
-
-    ticketsListHeader: {
-        color: "rgb(67, 83, 105)",
-        zIndex: 2,
-        backgroundColor: "white",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-
-    ticketsCount: {
-        fontWeight: "normal",
-        color: "rgb(104, 121, 146)",
-        marginLeft: "8px",
-        fontSize: "14px",
     },
 
     noTicketsText: {
@@ -63,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 
     noTicketsDiv: {
         display: "flex",
-        // height: "190px",
         margin: 40,
         flexDirection: "column",
         alignItems: "center",
@@ -72,29 +56,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ticketSortAsc = (a, b) => {
-    
-    if (a.updatedAt < b.updatedAt) {
-        return -1;
-    }
-    if (a.updatedAt > b.updatedAt) {
-        return 1;
-    }
+    if (a.updatedAt < b.updatedAt) return -1;
+    if (a.updatedAt > b.updatedAt) return 1;
     return 0;
 }
 
 const ticketSortDesc = (a, b) => {
-   
-    if (a.updatedAt > b.updatedAt) {
-        return -1;
-    }
-    if (a.updatedAt < b.updatedAt) {
-        return 1;
-    }
+    if (a.updatedAt > b.updatedAt) return -1;
+    if (a.updatedAt < b.updatedAt) return 1;
     return 0;
 }
 
 const reducer = (state, action) => {
-    //console.log("action", action, state)
     const sortDir = action.sortDir;
     
     if (action.type === "LOAD_TICKETS") {
@@ -198,6 +171,31 @@ const reducer = (state, action) => {
     }
 };
 
+const Row = React.memo(({ index, style, data }) => {
+    const { ticketsList, hasMore, setTabOpen, isItemLoaded } = data;
+    
+    if (!isItemLoaded(index)) {
+        return (
+            <div style={style}>
+                <TicketsListSkeleton />
+            </div>
+        );
+    }
+
+    const ticket = ticketsList[index];
+    if (!ticket) return null;
+
+    return (
+        <div style={style}>
+            <TicketListItem
+                ticket={ticket}
+                key={ticket.id}
+                setTabOpen={setTabOpen}
+            />
+        </div>
+    );
+});
+
 const TicketsListCustom = (props) => {
     const {
         setTabOpen,
@@ -219,8 +217,7 @@ const TicketsListCustom = (props) => {
 
     const classes = useStyles();
     const [pageNumber, setPageNumber] = useState(1);
-    let [ticketsList, dispatch] = useReducer(reducer, []);
-    //   const socketManager = useContext(SocketContext);
+    const [ticketsListState, dispatch] = useReducer(reducer, []);
     const { user, socket } = useContext(AuthContext);
 
     const { profile, queues } = user;
@@ -251,12 +248,6 @@ const TicketsListCustom = (props) => {
 
 
     useEffect(() => {
-        // const queueIds = queues.map((q) => q.id);
-        // const filteredTickets = tickets.filter(
-        //     (t) => queueIds.indexOf(t.queueId) > -1
-        // );
-        // const allticket = user.allTicket === 'enabled';
-        // if (profile === "admin" || allTicket || allowGroup || allHistoric) {
         if (companyId) {
             dispatch({
                 type: "LOAD_TICKETS",
@@ -265,10 +256,6 @@ const TicketsListCustom = (props) => {
                 sortDir: sortTickets
             });
         }
-        // } else {
-        //  dispatch({ type: "LOAD_TICKETS", payload: filteredTickets });
-        // }
-
     }, [tickets]);
 
     useEffect(() => {
@@ -281,7 +268,6 @@ const TicketsListCustom = (props) => {
             ticket.queueId && safeSelectedQueueIds.indexOf(ticket.queueId) === -1;
 
         const onCompanyTicketTicketsList = (data) => {
-            // console.log("onCompanyTicketTicketsList", data)
             if (data.action === "updateUnread") {
                 dispatch({
                     type: "RESET_UNREAD",
@@ -290,7 +276,6 @@ const TicketsListCustom = (props) => {
                     sortDir: sortTickets
                 });
             }
-            // console.log(shouldUpdateTicket(data.ticket))
             if (data.action === "update" &&
                 shouldUpdateTicket(data.ticket) && data.ticket.status === status) {
                 dispatch({
@@ -301,12 +286,6 @@ const TicketsListCustom = (props) => {
                 });
             }
 
-            // else if (data.action === "update" && shouldUpdateTicketUser(data.ticket) && data.ticket.status === status) {
-            //     dispatch({
-            //         type: "UPDATE_TICKET",
-            //         payload: data.ticket,
-            //     });
-            // }
             if (data.action === "update" && notBelongsToUserQueues(data.ticket)) {
                 dispatch({
                     type: "DELETE_TICKET", payload: data.ticket?.id, status: status,
@@ -333,12 +312,6 @@ const TicketsListCustom = (props) => {
                     sortDir: sortTickets
                 });
             }
-            // else if (data.action === "create" && shouldUpdateTicketUser(data.ticket) && data.ticket.status === status) {
-            //     dispatch({
-            //         type: "UPDATE_TICKET_UNREAD_MESSAGES",
-            //         payload: data.ticket,
-            //     });
-            // }
         };
 
         const onCompanyContactTicketsList = (data) => {
@@ -381,68 +354,72 @@ const TicketsListCustom = (props) => {
 
     const prevCountRef = React.useRef();
 
+    const ticketsList = useMemo(() => {
+        if (status && status !== "search") {
+            return ticketsListState.filter(ticket => ticket.status === status);
+        }
+        return ticketsListState;
+    }, [ticketsListState, status]);
+
     useEffect(() => {
         if (typeof updateCount === "function" && prevCountRef.current !== ticketsList.length) {
             updateCount(ticketsList.length);
             prevCountRef.current = ticketsList.length;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketsList]);
+    }, [ticketsList, updateCount]);
 
     const loadMore = () => {
         setPageNumber((prevState) => prevState + 1);
     };
 
-    const handleScroll = (e) => {
-        if (!hasMore || loading) return;
+    const isItemLoaded = (index) => !hasMore || index < ticketsList.length;
 
-        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-
-        if (scrollHeight - (scrollTop + 100) < clientHeight) {
-            loadMore();
-        }
-    };
-
-    if (status && status !== "search") {
-        ticketsList = ticketsList.filter(ticket => ticket.status === status)
-    }
+    const itemData = useMemo(() => ({
+        ticketsList,
+        hasMore,
+        setTabOpen,
+        isItemLoaded
+    }), [ticketsList, hasMore, setTabOpen]);
 
     return (
         <Paper className={classes.ticketsListWrapper} style={style}>
-            <Paper
-                square
-                name="closed"
-                elevation={0}
-                className={classes.ticketsList}
-                onScroll={handleScroll}
-            >
-                <List style={{ paddingTop: 0 }} >
-                    {ticketsList.length === 0 && !loading ? (
-                        <div className={classes.noTicketsDiv}>
-                            <span className={classes.noTicketsTitle}>
-                                {i18n.t("ticketsList.noTicketsTitle")}
-                            </span>
-                            <p className={classes.noTicketsText}>
-                                {i18n.t("ticketsList.noTicketsMessage")}
-                            </p>
-                        </div>
-                    ) : (
-                        <>
-                            {ticketsList.map((ticket) => (
-                                // <List key={ticket.id}>
-                                //     {console.log(ticket)}
-                                <TicketListItem
-                                    ticket={ticket}
-                                    key={ticket.id}
-                                    setTabOpen={setTabOpen}
-                                />
-                                // </List>
-                            ))}
-                        </>
-                    )}
-                    {loading && <TicketsListSkeleton />}
-                </List>
-            </Paper>
+            <div className={classes.ticketsList}>
+                {ticketsList.length === 0 && !loading ? (
+                    <div className={classes.noTicketsDiv}>
+                        <span className={classes.noTicketsTitle}>
+                            {i18n.t("ticketsList.noTicketsTitle")}
+                        </span>
+                        <p className={classes.noTicketsText}>
+                            {i18n.t("ticketsList.noTicketsMessage")}
+                        </p>
+                    </div>
+                ) : (
+                    <AutoSizer>
+                        {({ height, width }) => (
+                            <InfiniteLoader
+                                isItemLoaded={isItemLoaded}
+                                itemCount={hasMore ? ticketsList.length + 1 : ticketsList.length}
+                                loadMoreItems={loading ? () => {} : loadMore}
+                            >
+                                {({ onItemsRendered, ref }) => (
+                                    <ListWindow
+                                        height={height}
+                                        width={width}
+                                        itemCount={hasMore ? ticketsList.length + 1 : ticketsList.length}
+                                        itemSize={105}
+                                        onItemsRendered={onItemsRendered}
+                                        ref={ref}
+                                        itemData={itemData}
+                                    >
+                                        {Row}
+                                    </ListWindow>
+                                )}
+                            </InfiniteLoader>
+                        )}
+                    </AutoSizer>
+                )}
+                {loading && ticketsList.length === 0 && <TicketsListSkeleton />}
+            </div>
         </Paper>
     );
 };

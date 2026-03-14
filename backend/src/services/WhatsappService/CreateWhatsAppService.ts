@@ -23,6 +23,7 @@ interface Request {
   tokenMeta?: string;
   channel?: string;
   facebookPageUserId?: string;
+  wabaId?: string;
   maxUseBotQueues?: string;
   timeUseBotQueues?: string;
   expiresTicket?: number;
@@ -72,6 +73,7 @@ const CreateWhatsAppService = async ({
   facebookUserToken,
   facebookPageUserId,
   tokenMeta,
+  wabaId,
   channel = "whatsapp",
   maxUseBotQueues,
   timeUseBotQueues,
@@ -209,6 +211,7 @@ const CreateWhatsAppService = async ({
       facebookUserToken,
       facebookPageUserId,
       tokenMeta,
+      wabaId,
       maxUseBotQueues,
       timeUseBotQueues,
       expiresTicket,

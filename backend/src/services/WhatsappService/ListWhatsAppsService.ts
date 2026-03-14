@@ -33,7 +33,9 @@ const ListWhatsAppsService = async ({
     options.attributes = { exclude: ["session"] };
   }
 
+  console.log("ListWhatsAppsService input:", { companyId, session });
   const whatsapps = await Whatsapp.findAll(options);
+  console.log("ListWhatsAppsService found:", whatsapps.length);
 
   return whatsapps;
 };

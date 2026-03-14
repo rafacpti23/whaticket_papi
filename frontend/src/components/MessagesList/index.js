@@ -8,6 +8,8 @@ import React, {
   useCallback,
 } from "react";
 import { isSameDay, parseISO, format } from "date-fns";
+import { VariableSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import clsx from "clsx";
 import { isNil } from "lodash";
 import { blue, green, red } from "@material-ui/core/colors";
@@ -61,6 +63,7 @@ import AudioModal from "../AudioModal";
 import { messages } from "../../translate/languages";
 import { useParams, useHistory } from "react-router-dom";
 import { downloadResource } from "../../utils";
+const path = require("path");
 
 const useStyles = makeStyles((theme) => ({
   messagesListWrapper: {
@@ -131,11 +134,11 @@ const useStyles = makeStyles((theme) => ({
 
   messageLeft: {
     marginRight: 20,
-    marginTop: 2,
+    marginTop: 4,
     minWidth: 100,
     maxWidth: 600,
     height: "auto",
-    display: "block",
+    display: "inline-block",
     position: "relative",
     "&:hover #messageActionsButton": {
       display: "flex",
@@ -145,19 +148,19 @@ const useStyles = makeStyles((theme) => ({
     },
 
     whiteSpace: "pre-wrap",
-    backgroundColor: theme.mode === "light" ? "#ffffff" : "#202c33",
-    color: theme.mode === "light" ? "#303030" : "#ffffff",
+    backgroundColor: theme.mode === "light" ? "#FFFFFF" : "#1E293B",
+    color: theme.mode === "light" ? "#1E293B" : "#F8FAFC",
     alignSelf: "flex-start",
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 0,
-    boxShadow:
-      theme.mode === "light" ? "0 1px 1px #b3b3b3" : "0 1px 1px #000000",
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    padding: "8px 12px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    transition: "all 0.2s ease",
+    "&:hover": {
+      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    },
   },
 
   quotedContainerLeft: {
@@ -173,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     maxWidth: 300,
     height: "auto",
-    display: "block",
+    display: "inline-block",
     whiteSpace: "pre-wrap",
     overflow: "hidden",
   },
@@ -186,11 +189,11 @@ const useStyles = makeStyles((theme) => ({
 
   messageRight: {
     marginLeft: 20,
-    marginTop: 2,
+    marginTop: 4,
     minWidth: 100,
     maxWidth: 600,
     height: "auto",
-    display: "block",
+    display: "inline-block",
     position: "relative",
     "&:hover #messageActionsButton": {
       display: "flex",
@@ -199,28 +202,31 @@ const useStyles = makeStyles((theme) => ({
       right: 0,
     },
     whiteSpace: "pre-wrap",
-    backgroundColor: theme.mode === "light" ? "#dcf8c6" : "#005c4b",
-    color: theme.mode === "light" ? "#303030" : "#ffffff",
+    background: theme.mode === "light" 
+      ? "linear-gradient(135deg, #4F46E5 0%, #6366F1 100%)" 
+      : "linear-gradient(135deg, #4338CA 0%, #4F46E5 100%)",
+    color: "#FFFFFF",
     alignSelf: "flex-end",
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 0,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 0,
-    boxShadow:
-      theme.mode === "light" ? "0 1px 1px #b3b3b3" : "0 1px 1px #000000",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    padding: "8px 12px",
+    boxShadow: "0 4px 12px rgba(79, 70, 229, 0.2)",
+    transition: "all 0.2s ease",
+    "&:hover": {
+      boxShadow: "0 6px 16px rgba(79, 70, 229, 0.3)",
+      transform: "translateY(-1px)",
+    },
   },
 
   messageRightPrivate: {
     marginLeft: 20,
-    marginTop: 2,
+    marginTop: 4,
     minWidth: 100,
     maxWidth: 600,
     height: "auto",
-    display: "block",
+    display: "inline-block",
     position: "relative",
     "&:hover #messageActionsButton": {
       display: "flex",
@@ -229,19 +235,15 @@ const useStyles = makeStyles((theme) => ({
       right: 0,
     },
     whiteSpace: "pre-wrap",
-    backgroundColor: "#F0E68C",
-    color: "#303030",
+    background: "linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)",
+    color: "#92400E",
     alignSelf: "flex-end",
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 0,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 0,
-    boxShadow:
-      theme.mode === "light" ? "0 1px 1px #b3b3b3" : "0 1px 1px #000000",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    padding: "8px 12px",
+    boxShadow: "0 4px 12px rgba(251, 191, 36, 0.2)",
   },
 
   quotedContainerRight: {
@@ -447,6 +449,327 @@ const reducer = (state, action) => {
   }
 };
 
+const MessageListItem = memo(({ index, data, style }) => {
+  const {
+    messagesList,
+    classes,
+    isGroup,
+    handleOpenMessageOptionsMenu,
+    hanldeReplyMessage,
+    renderDailyTimestamps,
+    renderTicketsSeparator,
+    renderMessageDivider,
+    checkMessageMedia,
+    renderMessageAck,
+    renderQuotedMessage,
+    isYouTubeLink,
+    YouTubePreview,
+    MarkdownWrapper,
+    showSelectMessageCheckbox,
+    lgpdDeleteMessage,
+    formatXml,
+    xmlRegex,
+    path,
+    setSize,
+  } = data;
+
+  const rowRef = useRef();
+
+  useEffect(() => {
+    if (!rowRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setSize(index, entry.target.getBoundingClientRect().height);
+      }
+    });
+
+    resizeObserver.observe(rowRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [setSize, index]);
+
+  const message = messagesList[index];
+
+  if (message.mediaType === "call_log") {
+    return (
+      <div style={style}>
+        <div ref={rowRef} style={{ display: "flex", flexDirection: "column" }}>
+          {renderDailyTimestamps(message, index)}
+          {renderTicketsSeparator(message, index)}
+          {renderMessageDivider(message, index)}
+          <div className={classes.messageCenter}>
+            <IconButton
+              variant="contained"
+              size="small"
+              id="messageActionsButton"
+              disabled={message.isDeleted}
+              className={classes.messageActionsButton}
+              onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
+            >
+              <ExpandMore />
+            </IconButton>
+            {isGroup && (
+              <span className={classes.messageContactName}>
+                {message.contact?.name}
+              </span>
+            )}
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 17"
+                width="20"
+                height="17"
+              >
+                <path
+                  fill="#df3333"
+                  d="M18.2 12.1c-1.5-1.8-5-2.7-8.2-2.7s-6.7 1-8.2 2.7c-.7.8-.3 2.3.2 2.8.2.2.3.3.5.3 1.4 0 3.6-.7 3.6-.7.5-.2.8-.5.8-1v-1.3c.7-1.2 5.4-1.2 6.4-.1l.1.1v1.3c0 .2.1.4.2.6.1.2.3.3.5.4 0 0 2.2.7 3.6.7.2 0 1.4-2 .5-3.1zM5.4 3.2l4.7 4.6 5.8-5.7-.9-.8L10.1 6 6.4 2.3h2.5V1H4.1v4.8h1.3V3.2z"
+                ></path>
+              </svg>{" "}
+              <span>
+                {i18n.t("ticketsList.missedCall")}{" "}
+                {format(parseISO(message.createdAt), "HH:mm")}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!message.fromMe) {
+    return (
+      <div style={style}>
+        <div ref={rowRef} style={{ display: "flex", flexDirection: "column" }}>
+          {renderDailyTimestamps(message, index)}
+          {renderTicketsSeparator(message, index)}
+          {renderMessageDivider(message, index)}
+          <div
+            className={classes.messageLeft}
+            title={message.queueId && message.queue?.name}
+            onDoubleClick={(e) => hanldeReplyMessage(e, message)}
+          >
+            {showSelectMessageCheckbox && (
+              <SelectMessageCheckbox message={message} />
+            )}
+            <IconButton
+              variant="contained"
+              size="small"
+              id="messageActionsButton"
+              disabled={message.isDeleted}
+              className={classes.messageActionsButton}
+              onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
+            >
+              <ExpandMore />
+            </IconButton>
+
+            {message.isForwarded && (
+              <div>
+                <span className={classes.forwardMessage}>
+                  <Reply style={{ color: "grey", transform: "scaleX(-1)" }} />{" "}
+                  Encaminhada
+                </span>
+                <br />
+              </div>
+            )}
+            {isGroup && (
+              <span className={classes.messageContactName}>
+                {message.contact?.name}
+              </span>
+            )}
+            {isYouTubeLink(message.body) && (
+              <YouTubePreview videoUrl={message.body} />
+            )}
+
+            {!lgpdDeleteMessage && message.isDeleted && (
+              <div>
+                <span className={classes.deletedMessage}>
+                  🚫 Essa mensagem foi apagada pelo contato &nbsp;
+                </span>
+              </div>
+            )}
+
+            {(message.mediaUrl ||
+              message.mediaType === "locationMessage" ||
+              message.mediaType === "contactMessage" ||
+              message.mediaType === "pollCreationMessageV3" ||
+              message.mediaType === "eventMessage" ||
+              message.mediaType === "listMessage" ||
+              message.mediaType === "viewOnceMessage" ||
+              message.mediaType === "interactiveMessage" ||
+              message.mediaType === "adMetaPreview") &&
+              checkMessageMedia(message)}
+
+            <div
+              className={clsx(classes.textContentItem, {
+                [classes.textContentItemDeleted]: message.isDeleted,
+              })}
+            >
+              {message.quotedMsg && renderQuotedMessage(message)}
+              {((message.mediaUrl !== null &&
+                (message.mediaType === "image" ||
+                  message.mediaType === "video") &&
+                path.basename(message.mediaUrl).trim() !==
+                  message.body.trim()) ||
+                (message.mediaType !== "audio" &&
+                  message.mediaType !== "image" &&
+                  message.mediaType !== "video" &&
+                  message.mediaType !== "reactionMessage" &&
+                  message.mediaType !== "locationMessage" &&
+                  message.mediaType !== "contactMessage" &&
+                  message.mediaType !== "pollCreationMessageV3" &&
+                  message.mediaType !== "eventMessage" &&
+                  message.mediaType !== "listMessage" &&
+                  message.mediaType !== "viewOnceMessage" &&
+                  message.mediaType !== "interactiveMessage" &&
+                  message.mediaType !== "adMetaPreview")) && (
+                <>
+                  {xmlRegex.test(message.body) && (
+                    <span>{message.body}</span>
+                  )}
+                  {!xmlRegex.test(message.body) && (
+                    <MarkdownWrapper>
+                      {lgpdDeleteMessage && message.isDeleted
+                        ? "🚫 _Mensagem apagada_ "
+                        : message.body}
+                    </MarkdownWrapper>
+                  )}
+                </>
+              )}
+
+              {message.quotedMsg && message.mediaType === "reactionMessage" && (
+                <span style={{ marginLeft: "0px" }}>
+                  <MarkdownWrapper>
+                    {"" +
+                      message?.contact?.name +
+                      " reagiu... " +
+                      message.body}
+                  </MarkdownWrapper>
+                </span>
+              )}
+
+              <span className={classes.timestamp}>
+                {message.isEdited
+                  ? "Editada " + format(parseISO(message.createdAt), "HH:mm")
+                  : format(parseISO(message.createdAt), "HH:mm")}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div style={style}>
+        <div ref={rowRef} style={{ display: "flex", flexDirection: "column" }}>
+          {renderDailyTimestamps(message, index)}
+          {renderTicketsSeparator(message, index)}
+          {renderMessageDivider(message, index)}
+          <div
+            className={
+              message.isPrivate
+                ? classes.messageRightPrivate
+                : classes.messageRight
+            }
+            title={message.queueId && message.queue?.name}
+            onDoubleClick={(e) => hanldeReplyMessage(e, message)}
+          >
+            {showSelectMessageCheckbox && (
+              <SelectMessageCheckbox message={message} />
+            )}
+
+            <IconButton
+              variant="contained"
+              size="small"
+              id="messageActionsButton"
+              disabled={message.isDeleted}
+              className={classes.messageActionsButton}
+              onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
+            >
+              <ExpandMore />
+            </IconButton>
+            {message.isForwarded && (
+              <div>
+                <span className={classes.forwardMessage}>
+                  <Reply style={{ color: "grey", transform: "scaleX(-1)" }} />{" "}
+                  Encaminhada
+                </span>
+                <br />
+              </div>
+            )}
+            {isYouTubeLink(message.body) && (
+              <YouTubePreview videoUrl={message.body} />
+            )}
+            {!lgpdDeleteMessage && message.isDeleted && (
+              <div>
+                <span className={classes.deletedMessage}>
+                  🚫 Essa mensagem foi apagada &nbsp;
+                </span>
+              </div>
+            )}
+            {(message.mediaUrl ||
+              message.mediaType === "locationMessage" ||
+              message.mediaType === "contactMessage" ||
+              message.mediaType === "pollCreationMessageV3" ||
+              message.mediaType === "eventMessage" ||
+              message.mediaType === "listMessage" ||
+              message.mediaType === "viewOnceMessage" ||
+              message.mediaType === "interactiveMessage" ||
+              message.mediaType === "adMetaPreview") &&
+              checkMessageMedia(message)}
+            <div
+              className={clsx(classes.textContentItem, {
+                [classes.textContentItemDeleted]: message.isDeleted,
+              })}
+            >
+              {message.quotedMsg && renderQuotedMessage(message)}
+
+              {((message.mediaType === "image" || message.mediaType === "video") &&
+                path.basename(message.mediaUrl) === message.body) ||
+                (message.mediaType !== "audio" &&
+                  message.mediaType !== "reactionMessage" &&
+                  message.mediaType !== "locationMessage" &&
+                  message.mediaType !== "contactMessage" &&
+                  message.mediaType !== "pollCreationMessageV3" &&
+                  message.mediaType !== "eventMessage" &&
+                  message.mediaType !== "listMessage" &&
+                  message.mediaType !== "viewOnceMessage" &&
+                  message.mediaType !== "interactiveMessage" &&
+                  message.mediaType !== "adMetaPreview" && (
+                    <>
+                      {xmlRegex.test(message.body) && (
+                        <div>{formatXml(message.body)}</div>
+                      )}
+                      {!xmlRegex.test(message.body) && (
+                        <MarkdownWrapper>{message.body}</MarkdownWrapper>
+                      )}
+                    </>
+                  ))}
+
+              {message.quotedMsg && message.mediaType === "reactionMessage" && (
+                <span style={{ marginLeft: "0px" }}>
+                  <MarkdownWrapper>
+                    {"Você reagiu... " + message.body}
+                  </MarkdownWrapper>
+                </span>
+              )}
+
+              <span className={classes.timestamp}>
+                {message.isEdited
+                  ? "Editada " + format(parseISO(message.createdAt), "HH:mm")
+                  : format(parseISO(message.createdAt), "HH:mm")}
+                {renderMessageAck(message)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
   const classes = useStyles();
   const [messagesList, dispatch] = useReducer(reducer, []);
@@ -455,7 +778,52 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const history = useHistory();
-  const lastMessageRef = useRef();
+  const listRef = useRef();
+  const sizeMap = useRef({});
+
+  const setSize = useCallback((index, size) => {
+    sizeMap.current = { ...sizeMap.current, [index]: size };
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(index);
+    }
+  }, []);
+
+  const getItemSize = (index) => {
+    const message = messagesList[index];
+    if (sizeMap.current[index]) return sizeMap.current[index];
+
+    let height = 60; // Base height
+
+    if (message.mediaType === "chat") {
+      height += Math.ceil((message.body || "").length / 40) * 20;
+    } else if (
+      ["image", "video", "locationMessage", "adMetaPreview"].includes(
+        message.mediaType
+      )
+    ) {
+      height += 300;
+    } else if (message.mediaType === "audio") {
+      height += 80;
+    } else if (message.mediaType === "vcard" || message.mediaType === "contactMessage") {
+      height += 150;
+    }
+
+    if (message.quotedMsg) height += 100;
+
+    // Check for separators/timestamps
+    if (index === 0) height += 40;
+    else {
+      const prevMessage = messagesList[index - 1];
+      if (!isSameDay(parseISO(message.createdAt), parseISO(prevMessage.createdAt))) {
+        height += 40;
+      }
+      if (message.ticketId !== prevMessage.ticketId) {
+        height += 40;
+      }
+    }
+
+    return height;
+  };
 
   const [selectedMessage, setSelectedMessage] = useState({});
   const { setReplyingMessage } = useContext(ReplyMessageContext);
@@ -593,26 +961,15 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
   };
 
   const scrollToBottom = () => {
-    setTimeout(() => {
-      if (lastMessageRef.current) {
-        lastMessageRef.current.scrollIntoView({});
-      }
-    }, 100);
+    if (listRef.current && messagesList.length > 0) {
+      listRef.current.scrollToItem(messagesList.length - 1, "end");
+    }
   };
 
-  const handleScroll = (e) => {
-    if (!hasMore) return;
-    const { scrollTop } = e.currentTarget;
+  const handleScroll = ({ scrollOffset }) => {
+    if (!hasMore || loading) return;
 
-    if (scrollTop === 0) {
-      document.getElementById("messagesList").scrollTop = 1;
-    }
-
-    if (loading) {
-      return;
-    }
-
-    if (scrollTop < 50) {
+    if (scrollOffset < 50) {
       loadMore();
     }
   };
@@ -979,13 +1336,7 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
         );
       }
     } else if (index === messagesList.length - 1) {
-      return (
-        <div
-          key={`ref-${message.id}`}
-          ref={lastMessageRef}
-          style={{ float: "left", clear: "both" }}
-        />
-      );
+      return null;
     }
   };
 
@@ -1042,8 +1393,6 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
     }
   };
 
-  const path = require("path");
-
   const renderQuotedMessage = (message) => {
     return (
       <div
@@ -1066,11 +1415,6 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
           {message.quotedMsg.mediaType === "audio" && (
             <div className={classes.downloadMedia}>
               <AudioModal url={message.quotedMsg.mediaUrl} />
-
-              {/* <audio controls>
-                  <source src={message.quotedMsg.mediaUrl} type="audio/mp3"></source>
-                  {/* <source src={message.quotedMsg.mediaUrl} type="audio/ogg"></source> 
-                </audio> */}
             </div>
           )}
           {message.quotedMsg.mediaType === "video" && (
@@ -1085,7 +1429,6 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
             <div className={classes.downloadMedia}>
               <Button
                 startIcon={<GetApp />}
-                // color="primary"
                 variant="outlined"
                 target="_blank"
                 href={message.quotedMsg.mediaUrl}
@@ -1132,340 +1475,16 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
       }
     }
   };
-  const xmlRegex = /<([^>]+)>/g;
-  const boldRegex = /\*(.*?)\*/g;
 
   const formatXml = (xmlString) => {
-    // Verifica se o XML contém a assinatura com nome do atendente
     if (boldRegex.test(xmlString)) {
-      // Formata o texto dentro da assinatura em negrito
       xmlString = xmlString.replace(boldRegex, "**$1**");
     }
     return xmlString;
   };
 
-  const renderMessages = () => {
-    if (messagesList.length > 0) {
-      const viewMessagesList = messagesList.map((message, index) => {
-        if (message.mediaType === "call_log") {
-          return (
-            <React.Fragment key={message.id}>
-              {renderDailyTimestamps(message, index)}
-              {renderTicketsSeparator(message, index)}
-              {renderMessageDivider(message, index)}
-              <div className={classes.messageCenter}>
-                <IconButton
-                  variant="contained"
-                  size="small"
-                  id="messageActionsButton"
-                  disabled={message.isDeleted}
-                  className={classes.messageActionsButton}
-                  onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
-                >
-                  <ExpandMore />
-                </IconButton>
-                {isGroup && (
-                  <span className={classes.messageContactName}>
-                    {message.contact?.name}
-                  </span>
-                )}
-
-                {/* {isGroup && (
-                  <span className={classes.messageContactName}>
-                    {JSON.parse(message.dataJson).pushName} #{message.contact?.name}
-                  </span>
-                )} */}
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 17"
-                    width="20"
-                    height="17"
-                  >
-                    <path
-                      fill="#df3333"
-                      d="M18.2 12.1c-1.5-1.8-5-2.7-8.2-2.7s-6.7 1-8.2 2.7c-.7.8-.3 2.3.2 2.8.2.2.3.3.5.3 1.4 0 3.6-.7 3.6-.7.5-.2.8-.5.8-1v-1.3c.7-1.2 5.4-1.2 6.4-.1l.1.1v1.3c0 .2.1.4.2.6.1.2.3.3.5.4 0 0 2.2.7 3.6.7.2 0 1.4-2 .5-3.1zM5.4 3.2l4.7 4.6 5.8-5.7-.9-.8L10.1 6 6.4 2.3h2.5V1H4.1v4.8h1.3V3.2z"
-                    ></path>
-                  </svg>{" "}
-                  <span>
-                    {i18n.t("ticketsList.missedCall")}{" "}
-                    {format(parseISO(message.createdAt), "HH:mm")}
-                  </span>
-                </div>
-              </div>
-            </React.Fragment>
-          );
-        }
-
-        if (!message.fromMe) {
-          return (
-            <React.Fragment key={message.id}>
-              {renderDailyTimestamps(message, index)}
-              {renderTicketsSeparator(message, index)}
-              {renderMessageDivider(message, index)}
-              <div
-                className={classes.messageLeft}
-                title={message.queueId && message.queue?.name}
-                onDoubleClick={(e) => hanldeReplyMessage(e, message)}
-              >
-                {showSelectMessageCheckbox && (
-                  <SelectMessageCheckbox
-                    // showSelectMessageCheckbox={showSelectMessageCheckbox}
-                    message={message}
-                  // selectedMessagesList={selectedMessagesList}
-                  // setSelectedMessagesList={setSelectedMessagesList}
-                  />
-                )}
-                <IconButton
-                  variant="contained"
-                  size="small"
-                  id="messageActionsButton"
-                  disabled={message.isDeleted}
-                  className={classes.messageActionsButton}
-                  onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
-                >
-                  <ExpandMore />
-                </IconButton>
-
-                {message.isForwarded && (
-                  <div>
-                    <span className={classes.forwardMessage}>
-                      <Reply
-                        style={{ color: "grey", transform: "scaleX(-1)" }}
-                      />{" "}
-                      Encaminhada
-                    </span>
-                    <br />
-                  </div>
-                )}
-                {isGroup && (
-                  <span className={classes.messageContactName}>
-                    {message.contact?.name}
-                  </span>
-                )}
-                {isYouTubeLink(message.body) && (
-                  <>
-                    <YouTubePreview videoUrl={message.body} />
-                  </>
-                )}
-                {/* {isGroup && (
-                  <span className={classes.messageContactName}>
-                    {JSON.parse(message.dataJson).pushName} #{message.contact?.name}
-                  </span>
-                )} */}
-
-                {/* aviso de mensagem apagado pelo contato */}
-
-                {!lgpdDeleteMessage && message.isDeleted && (
-                  <div>
-                    <span className={classes.deletedMessage}>
-                      🚫 Essa mensagem foi apagada pelo contato &nbsp;
-                    </span>
-                  </div>
-                )}
-
-                {(message.mediaUrl ||
-                  message.mediaType === "locationMessage" ||
-                  message.mediaType === "contactMessage" ||
-                  message.mediaType === "pollCreationMessageV3" ||
-                  message.mediaType === "eventMessage" ||
-                  message.mediaType === "listMessage" ||
-                  message.mediaType === "viewOnceMessage" ||
-                  message.mediaType === "interactiveMessage" ||
-                  message.mediaType === "adMetaPreview") && // Adicionado para aceitar o componente de preview de anúncio
-                  //|| message.mediaType === "multi_vcard"
-                  checkMessageMedia(message)}
-
-                <div
-                  className={clsx(classes.textContentItem, {
-                    [classes.textContentItemDeleted]: message.isDeleted,
-                  })}
-                >
-                  {message.quotedMsg && renderQuotedMessage(message)}
-                  {((message.mediaUrl !== null &&
-                    (message.mediaType === "image" ||
-                      message.mediaType === "video") &&
-                    path.basename(message.mediaUrl).trim() !==
-                    message.body.trim()) ||
-                    (message.mediaType !== "audio" &&
-                      message.mediaType !== "image" &&
-                      message.mediaType !== "video" &&
-                      message.mediaType != "reactionMessage" &&
-                      message.mediaType != "locationMessage" &&
-                      message.mediaType !== "contactMessage" &&
-                      message.mediaType != "pollCreationMessageV3" &&
-                      message.mediaType != "eventMessage" &&
-                      message.mediaType != "listMessage" &&
-                      message.mediaType != "viewOnceMessage" &&
-                      message.mediaType != "interactiveMessage" &&
-                      message.mediaType !== "adMetaPreview")) && (
-                      <>
-                        {xmlRegex.test(message.body) && (
-                          <span>{message.body}</span>
-                        )}
-                        {!xmlRegex.test(message.body) && (
-                          <MarkdownWrapper>
-                            {lgpdDeleteMessage && message.isDeleted
-                              ? "🚫 _Mensagem apagada_ "
-                              : message.body}
-                          </MarkdownWrapper>
-                        )}
-                      </>
-                    )}
-
-                  {message.quotedMsg &&
-                    message.mediaType === "reactionMessage" && (
-                      <>
-                        <span style={{ marginLeft: "0px" }}>
-                          <MarkdownWrapper>
-                            {"" +
-                              message?.contact?.name +
-                              " reagiu... " +
-                              message.body}
-                          </MarkdownWrapper>
-                        </span>
-                      </>
-                    )}
-
-                  <span className={classes.timestamp}>
-                    {message.isEdited
-                      ? "Editada " +
-                      format(parseISO(message.createdAt), "HH:mm")
-                      : format(parseISO(message.createdAt), "HH:mm")}
-                  </span>
-                </div>
-              </div>
-            </React.Fragment>
-          );
-        } else {
-          return (
-            <React.Fragment key={message.id}>
-              {renderDailyTimestamps(message, index)}
-              {renderTicketsSeparator(message, index)}
-              {renderMessageDivider(message, index)}
-              <div
-                className={
-                  message.isPrivate
-                    ? classes.messageRightPrivate
-                    : classes.messageRight
-                }
-                title={message.queueId && message.queue?.name}
-                onDoubleClick={(e) => hanldeReplyMessage(e, message)}
-              >
-                {showSelectMessageCheckbox && (
-                  <SelectMessageCheckbox
-                    // showSelectMessageCheckbox={showSelectMessageCheckbox}
-                    message={message}
-                  // selectedMessagesList={selectedMessagesList}
-                  // setSelectedMessagesList={setSelectedMessagesList}
-                  />
-                )}
-
-                <IconButton
-                  variant="contained"
-                  size="small"
-                  id="messageActionsButton"
-                  disabled={message.isDeleted}
-                  className={classes.messageActionsButton}
-                  onClick={(e) => handleOpenMessageOptionsMenu(e, message)}
-                >
-                  <ExpandMore />
-                </IconButton>
-                {message.isForwarded && (
-                  <div>
-                    <span className={classes.forwardMessage}>
-                      <Reply
-                        style={{ color: "grey", transform: "scaleX(-1)" }}
-                      />{" "}
-                      Encaminhada
-                    </span>
-                    <br />
-                  </div>
-                )}
-                {isYouTubeLink(message.body) && (
-                  <>
-                    <YouTubePreview videoUrl={message.body} />
-                  </>
-                )}
-                {!lgpdDeleteMessage && message.isDeleted && (
-                  <div>
-                    <span className={classes.deletedMessage}>
-                      🚫 Essa mensagem foi apagada &nbsp;
-                    </span>
-                  </div>
-                )}
-                {(message.mediaUrl ||
-                  message.mediaType === "locationMessage" ||
-                  message.mediaType === "contactMessage" ||
-                  message.mediaType === "pollCreationMessageV3" ||
-                  message.mediaType === "eventMessage" ||
-                  message.mediaType === "listMessage" ||
-                  message.mediaType === "viewOnceMessage" ||
-                  message.mediaType === "interactiveMessage" ||
-                  message.mediaType === "adMetaPreview") && // Adicionado para aceitar o componente de preview de anúncio
-                  //|| message.mediaType === "multi_vcard"
-                  checkMessageMedia(message)}
-                <div
-                  className={clsx(classes.textContentItem, {
-                    [classes.textContentItemDeleted]: message.isDeleted,
-                  })}
-                >
-                  {/* {message.isDeleted && (`🚫`)} */}
-
-                  {message.quotedMsg && renderQuotedMessage(message)}
-
-                  {((message.mediaType === "image" ||
-                    message.mediaType === "video") &&
-                    path.basename(message.mediaUrl) === message.body) ||
-                    (message.mediaType !== "audio" &&
-                      message.mediaType != "reactionMessage" &&
-                      message.mediaType != "locationMessage" &&
-                      message.mediaType !== "contactMessage" &&
-                      message.mediaType != "pollCreationMessageV3" &&
-                      message.mediaType != "eventMessage" &&
-                      message.mediaType != "listMessage" &&
-                      message.mediaType != "viewOnceMessage" &&
-                      message.mediaType != "interactiveMessage" &&
-                      message.mediaType !== "adMetaPreview" && (
-                        <>
-                          {xmlRegex.test(message.body) && (
-                            <div>{formatXml(message.body)}</div>
-                          )}
-                          {!xmlRegex.test(message.body) && (
-                            <MarkdownWrapper>{message.body}</MarkdownWrapper>
-                          )}
-                        </>
-                      ))}
-
-                  {message.quotedMsg &&
-                    message.mediaType === "reactionMessage" && (
-                      <>
-                        <span style={{ marginLeft: "0px" }}>
-                          <MarkdownWrapper>
-                            {"Você reagiu... " + message.body}
-                          </MarkdownWrapper>
-                        </span>
-                      </>
-                    )}
-
-                  <span className={classes.timestamp}>
-                    {message.isEdited
-                      ? "Editada " +
-                      format(parseISO(message.createdAt), "HH:mm")
-                      : format(parseISO(message.createdAt), "HH:mm")}
-                    {renderMessageAck(message)}
-                  </span>
-                </div>
-              </div>
-            </React.Fragment>
-          );
-        }
-      });
-      return viewMessagesList;
-    } else {
-      return <div>Diga olá para seu novo contato!</div>;
-    }
-  };
+  const xmlRegex = /<([^>]+)>/g;
+  const boldRegex = /\*(.*?)\*/g;
 
   return (
     <div className={classes.messagesListWrapper} onDragEnter={handleDrag}>
@@ -1490,12 +1509,43 @@ const MessagesList = ({ isGroup, onDrop, whatsappId, queueId, channel }) => {
         whatsappId={whatsappId}
         queueId={queueId}
       />
-      <div
-        id="messagesList"
-        className={classes.messagesList}
-        onScroll={handleScroll}
-      >
-        {messagesList.length > 0 ? renderMessages() : []}
+      <div id="messagesList" className={classes.messagesList}>
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              width={width}
+              itemCount={messagesList.length}
+              itemSize={getItemSize}
+              ref={listRef}
+              onScroll={handleScroll}
+              itemData={{
+                messagesList,
+                classes,
+                isGroup,
+                handleOpenMessageOptionsMenu,
+                hanldeReplyMessage,
+                renderDailyTimestamps,
+                renderTicketsSeparator,
+                renderMessageDivider,
+                checkMessageMedia,
+                renderMessageAck,
+                renderQuotedMessage,
+                isYouTubeLink,
+                YouTubePreview: YouTubePreview,
+                MarkdownWrapper: MarkdownWrapper,
+                showSelectMessageCheckbox,
+                lgpdDeleteMessage,
+                formatXml,
+                xmlRegex,
+                path,
+                setSize,
+              }}
+            >
+              {MessageListItem}
+            </List>
+          )}
+        </AutoSizer>
       </div>
 
       {channel !== "whatsapp" && channel !== "papi" && channel !== undefined && (

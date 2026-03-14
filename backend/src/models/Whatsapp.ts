@@ -126,6 +126,21 @@ class Whatsapp extends Model<Whatsapp> {
   tokenMeta: string;
 
   @Column(DataType.TEXT)
+  wabaId: string;
+
+  @Column(DataType.TEXT)
+  mlUserId: string;
+
+  @Column(DataType.TEXT)
+  mlAccessToken: string;
+
+  @Column(DataType.TEXT)
+  mlRefreshToken: string;
+
+  @Column
+  mlTokenExpiry: Date;
+
+  @Column(DataType.TEXT)
   channel: string;
 
   @Default(3)

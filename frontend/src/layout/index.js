@@ -70,41 +70,36 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       height: "calc(100vh - 56px)",
     },
-    backgroundColor: theme.palette.fancyBackground,
+    backgroundColor: theme.palette.background.default,
     "& .MuiButton-outlinedPrimary": {
-      color: theme.palette.primary,
-      border:
-        theme.mode === "light"
-          ? "1px solid rgba(0 124 102)"
-          : "1px solid rgba(255, 255, 255, 0.5)",
+      color: theme.palette.primary.main,
+      border: `1px solid ${theme.palette.primary.main}`,
     },
-    "& .MuiTab-textColorPrimary.Mui-selected": {
-      color: theme.palette.primary,
-    },
+    transition: "background-color 0.3s ease",
   },
   chip: {
-    background: "red",
+    background: theme.palette.primary.main,
     color: "white",
   },
   avatar: {
     width: "100%",
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-    color: theme.palette.dark.main,
-    background: theme.palette.barraSuperior,
+    paddingRight: 24, 
+    color: theme.palette.text.primary,
+    backgroundColor: "transparent",
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: `${theme.palette.barraLateral} !important`,
-    color: theme.palette.corIconesbarra,
-    backgroundSize: "cover",
-    padding: "0 8px",
-    minHeight: "48px",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    color: theme.palette.text.primary,
+    padding: "0 16px",
+    minHeight: "56px",
     [theme.breakpoints.down("sm")]: {
-      height: "48px",
+      height: "56px",
     },
   },
   appBar: {
@@ -134,12 +129,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     fontSize: 14,
-    color: "white",
+    color: theme.palette.text.primary,
+    fontWeight: 600,
   },
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
-    // overflowX: "hidden",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -147,8 +142,10 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden",
     overflowY: "hidden",
-    backgroundColor: theme.palette.barraLateral,
-    color: theme.palette.corTextobarraLateral,
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    borderRight: `1px solid ${theme.palette.divider}`,
+    backdropFilter: "blur(12px) saturate(180%)",
   },
 
   drawerPaperClose: {
@@ -162,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9),
     },
-    backgroundColor: theme.palette.barraLateral,
+    backgroundColor: theme.palette.background.paper,
   },
 
   appBarSpacer: {
@@ -170,7 +167,9 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: 1,
-    overflow: "auto",
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -440,7 +439,7 @@ const LoggedInLayout = ({ children, themeToggle }) => {
             className={drawerOpen ? classes.logo : classes.hideLogo}
             alt="logo"
           />
-          <IconButton onClick={() => setDrawerOpen(!drawerOpen)} style={{ color: theme.palette.corIconesbarra }}>
+          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -454,14 +453,13 @@ const LoggedInLayout = ({ children, themeToggle }) => {
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}
-        color="primary"
       >
         <Toolbar variant="dense" className={classes.toolbar}>
           <IconButton
             edge="start"
             variant="contained"
             aria-label="open drawer"
-            style={{ color: "white" }}
+            color="inherit"
             onClick={() => setDrawerOpen(!drawerOpen)}
             className={clsx(drawerOpen && classes.menuButtonHidden)}
           >
@@ -516,11 +514,11 @@ const LoggedInLayout = ({ children, themeToggle }) => {
             setRingVolume={setRingVolume} // Callback function
             timelocale={'UTC-3'} //Set time local for call history
           /> */}
-          <IconButton edge="start" onClick={colorMode.toggleColorMode}>
+          <IconButton edge="start" color="inherit" onClick={colorMode.toggleColorMode}>
             {theme.mode === "dark" ? (
-              <Brightness7Icon style={{ color: "white" }} />
+              <Brightness7Icon />
             ) : (
-              <Brightness4Icon style={{ color: "white" }} />
+              <Brightness4Icon />
             )}
           </IconButton>
 
@@ -531,7 +529,7 @@ const LoggedInLayout = ({ children, themeToggle }) => {
             aria-label={i18n.t("mainDrawer.appBar.refresh")}
             color="inherit"
           >
-            <CachedIcon style={{ color: "white" }} />
+            <CachedIcon />
           </IconButton>
 
           {/* <DarkMode themeToggle={themeToggle} /> */}

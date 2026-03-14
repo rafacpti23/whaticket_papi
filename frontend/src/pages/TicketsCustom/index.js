@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    height: "100%",
+    height: "calc(100% - 48px)",
     position: "relative",
     backgroundColor: theme.palette.background.default,
   },
   chatContainer: {
     flex: 1,
     padding: theme.spacing(1, 0.5),
-    height: `calc(100% - 48px)`,
+    height: "100%",
     overflowY: "hidden",
   },
   chatWrapper: {

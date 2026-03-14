@@ -41,6 +41,8 @@ import useCompanySettings from "../../hooks/useSettings/companySettings";
 import SchedulesForm from "../SchedulesForm";
 import usePlans from "../../hooks/usePlans";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import WhatsAppOfficialHelpModal from "../WhatsAppOfficialHelpModal";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,6 +146,9 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
     collectiveVacationStart: "",
     collectiveVacationMessage: "",
     queueIdImportMessages: null,
+    tokenMeta: "",
+    facebookPageUserId: "",
+    wabaId: "",
     channel: "whatsapp"
   };
   const [whatsApp, setWhatsApp] = useState(initialState);
@@ -162,6 +167,7 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
   const [showOpenAi, setShowOpenAi] = useState(false);
   const [showIntegrations, setShowIntegrations] = useState(false);
   const { user } = useContext(AuthContext);
+  const [helpModalOpen, setHelpModalOpen] = useState(false);
 
 
 
@@ -637,13 +643,65 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
                               id="channel"
                               name="channel"
                             >
-                              <MenuItem value={"whatsapp"}>WhatsApp (Padrão)</MenuItem>
-                              <MenuItem value={"papi"}>PAPI (Beta)</MenuItem>
+                                <MenuItem value={"whatsapp"}>WhatsApp (Padrão)</MenuItem>
+                                <MenuItem value={"whatsapp_cloud"}>WhatsApp Official (Cloud API)</MenuItem>
+                                <MenuItem value={"papi"}>PAPI (Beta)</MenuItem>
                             </Field>
                           </FormControl>
                         </Grid>
                       </Grid>
                     </div>
+
+                    {values.channel === "whatsapp_cloud" && (
+                      <Box mt={2} mb={2}>
+                        <Divider />
+                        <Typography variant="subtitle1" style={{ marginTop: 10, display: "flex", alignItems: "center" }}>
+                          Configurações Meta Cloud API
+                          <Button 
+                            size="small" 
+                            color="primary" 
+                            onClick={() => setHelpModalOpen(true)}
+                            startIcon={<HelpOutlineIcon />}
+                            style={{ marginLeft: 10 }}
+                          >
+                            Ajuda
+                          </Button>
+                        </Typography>
+                        <Grid spacing={2} container>
+                          <Grid item xs={12} md={6}>
+                            <Field
+                              as={TextField}
+                              label="ID do Número de Telefone"
+                              name="facebookPageUserId"
+                              variant="outlined"
+                              margin="dense"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <Field
+                              as={TextField}
+                              label="ID da Conta WABA"
+                              name="wabaId"
+                              variant="outlined"
+                              margin="dense"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Field
+                              as={TextField}
+                              label="Token Meta (Permanente)"
+                              name="tokenMeta"
+                              variant="outlined"
+                              margin="dense"
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                        <Divider style={{ marginTop: 15 }} />
+                      </Box>
+                    )}
 
 
                     <div className={classes.importMessage}>
@@ -1418,6 +1476,10 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
           )}
         </Formik>
       </Dialog>
+      <WhatsAppOfficialHelpModal
+        open={helpModalOpen}
+        onClose={() => setHelpModalOpen(false)}
+      />
     </div>
   );
 };

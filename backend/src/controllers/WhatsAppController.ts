@@ -61,6 +61,9 @@ interface WhatsappData {
   flowIdNotPhrase?: number;
   flowIdWelcome?: number;
   channel?: string;
+  tokenMeta?: string;
+  facebookPageUserId?: string;
+  wabaId?: string;
 }
 
 interface QueryParams {
@@ -122,7 +125,10 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     queueIdImportMessages,
     flowIdNotPhrase,
     flowIdWelcome,
-    channel
+    channel,
+    tokenMeta,
+    facebookPageUserId,
+    wabaId
   }: WhatsappData = req.body;
   const { companyId } = req.user;
 
@@ -130,6 +136,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   const plan = await ShowPlanService(company.planId);
 
   if (!plan.useWhatsapp) {
+    console.log("Plan error: useWhatsapp is false for company", companyId);
     return res.status(400).json({
       error: "Você não possui permissão para acessar este recurso!"
     });
@@ -176,12 +183,17 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     queueIdImportMessages,
     flowIdNotPhrase,
     flowIdWelcome,
-    channel
+    channel,
+    tokenMeta,
+    facebookPageUserId,
+    wabaId
   });
 
   if (whatsapp.channel === "papi") {
     await PapiService.createInstance(whatsapp);
     await whatsapp.reload(); // Reload to get updated status/qrcode from PapiService
+  } else if (whatsapp.channel === "whatsapp_cloud" || whatsapp.channel === "mercadolivre") {
+    await whatsapp.update({ status: "CONNECTED" });
   } else {
     StartWhatsAppSession(whatsapp, companyId);
   }

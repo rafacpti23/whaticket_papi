@@ -3,17 +3,24 @@
  * serviço/todas as configurações de 1 empresa |
  * @param:companyId
  */
-import sequelize from "../../database";
+import FindCompanySettingsService from "./FindCompanySettingsService";
 
 type Params = {
-  companyId: any;
-  column:string
+  companyId: number;
+  column: string;
 };
 
-const FindCompanySettingOneService = async ({companyId, column}:Params): Promise<any> => {
-    
-    const [results, metadata] = await sequelize.query(`SELECT "${column}" FROM "CompaniesSettings" WHERE "companyId"=${companyId}`)
-    return results;
+const FindCompanySettingOneService = async ({
+  companyId,
+  column
+}: Params): Promise<any> => {
+  const companySettings = await FindCompanySettingsService({ companyId });
+
+  if (companySettings && column in companySettings) {
+    return [{ [column]: (companySettings as any)[column] }];
+  }
+
+  return [];
 };
 
 export default FindCompanySettingOneService;

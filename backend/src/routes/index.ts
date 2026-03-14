@@ -46,6 +46,7 @@ import webHook from "./webHookRoutes";
 import flowBuilder from "./flowBuilderRoutes";
 import flowCampaignRoutes from "./flowCampaignRoutes";
 import papiRoutes from "./papiRoutes";
+import mercadoLivreRoutes from "./mercadoLivreRoutes";
 
 
 const routes = Router();
@@ -99,5 +100,6 @@ routes.use(promptRoutes);
 routes.use(statisticsRoutes);
 routes.use(companySettingsRoutes);
 routes.use(scheduleMessageRoutes);
+routes.use(mercadoLivreRoutes);
 
 export default routes;

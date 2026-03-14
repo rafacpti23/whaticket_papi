@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
   mainWrapper: {
     flex: 1,
-    height: "95%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",

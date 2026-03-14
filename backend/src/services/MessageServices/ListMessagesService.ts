@@ -5,7 +5,6 @@ import ShowTicketService from "../TicketServices/ShowTicketService";
 import { Op } from "sequelize";
 import { intersection } from "lodash";
 import User from "../../models/User";
-import isQueueIdHistoryBlocked from "../UserServices/isQueueIdHistoryBlocked";
 import Contact from "../../models/Contact";
 import Queue from "../../models/Queue";
 import Whatsapp from "../../models/Whatsapp";

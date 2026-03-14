@@ -2,8 +2,9 @@ import * as Yup from "yup";
 
 import AppError from "../../errors/AppError";
 import ShowUserService from "./ShowUserService";
-import Company from "../../models/Company";
 import User from "../../models/User";
+import Queue from "../../models/Queue";
+import Company from "../../models/Company";
 import cacheLayer from "../../libs/cache";
 
 interface UserData {
@@ -122,11 +123,17 @@ const UpdateUserService = async ({
     allowConnections
   });
 
-  await user.$set("queues", queueIds);
+  const queues = queueIds.map(q => Number(q));
+  await user.$set("queues", queues);
 
   await cacheLayer.del(`showuser:${userId}:${companyId}`);
 
-  await user.reload();
+  await user.reload({
+    include: [
+      { model: Queue, as: "queues", attributes: ["id", "name", "color"] },
+      { model: Company, as: "company" }
+    ]
+  });
 
   const company = await Company.findByPk(user.companyId);
 

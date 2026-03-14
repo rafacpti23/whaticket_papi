@@ -3,20 +3,37 @@
  * serviço/atualizar 1 configuração da empresa |
  * @params:companyId/column(name)/data
  */
-import sequelize from "../../database";
 import CompaniesSettings from "../../models/CompaniesSettings";
+import cacheLayer from "../../libs/cache";
 
 type Params = {
   companyId: number,
-  column:string,
-  data:string
+  column: string,
+  data: string
 };
 
-const UpdateCompanySettingsService = async ({companyId, column, data}:Params): Promise<any> => {
+const UpdateCompanySettingsService = async ({
+  companyId,
+  column,
+  data
+}: Params): Promise<any> => {
+  let value: any = data;
 
-  const [results, metadata] = await sequelize.query(`UPDATE "CompaniesSettings" SET "${column}"='${data}' WHERE "companyId"=${companyId}`)
+  // Automagically convert frontend status strings to boolean if column expects boolean
+  if (data === "enabled") value = true;
+  if (data === "disabled") value = false;
 
-  return results;
+  const [updatedCount] = await CompaniesSettings.update(
+    { [column]: value },
+    { where: { companyId } }
+  );
+
+  if (updatedCount > 0) {
+    const cacheKey = `companysettings:${companyId}`;
+    await cacheLayer.del(cacheKey);
+  }
+
+  return updatedCount;
 };
 
 export default UpdateCompanySettingsService;
